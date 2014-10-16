@@ -184,6 +184,10 @@ Number aLength = aString length.
 Number anotherLength = 'Hello World!' length.
 ```
 
+#### Block
+A block of code. (function, method, lambda)
+**_TBD_**
+
 #### Boolean
 There are only 2 instances of this type: `true` and `false`. Some operations return a `Boolean` and can be used as any other object:
 ```
@@ -210,10 +214,6 @@ Boolean newAndOdd = isNew and: isOdd.
 Boolean newXorOdd = isNew xor: isOdd.
 Boolean notNew = isNew not.
 ```
-
-#### Block
-A block of code. (function, method, lambda)
-**_TBD_**
 
 #### Interval
 **_TBD_**
