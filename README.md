@@ -1,6 +1,6 @@
 **_This is a work in progress, anything defined can be modified in the future_**
 
-# Features of the language
+## Features of the language
 
 #### Multiparadigm
 At least Object-oriented, Functional and Structured (in that order of importance).
@@ -52,22 +52,22 @@ block1 whileFalse: block2.
  * FixedSizePoolAllocator: manage memory like a pool, but it have a fixed size pool.
 
 
-### Structure of a source code file
+## Structure of a source code file
 
 ```
-import file     # "imports" are legal only at the beginning
+import file         # "imports" are legal only at the beginning
 
-statments			  # statements are executed in order of appearance (structured)
+statments           # statements are executed in order of appearance (structured)
 
-functions			  # blocks of code can be declared and invoked anywhere (functional)
-	statements
+functions           # blocks of code can be declared and invoked anywhere (functional)
+    statements
 
-types           # new types can be declared and used anywhere (oop)
-	functions     # functions inside a type are methods
-		statements
+types               # new types can be declared and used anywhere (oop)
+    functions       # functions inside a type are methods
+        statements
 ```
 
 
-# Examples of code
+## Examples of code
 
 **_TBD_**
