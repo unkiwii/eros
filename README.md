@@ -46,8 +46,10 @@ begin to: end do: block.
 
 #### Initialization is required. Always
 ```
-Type variable.          # This is an error. Terminates the program.
-Type variable = value.  # This is ok.
+Type v.                     # This is an error. Terminates the program.
+Type v = value.             # This is ok.
+Type v = object message.    # This is ok.
+Type v = object message: v. # This is an error, v is not defined yet.
 ```
 
 ## Nice to have
