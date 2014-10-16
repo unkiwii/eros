@@ -21,21 +21,33 @@ Blocks of code (functions, methods, lambdas) and Type definitions (classes) are 
 All the data is private. Accesible only by code of the same object. All the code is public. Accesible by everyone.
 
 #### Objects recieve messages like Smalltalk
-```Smalltalk
+```
 object message.
 object message: param.
 ```
 
 #### Conditionals and loops
 Are not part of the language, they are implemented like messages to objects (like Smalltalk)
-```Smalltalk
-boolean ifTrue: block.
+
+```
+boolean ifTrue: block.      # Branches (if)
 boolean ifFalse: block.
 ```
 
-```Smalltalk
-block1 whileTrue: block2.
+```
+block1 whileTrue: block2.   # Loops (while)
 block1 whileFalse: block2.
+```
+
+```
+1 to: 10 do: block.         # Range-loops (for)
+begin to: end do: block.
+```
+
+#### Initialization is required. Always
+```
+Type variable.          # This is an error. Terminates the program.
+Type variable = value.  # This is ok.
 ```
 
 ## Nice to have
