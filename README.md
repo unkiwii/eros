@@ -45,12 +45,18 @@ begin to: end do: block.
 ```
 
 #### Initialization is required. Always
+You can't define a variable, you must always declare it (give it a type and a value), i.e. in C you can write the following:
+```C
+int a;
+a = 10;
 ```
-Type v.                     # This is an error. Terminates the program.
-Type v = value.             # This is ok.
-Type v = object message.    # This is ok.
-Type v = object message: v. # This is an error, v is not defined yet.
+or this:
+```C
+int aVeryLongVariableName;
+int aVeriLongVariableName = func(aVeriLongVariableName);
 ```
+
+Bacause that pieces of code always brought pain to me and are just to difficult to debug, a definition without an initialization will be illegal. For more details see **Variables** in the code examples below.
 
 ## Nice to have
 
@@ -65,23 +71,77 @@ Type v = object message: v. # This is an error, v is not defined yet.
  * DynamicPoolAllocator: manage memory like a dynamic growing pool.
  * FixedSizePoolAllocator: manage memory like a pool, but it have a fixed size pool.
 
+## Naming requirements
+The names of all types, variables and messages (funcionts names) must comply with the following rules:  
+ 1. The use of '_' is forbidden, only letters ('a' to 'z' and 'A' to 'Z') and digits (0 to 9) can be used.
+ 2. All types must start with uppercase letters and follow the `CamelCase` style.
+```
+GoodType.
+badType.
+OTHERBadType.
+```
+ 3. All variables and messages must start with lowercase letters and follow the `camelCase` style.
+```
+aGoodName.
+anotherGoodName.
+BadVariableName.
+OTHER_BAD_VARIABLE_NAME.
+```
 
-## Structure of a source code file
+## Code examples
+
+#### Comments
 
 ```
-import file         # "imports" are legal only at the beginning
+# Line comments like Python.
+# No multiline comments
+```
 
-statments           # statements are executed in order of appearance (structured)
+#### Values (or primitives)
 
-functions           # blocks of code can be declared and invoked anywhere (functional)
-    statements
-
-types               # new types can be declared and used anywhere (oop)
-    functions       # functions inside a type are methods
-        statements
+```
+123                 # Integer Number
+123,34              # Real Number
+'string'            # Strings are enclosed in single quotes
+'こんにちは世界'    # Strings can hold any unicode char
 ```
 
 
-## Examples of code
+#### Variables
+Simple declarations:
+```
+Object anObject = anotherVariable.
+Number aNumber = 123.
+String aString = 'a string'.
+```
 
-**_TBD_**
+Initialized with the return value of a block of code:
+```
+Object anObject = anotherObject message.
+Object anObject = anotherObject message: param.
+Object anObject = anotherObject message: param1 with: param2.
+```
+
+Any Type and any block of code are first-class objects, so they can be assigned to any variable:
+```
+Type aType = String.
+Block aBlock = #TBD.
+```
+
+Declaration errors:
+```
+Object anObject.         # ERROR: A variable without a value is illegal.
+
+Object var = anObject message: var.    # ERROR: 'var' is not defined yet, can't be used.
+
+Number aNumber = 123.    # Good.
+Number aNumber = 456.    # ERROR: can't redefine a variable.
+aNumber = 789.           # But you can change it's value.
+
+Number aNumber = 123.    # Good.
+String aNumber = 'str'.  # ERROR: can't redefine a variable even if you change it's type.
+
+String aString = 123.                 # ERROR: assigning an incompatible type (Number to String).
+String aString = 123 asString.        # But you can get the correct type from a value...
+String aString = aNumber asString.    # ...or from another variable.
+```
