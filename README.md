@@ -63,6 +63,10 @@ Bacause pieces of code like those brought pain to me and are just to difficult t
 
 ## Nice to have
 
+* Every object must have an 'id', a unique number that represents that object in memory and can be used to check if two objects are the same.
+* Iterating throught a collection make that collection 'selaed'. You can't change a collection while you are iterating throught it.
+* Abstract classes and abstract methods. (complete and partial interfaces)
+* Compilation must be "incremental". You pass 1 file to the compiler and only compile the files that are imported in the first file, then compile the ones that are imported in the imported files and so on. Never compile something that is not part of the objects and functions used by a probram, even the "standard" objects. If a Boolean is never used, it is never compiled.
 * Automatic memory management, but without a garbage collector.
 * No pointers.
 * Unless "global" return values are returned not by copy, but by moving.
