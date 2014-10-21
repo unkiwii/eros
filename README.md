@@ -135,26 +135,26 @@ Object c = anObject message: param1 with: param2.
 Any Type and any block of code are first-class objects, so they can be assigned to any variable:
 ```
 Type aType = String.
-Block<Void> aBlock = [].    # this is illegal, but below is a better description for Block
+Block<Void> aBlock = [].    # this is illegal, see below for Block
 ```
 
 Declaration errors:
 ```
-Object anObject.         # ERROR: A variable without an initialization is illegal...
-Object anObject = null.  # ...but you can initialize it to null.
+Object anObject.        # ERROR: A variable without an initialization is illegal...
+Object anObject = null. # ...but you can initialize it to null.
 
-Object var = anObject message: var.    # ERROR: 'var' is not defined yet, can't be used.
+Object var = anObject message: var. # ERROR: 'var' is not defined yet, can't be used.
 
-Number aNumber = 123.    # Good.
-Number aNumber = 456.    # ERROR: can't redefine a variable...
-aNumber = 789.           # ...but you can change it's value.
+Number aNumber = 123.   # Good.
+Number aNumber = 456.   # ERROR: can't redefine a variable...
+aNumber = 789.          # ...but you can change it's value.
 
-Number aNumber = 123.    # Good.
-String aNumber = 'str'.  # ERROR: can't redefine a variable, nor change it's type.
+Number aNumber = 123.   # Good.
+String aNumber = 'str'. # ERROR: can't redefine a variable, nor change it's type.
 
-String aString = 123.                 # ERROR: assigning an incompatible type...
-String aString = 123 asString.        # ...but you can get the correct type from a value...
-String aString = aNumber asString.    # ...or from another variable.
+String aString = 123.               # ERROR: assigning an incompatible type...
+String aString = 123 asString.      # ...but you can get the correct type from a value...
+String aString = aNumber asString.  # ...or from another variable.
 ```
 
 ## Standard Types
@@ -192,10 +192,38 @@ Number anotherLength = "Hello World!" length.
 
 Strings must are enclosed in double quotes (") never in single quotes ('). To write a double quote character inside a string just escape it with a backslash (\\) like this: "\\'" and to write a backslash character write it twice like this "\\\\", those are the only two exceptions.
 
+
+#### Boolean
+There are only 2 instances of this type: `true` and `false`. Some operations return a `Boolean` and can be used as any other object:
+```
+String aString = 'Hello World!'.
+Boolean hasWorld = aString contains: 'World'.
+```
+
+Some methods:
+```
+Block doSomething = [].     # illegal, see below for Block
+Block doSomethingElse = []. # illegal, see below for Block
+
+Boolean isNew = true.
+Boolean isOdd = 4 isOdd.
+
+# Conditionals
+isNew ifTrue: doSomething.
+isNew ifFalse: doSomethingElse.
+(isNew ifTrue: doSomething) ifFalse: doSomethingElse.
+
+# Operators
+Boolean newOrOdd = isNew or: isOdd.
+Boolean newAndOdd = isNew and: isOdd.
+Boolean newXorOdd = isNew xor: isOdd.
+Boolean notNew = isNew not.
+```
+
 #### Block
 A block of executable code: _function_, _method_ or _lambda_ as seen in other languages.
 
-You can define a block of code anywhere in the source code. Blocks of code are first-class objects so you can think of it as any other variable or literal like String or Number but with a specific syntax, first it's type `Block` then enclosed in angle brackets ('<' and '>') the return type and then the type of each parameter separated by comma:
+You can define a block of code anywhere in the source code. Blocks of code are first-class objects so think of it as any other variable or literal like String or Number but with a specific syntax: first it's type `Block` then enclosed in angle brackets ('<' and '>') the return type and then the type of each parameter separated by comma:
 ```
 Block<Void> aBlock.     # returns nothing and recieve nothing.
 Block<Number> aBlock.   # returns a Number and recieve nothing.
@@ -230,7 +258,7 @@ Block<String> text
     ].  # ...this is ok
 ```
 
-All those blocks did not receive any parameter, to send a parameter you must define the block to receive it and then declare the parameters before using them, writing all parameters with their type, separating them with a comma and then ending the parameters list with a bar (|) to delimit the beginning of the statements:
+All those blocks did not receive any parameter, to send a parameter you must define the block to receive it and then declare the parameters before using them, writing all parameters with their type, separating them with a comma and then ending the parameters list with a bar ('|') to delimit the beginning of the statements:
 ```
 # 1 parameter
 Block<Void, Number> aBlock
@@ -249,32 +277,4 @@ Block<Void, Number, String, Number> aBlock
     [ Number aNumber, String aString, Number anotherNumber |
         # code
     ].
-```
-
-
-#### Boolean
-There are only 2 instances of this type: `true` and `false`. Some operations return a `Boolean` and can be used as any other object:
-```
-String aString = 'Hello World!'.
-Boolean hasWorld = aString contains: 'World'.
-```
-
-Some methods:
-```
-Block doSomething = #TBD.
-Block doSomethingElse = #TBD.
-
-Boolean isNew = true.
-Boolean isOdd = 4 isOdd.
-
-# Conditionals
-isNew ifTrue: doSomething.
-isNew ifFalse: doSomethingElse.
-(isNew ifTrue: doSomething) ifFalse: doSomethingElse.
-
-# Operators
-Boolean newOrOdd = isNew or: isOdd.
-Boolean newAndOdd = isNew and: isOdd.
-Boolean newXorOdd = isNew xor: isOdd.
-Boolean notNew = isNew not.
 ```
