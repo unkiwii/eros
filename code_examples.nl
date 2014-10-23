@@ -12,307 +12,361 @@ import ../../aLib.nlib
 import ../foo/aFile.nl
 import ../foo/bar/aLib.nlib
 
-
-# block with no parameters
-# Block<ReturnType>
-Block<Void> doSomething
-  [ Console println: 9999 asString. ].
-
-# calling a block with no parameters
-doSomething value.
-
-# error: "'Block doSomething' has no method 'value:', maybe you want to invoke 'value' instead."
-doSomething value: 9999.
-
-# lambda with no parameters (this is useless, a lambda must be invoked or stored in a variable or it's destroyed immediately)
+# anonymous block with no parameters
+# this is valid but useless, because it's not invoked nor had a name so it's destroyed immediately
 [ Console println: 9999 asString. ].
 
-# calling a lambda with no parameters
+# calling an anonymous block with no parameters
+# every block with no parameters had a 'value' method so you can invoke it
 [ Console println: 9999 asString. ] value.
 
-# error: "'lambda' has no method 'value:', maybe you want to invoke 'value' instead."
+# ERROR: "block has no method 'value:', maybe you want to invoke 'value' instead."
 [ Console println: 9999 asString. ] value: 'hello'.
 
-# calling a lambda with a parameter
-[ String aString | Console println: aString ] value: 'hello'.
+# calling a block with a parameter
+# the name of the block is 'print:'
+# the signature of the block is '[ print: String ]'
+[ print: String aString | Console println: aString ] print: 'hello'.
 
-# calling a lambda with more than one parameter
-[ String aString, Number aNumber | Console println: aString + (aNumber asString) ] value: 'hello' value: 1234.
+# that block had a name 'print:' so you can call it later
+print: 'hello'.
 
-# error: "'lambda' has no method 'value: Number', maybe you want to invoke 'value: String value: Number' instead."
-[ String aString, Number aNumber | Console println: aString + (aNumber asString) ] value: 123.
+# calling a block with more than one parameter
+# the name of the block is 'print:and:'
+# the signature of the block is '[ print: String, and: Number ]'
+[ print: String aString, and: Number aNumber | Console println: aString + (aNumber asString) ] print: 'hello' and: 1234.
 
-# block with one parameter
-# Block<ReturnType, FirstParameter>
-Block<Void, Object> isNull: = [ Object anObject |
-  anObject is Null.
+# that block had a name 'print:and:' so you can call it later
+print: 'hello' and: 1234.
+
+# ERROR: "block 'print: Number, and: String' does not exists, maybe you want to invoke 'print: String, and: Number' instead
+print: 1234 and: 'hello'.
+
+# ERROR: "block 'print: String, and: Number' was invoked with 'and: Number', maybe you want to invoke 'print: String and: Number' instead."
+[ print: String aString, and: Number aNumber | Console println: aString + (aNumber asString) ] and: 123.
+
+# named block with no parameters
+# just assign the block to a variable of type 'Block'
+Block doSomething = [ Console println: 9999 asString. ].
+
+# calling a named block with no parameters
+# remember: a block with no parameters has a method called 'value' to invoke it.
+doSomething value.
+
+# ERROR: "'Block doSomething' has no method 'value:', maybe you want to invoke 'value' instead."
+doSomething value: 9999.
+
+# named block with parameters
+Block doSomething = [ with: String aString | Console println: aString. ].
+
+# calling a named block with parameters
+doSomething with: 'hello'.
+
+# ERROR: "'Block doSomething' has no method 'value', maybe you want to invoke 'with:' instead."
+doSomething value.
+
+# a block with a return type
+# this Block returns a Boolean
+[ (Boolean) isNull: Object anObject | anObject is Null. ].
+
+# calling a block that return something (useless because we do not use the result)
+isNull: anObject
+
+# using the result of a returning block
+(isNull: anObject) ifTrue: [
+  # this is the way to perform an "if" in this language
 ].
 
-# calling a block with parameters.
-isNull: anObject.
-
-# error: "a parameter is expected after ':'"
-isNull:.
-
-# error: "'isNull' does not exists, maybe you want to call 'isNull: Object' instead".
+# ERROR: "'isNull' doesn't exist, maybe you want to invoke 'isNull: Object' instead"
 isNull.
 
 
-type BlackHole
-  static BlackHole instance = BlackHole new.  # 'instance' type variable > private
+# define a new type (or class)
+type TestObject
+  # define an instance variable:
+  #   it must be initialized ALWAYS
+  #   this is always private, never public
+  #   every instance has it's own copy of this
+  Number power = 9001.
 
-  static Block<BlackHole> instance = [  # 'instance' type method > public
-    instance.
+  # define a "class" (static) variable:
+  #   this is always private, never public
+  #   every instance has access to the SAME copy of this
+  #   and there are only one copy of this
+  static String name = "TestObject".
+
+  # define "setter" and "getter" for instance variables:
+  #   this are just common instance methods that just access private variables
+  #   getter name: 'power', returns the 'Number power' instance variable
+  [ (Number) power | power. ].
+  #   setter name: 'power', returns the Number power
+  [ power: Number aNumber | power = aNumber. ].
+
+  # define an instance method:
+  #   this is always public, never private
+  #   doesn't receive anything and returns nothing
+  [ printValue | Console println: power. ].
+
+  # define another instance method
+  #   this is always public, never private
+  #   receives a Number and returns a Number
+  #   the result of the last statement is the returned object.
+  #   in this case: 'Number power'
+  [ (Number) add: Number aNumber |
+    power = power + aNumber.
   ].
 
-  # '?...' means can receive anything from 0 to infinite parameters
-  # (this is just a notation, in user's code this will be illegal)
-  Block<?...> value = [ ]. # do nothing.
+  # define a "class" method
+  #   this is always public, never private
+  #   just add static in front of the block
+  #   this is a getter for the 'static String name' object
+  static [ (String) name | name. ].
 
 
-type Boolean
-  Type VoidBlock = Block<Void>.     # same as typedef in C++, is visible in all this scope (and childs of this scope)
+## using the new type
 
-  Type ReceiveVoidBlock as Block<Void, VoidBlock>.   # same as typedef in C++
+# accessing static members:
+#   this calls the method 'static name' not the static variable
+#   variables are always private, methods are always public
+TestObject name.
 
-  ReceiveVoidBlock ifTrue: = interface.     # same as 'virtual = 0' in C++
+# creating a new instance:
+#   every object has a 'new' method for creating instances of it
+#   'new' is a static method
+TestObject test = TestObject new.
 
-  ReceiveVoidBlock ifFalse: = interface.    # same as 'virtual = 0' in C++
+# using the created instance:
+#   this gets the 'Number power' object by calling it's "getter"
+#   this method signature is 'TestObject [ (Number) power ]'
+#   is a method of type TestObject that returns a Number but receives nothing
+#   the returned power is the Number '9001'
+test power.
+#   this sets the 'Number power' object to a new power by calling it's "setter"
+#   this method signature is 'TestObject [ power: Number ]'
+#   is a method of type TestObject that returns nothing but receives a Number
+#   now power is '123'
+test power: 123.
 
-  Type ReceiveVoidBlockVoidBlock as Block<Void, VoidBlock, VoidBlock>. # same as typedef in C++
+#   this adds 5 to the last value of power
+#   this method signature is 'TestObject [ (Number) add: Number ]'
+#   is a method of type TestObject that returns a Number and receives a Number
+#   now power is '128'
+#   the result value is not used
+test add: 5.
 
-  ReceiveVoidBlockVoidBlock ifTrue: ifFalse: = interface.   # same as 'virtual = 0' in C++
+#   the result value is used here, in another call
+#   and it's stored in a new object of type Number
+#   this object is the same as the 'power' inside 'test'
+#   the return value is not copied, it's just referenced by 'thePower'
+Number thePower = test add: 2.
 
-  ReceiveVoidBlockVoidBlock ifFalse: ifTrue: = interface.   # same as 'virtual = 0' in C++
+#   this changes the value to 'thePower' from '130' to '8888'
+thePower = 8888.
 
-  Type BooleanBlock as Block<Boolean>.
+#   so this will return the Number '8888'
+test power.
 
-  Type ReceiveBooleanBlock as Block<Void, BooleanBlock>.
-
-  ReceiveBooleanBlock or: = interface.
-
-  ReceiveBooleanBlock and: = interface.
-
-  BooleanBlock | = or:.  # synonim for or: block
-  BooleanBlock or = or:. # synonim for or: block
-
-  BooleanBlock & = and:.     # synonim for and: block
-  BooleanBlock and = and:.   # synonim for and: block
+#   if you want to copy the returned value just copy it like this:
+type TestObject
+  [ (Number) add: Number aNumber |
+    power = power + aNumber.
+    # this last sentence will copy the object and return the new copy
+    # by default objects are not copied, just referenced with another name
+    power copy.
+  ].
 
 
-type True extends Boolean   # simple inheritance
-  # 'ReceiveBlock' and 'VoidBlock' are visible because this type inherits it's parent scope
-  ReceiveVoidBlock ifTrue: = [ VoidBlock aBlock |
-    # evaluate aBlock since the receiver is True.
+# there is an "Object" that is a superclass of all objects in the language
+# it will hold methods like 'new' and 'copy' that are implemented natively
+type Object
+  # the 'primitive' says it's implemented primitively, not in this language
+  static [ (Object) new ] = primitive.
+
+  # same here the compiler will write the body of this method
+  [ (Object) copy ] = primitive.
+
+
+# here is an example of an abstract type
+# the whole type is declared abstract, so no 'Boolean new' is allowed
+type Boolean = abstract
+  # in C++ you can define a 'pure virtual' function
+  # here, you declare just their interfaces, not their bodies
+
+  # Boolean has a method 'ifTrue:' that receives a Block and returns nothing
+  # the '[ aBlock ]' type means a block of code that receives nothing and returns nothing
+  # it's name is 'aBlock'
+  [ ifTrue: [ aBlock ] ].
+
+  # Boolean has another method 'ifFalse:'
+  # but this are interfaces, so parameters names are optional
+  # normally you would say that this method is abstract
+  # but as the whole type is abstract, it's not mandatory
+  # the '= abstract' here is just non-sense
+  [ ifFalse: [] ] = abstract.
+
+  # here is another interface with more parameters
+  # again, this is an interface, so parameters with no names are fine
+  [ ifTrue: [], ifFalse: [] ].
+
+  # here is another interface
+  # note that 'ifTrue:ifFalse' is not the same that 'ifFalse:ifTrue'
+  [ ifFalse: [], ifTrue: [] ].
+
+  # here is an interface that receives a block that returns something
+  # 'or:' is a method that returns a Boolean and receives another block of code
+  # that is evaluated if this object is True, so the block that receives must
+  # return 'Boolean'
+  [ (Boolean) or: [ (Boolean) ] ].
+
+  # the same with and:
+  [ (Boolean) and: [ (Boolean) ] ].
+
+
+# here is an example of extending another type (subclassing)
+# we can have simple inheritance only, never multiple inheritance
+type True extends Boolean
+  # here, every parameter needs a name because this is a concrete method, not abstract
+  # and with that name it can be used inside the body of the method
+  [ ifTrue: [ aBlock ] |
+    # evaluate 'aBlock' since the receiver is True.
     aBlock value.
   ].
 
-  ReceiveVoidBlock ifFalse: = BlackHole instance.   # do nothing and no matter how you call it it will not throw any error.
+  # this is just an empty method, it receives a block but does nothing
+  [ ifFalse: [ aBlock ] | ].
 
-  ReceiveVoidBlockVoidBlock ifTrue: ifFalse: = [ VoidBlock trueBlock, VoidBlock falseBlock |
-    # evaluate trueBlock since the receiver is True.
+  [ ifTrue: [ trueBlock ], ifFalse: [ falseBlock ] |
+    # evaluate 'trueBlock' since the receiver is True.
     trueBlock value.
   ].
 
-  ReceiveVoidBlockVoidBlock ifFalse: ifTrue: = [ VoidBlock falseBlock, VoidBlock trueBlock |
-    # evaluate trueBlock since the receiver is True.
+  [ ifFalse: [ falseBlock ], ifTrue: [ trueBlock ] |
+    # evaluate 'trueBlock' since the receiver is True.
     trueBlock value.
   ].
 
-  BooleanBlock or: = [ BooleanBlock aBlock |
+  [ (Boolean) or: [ (Boolean) alternativeBlock ] ].
     # answer self since the receiver is True.
     self.
   ].
 
-  BooleanBlock and: =
-  [ BooleanBlock aBlock |
-    # answer the result of evaluating aBlock since the receiver is True.
+  [ (Boolean) and: [ (Boolean) alternativeBlock ] ].
+    # answer the result of evaluating alternativeBlock since the receiver is True.
+    alternativeBlock value.
+  ].
+
+
+# we defined True, now we will define False
+type False extends Boolean
+  [ ifTrue: [ ] aBlock | ].
+
+  [ ifFalse: [ ] aBlock |
+    # evaluate 'aBlock' since the receiver is False.
     aBlock value.
   ].
 
-
-type False extends Boolean   # simple inheritance
-  ReceiveVoidBlock ifTrue: = BlackHole instance.    # do nothing and no matter how you call it it will not throw any error.
-
-  ReceiveVoidBlock ifFalse: = [ VoidBlock aBlock |
-    # evaluate aBlock since the receiver is False.
-    aBlock value.
-  ].
-
-  ReceiveVoidBlockVoidBlock ifTrue: ifFalse: = [ VoidBlock trueBlock, VoidBlock falseBlock |
-    # evaluate falseBlock since the receiver is False.
+  [ ifTrue: [ ] trueBlock, ifFalse: [ ] falseBlock |
+    # evaluate 'falseBlock' since the receiver is False.
     falseBlock value.
   ].
 
-  ReceiveVoidBlockVoidBlock ifFalse: ifTrue: = [ VoidBlock falseBlock, VoidBlock trueBlock |
-    # evaluate falseBlock since the receiver is False.
+  [ ifFalse: [ ] falseBlock, ifTrue: [ ] trueBlock |
+    # evaluate 'falseBlock' since the receiver is False.
     falseBlock value.
   ].
 
-  BooleanBlock or: = [ VoidBlock aBlock |
-    # answer the result of evaluating aBlock since the receiver is False.
-    aBlock value.  # without the parenteshis it will return aBlock
+  [ (Boolean) or: [ (Boolean) ] alternativeBlock ].
+    # answer the result of evaluating alternativeBlock since the receiver is False.
+    alternativeBlock value.
   ].
 
-  BooleanBlock and: = [ VoidBlock aBlock |
+  [ (Boolean) and: [ (Boolean) ] alternativeBlock ].
     # answer self since the receiver is False.
     self.
   ].
 
 
-type Block<ReturnType, ArgumentsType...> = primitive.   # the whole Block type is implemented primitively
+# NOTE: there are 2 "global variables" in the environment: 'true' and 'false', both are instances of types 'True' and 'False'
+# future calls to 'True new.' and 'False new.' will return the same objects, they will never return a new Boolean.
+# also 'true' and 'false' are keywords, they cannot be used as a name to nothing else
+Boolean true = True new.
+Boolean false = False new.
 
 
-type Block<ReturnType, ArgumentsType...>
-  Block<Void> doSomething: = primitive.   # the 'doSomething' method is implemented primitively
+# as you can see the Boolean objects are not part of the language, they are just 2 more types in the standard library
+# here are some examples of conditionals (also not part of the language)
+Boolean state = true.
+
+state ifTrue: [
+  # do something here
+].
+
+state ifFalse: [
+  # this will never be called because 'state' is 'true'
+].
+
+# operators can exist in this language, for example with type Number
+type Number
+  # the name of the next method is just '<' as the less-than operator in many languages
+  # it receive a number, compare it with 'self' and return 'true' if this Number is
+  # less thatn the Number received by parameter.
+  # is implemented primitively
+  [ (Boolean) < Number ] = primitive.
+
+  # the name of the next method is just '=' as the equals operator in many languages
+  # it's the same operator that '==' in C or JavaScript for Numbers
+  # it receive a number, compare it with 'self' and return 'true' if this Number is
+  # equals thatn the Number received by parameter.
+  [ (Boolean) = Number ] = primitive.
+
+  # same for other operators as '>', '>=' and '<='
+  # ...
 
 
-# OOP while
+# back to Booleans
+Number age = someObject someMethod.
 
-## definition
-type Block<Boolean>     # you can define a type as a specification of a 'template' type. this is not inheritance, is specification
-  # specific methods for Block<Boolean> an no other type of Block<>
+(age < 18) ifTrue: [
+  # code to be executed when age is less than 18
+] ifFalse: [
+  # code to be executed when age is NOT less than 18
+].
 
-type BooleanBlock as Block<Boolean>     # you can also define a new type as a synonym of another type (its the same type with another name)
-  Block<Void, Block<Void>> whileTrue: = [ Block<Void> aBlock |
+# those were the conditionals of our language, but here are the loops:
+
+# range-loop (for)
+1 to: 10 do: [ Number step |
+  # this will print every number from 1 to 10 (inclusive) in a new line
+  Console println: step.
+].
+
+# [ to: Number, do: [ Number ] ] is defined in the type Number
+# and it use a loop (while) to perform it's job
+type Number
+  [ to: Number end, do: [ Number ] aBlock |
+    Number step = self.
+    [ (Boolean) | step <= end. ] whileTrue: [
+      aBlock value: step.
+      step add: 1.
+    ].
+  ].
+
+# [ whileTrue: [] ] is defined in the type Block
+type Block
+  [ whileTrue: [ ] aBlock |
     (self value) ifTrue: [
       aBlock value.
-      self whileTrue: aBlock.     # recursive call
+      self whileTrue: aBlock.
     ].
   ].
 
-## invocation
-[aBoolean] whileTrue: [doSomething].
+# with just that methods and types you have bifurcation and repetition, essencial to any
+# programming language, or as many of us were presented:
+#
+#   Conditionals (if, if else, if elseif)
+#   Range Loops (for)
+#   Loops (while, do while)
 
+# MORE IS COMING!
 
-# Functional while
-
-## definition
-Block<Void, Block<Boolean>, Block<Void>> while: isTrue: =
-    [ Block<Boolean> aCondition, Block<Void> aBlock |
-        (aCondition value) ifTrue: [
-            aBlock value.
-            while: aCondition isTrue: aBlock.   # recursive call
-        ].
-    ].
-
-## invocation
-while: [aBoolean] isTrue: [doSomething].
-
-
-# block with multiple parameters
-# the signature is: 'from: Number to: Number do: Block'
-
-# with functional 'while'
-Block<Void, Number, Number, Block<Void, Number>> from: to: do: =
-    [ Number start, Number end, Block<Void, Number> aBlock |
-        while: [start < end] isTrue: [
-            aBlock value: start.
-            start add: 1.
-        ].
-    ].
-
-# with OOP 'while'
-Void Block from: to: do: = [ Number start, Number end, Void Block aBlock |
-    [start < end] whileTrue: [
-      aBlock value: start.
-      start add: 1.
-    ].
-  ].
-
-# calling a block with multiple parameters
-from: 1 to: 10 do: [ Number index |
-    Console println: index.
-].
-
-
-
-# some Block tests
-Block from: to: do: = [ Number start, Number end, Block aBlock |
-  Number index = start.
-  [start < end] whileTrue: [
-    aBlock value: index.
-    index add: 1.
-  ].
-].
-
-[ Number start, Number end, Block aBlock |
-  [start < end] whileTrue: [
-    aBlock value: index.
-    start add: 1.
-  ].
-].
-
-
-# ------------------------------------------------------------------------------
-# Smalltalk implementation:
-
-# from:to:do:with: function definition (as a method of TestObject class)
-from: start to: end do: aBlock with: aString
-  | index |
-  index := start.
-  [index <= end] whileTrue: [
-    aBlock value: index value: aString.
-    index := index + 1.
-  ].
-
-# from:to:do:with: in use (as a method of TestObject class)
-TestObject from: 1 to: 5 do: [:aNumber :aString |
-  Transcript showln: aString; showln: (aNumber / 2) asString.
-] with: 'str: '.
-
-
-# ------------------------------------------------------------------------------
-# Python 3 implementation:
-
-# from:to:do:with: function definition
-def fromToDoWith(start, end, aBlock, aString):
-    while start <= end:
-        aBlock(start, aString)
-        start = start + 1
-
-# from:to:do:with: in use (with lambdas)
-fromToDoWith(1, 5,
-  lambda aNumber, aString: print(aString + str(aNumber / 2)),
-  "str: ")
-
-
-# ------------------------------------------------------------------------------
-# C implementation:
-
-# show function (in C there are no lambdas so we must define a normal function)
-void show(float aNumber, char* aString) {
-  printf("%s%.2f\n", aString, aNumber / 2.f);
-}
-
-# from:to:do:with: function definition
-void fromToDoWith(int start, int end, void (aBlock)(float, char*), char* aString) {
-  while (start <= end) {
-    aBlock(start, aString);
-    start += 1;
-  }
-}
-
-# from:to:do:with: in use
-fromToDoWith(1, 5, &show, "str: ");
-
-
-# ------------------------------------------------------------------------------
-# New Language implementation:
-
-# from:to:do:with: function definition
-Type DoBlock = Block<Void, Number, String>.
-Type DefBlock = Block<Void, Number, Number, DoBlock, String>.
-DefBlock from: start to: end do: aBlock with: aString = [
-  index = from.
-  [from <= to] whileTrue: [
-    do value: index value: with.
-    index add: 1.
-  ].
-].
-
-# from:to:do:with: in use
-from: 1 to: 5 do: [ Number aNumber, String aString |
-  Console println: aString + (aNumber / 2).
-] with: "str: ".
-
+# vim: tabstop=2:shiftwidth=2:softtabstop=2:

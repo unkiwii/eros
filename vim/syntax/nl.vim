@@ -20,18 +20,21 @@ set cpo&vim
 syn keyword nlSelf      self
 syn keyword nlTypeDef   type
 syn keyword nlImport    import
-syn keyword nlInterface interface
+syn keyword nlAbstract  abstract
 syn keyword nlExtends   extends
 syn keyword nlUsing     using
 syn keyword nlAs        as
 syn keyword nlStatic    static
 syn keyword nlPrimitive primitive
 
+syn keyword nlTrue  true
+syn keyword nlFalse false
+
 syn match nlComment /#.*$/
-syn match nlString  /'[^']*'/
 syn match nlNumber  /[^0-9][0-9]+/hs=s+1
 syn match nlType    /^[A-Z][a-zA-Z0-9]*/
 syn match nlType    /[^A-Za-z0-9][A-Z][a-zA-Z0-9]*/hs=s+1
+syn match nlString  /"[^"]*"/
 
 if version >= 508 || !exists("did_nl_syn_inits")
   if version <= 508
@@ -43,6 +46,8 @@ if version >= 508 || !exists("did_nl_syn_inits")
 
   HiLink nlComment    Comment
   HiLink nlNumber     Constant
+  HiLink nlTrue       Constant
+  HiLink nlFalse      Constant
   HiLink nlTrailSpace Error
   HiLink nlSpaceError Error
   HiLink nlSpaceError Error
@@ -51,11 +56,11 @@ if version >= 508 || !exists("did_nl_syn_inits")
   HiLink nlString     String
   HiLink nlSelf       Keyword
   HiLink nlTypeDef    Keyword
-  HiLink nlInterface  Keyword
   HiLink nlExtends    Keyword
   HiLink nlUsing      Keyword
   HiLink nlAs         Keyword
   HiLink nlStatic     Keyword
+  HiLink nlAbstract   Define
   HiLink nlPrimitive  Define
 
   delcommand HiLink
