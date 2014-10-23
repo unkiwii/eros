@@ -33,6 +33,8 @@
       <section id="main_content" class="inner">
         <p><strong><em>This is a work in progress, anything defined here can be modified in the future</em></strong></p>
 
+        <p>For some code examples please, check <a href="code_examples.html">this</></p>
+
 <h2>
 <a name="features-of-the-language" class="anchor" href="#features-of-the-language"><span class="octicon octicon-link"></span></a>Features of the language</h2>
 
@@ -85,13 +87,11 @@ object message: param.
 
 <pre><code>boolean ifTrue: block.      # Branches (if)
 boolean ifFalse: block.
-</code></pre>
 
-<pre><code>block1 whileTrue: block2.   # Loops (while)
+block1 whileTrue: block2.   # Loops (while)
 block1 whileFalse: block2.
-</code></pre>
 
-<pre><code>1 to: 10 do: block.         # Range-loops (for)
+1 to: 10 do: block.         # Range-loops (for)
 begin to: end do: block.
 </code></pre>
 
@@ -147,18 +147,16 @@ begin to: end do: block.
 
 <ol>
 <li>The use of '_' is forbidden, only letters ('a' to 'z' and 'A' to 'Z') and digits (0 to 9) can be used.</li>
+<br>
 <li>All types must start with uppercase letters and follow the <code>CamelCase</code> style.</li>
-</ol>
-
+<br>
 <pre><code>GoodType.
 badType.
 OTHERBadType.
 </code></pre>
-
-<ol>
+<br>
 <li>All variables and messages must start with lowercase letters and follow the <code>camelCase</code> style.</li>
-</ol>
-
+<br>
 <pre><code>aGoodName.
 anotherGoodName.
 BadVariableName.
@@ -167,7 +165,7 @@ REALLY_BAD_NAME.
 </code></pre>
 
 <h2>
-<a name="code-examples" class="anchor" href="#code-examples"><span class="octicon octicon-link"></span></a>Code examples</h2>
+<a name="code-examples" class="anchor" href="#code-examples"><span class="octicon octicon-link"></span></a>Some code</h2>
 
 <h4>
 <a name="comments" class="anchor" href="#comments"><span class="octicon octicon-link"></span></a>Comments</h4>
@@ -281,84 +279,21 @@ Boolean hasWorld = aString contains: 'World'.
 
 <p>Some methods:</p>
 
-<pre><code>Block doSomething = [].     # illegal, see below for Block
-Block doSomethingElse = []. # illegal, see below for Block
-
-Boolean isNew = true.
+<pre><code>Boolean isNew = true.
 Boolean isOdd = 4 isOdd.
 
 # Conditionals
 isNew ifTrue: doSomething.
 isNew ifFalse: doSomethingElse.
-(isNew ifTrue: doSomething) ifFalse: doSomethingElse.
+isNew ifTrue: doSomething ifFalse: doSomethingElse.
 
 # Operators
 Boolean newOrOdd = isNew or: isOdd.
 Boolean newAndOdd = isNew and: isOdd.
 Boolean newXorOdd = isNew xor: isOdd.
-Boolean notNew = isNew not.
+Boolean notNew = not isNew.
 </code></pre>
 
-<h4>
-<a name="block" class="anchor" href="#block"><span class="octicon octicon-link"></span></a>Block</h4>
-
-<p>A block of executable code: <em>function</em>, <em>method</em> or <em>lambda</em> as seen in other languages.</p>
-
-<p>You can define a block of code anywhere in the source code. Blocks of code are first-class objects so think of it as any other variable or literal like String or Number but with a specific syntax: first it's type <code>Block</code> then enclosed in angle brackets ('&lt;' and '&gt;') the return type and then the type of each parameter separated by comma:</p>
-
-<pre><code>Block&lt;Void&gt; aBlock.     # returns nothing and recieve nothing.
-Block&lt;Number&gt; aBlock.   # returns a Number and recieve nothing.
-Block&lt;Void, Number&gt; aBlock.     # returns nothing and recieve a Number.
-Block&lt;Number, Number&gt; aBlock.   # returns a Number and recieve a Number.
-</code></pre>
-
-<p>That defines the type of a block and it's name, but not the code itself, for that, in a new line you must define it's body and always enclosed in square brackets '[' and ']' and finalize it with a dot '.':</p>
-
-<pre><code>Block&lt;Void&gt; aBlock
-    [ String a = "Hello World". ].
-
-Block&lt;Number&gt; random
-    [ 4. ].
-</code></pre>
-
-<p>You can see that blocks has no <code>return</code> statement, that's because any block of code return the value of it's last statement. So <code>aBlock</code> will return the string "Hello World" and <code>random</code> will return 4.</p>
-
-<p>The new line between a block definition and it's body is mandatory. Also the indentation must be increased. Here some examples:</p>
-
-<pre><code>Block&lt;Void&gt; aBlock [ String a = "Hello World". ].   # ERROR: No new line between 'aBlock' and '['
-
-Block&lt;Number&gt; random
-[ 4. ].                 # ERROR: Indentation is erroneous...
-    [ 4. ].             # ...this is ok
-
-Block&lt;String&gt; text
-    [
-        Number someValue = random.  # calling random block
-        someValue asString.
-].      # ERROR: indentation is erroneous...
-    ].  # ...this is ok
-</code></pre>
-
-<p>All those blocks did not receive any parameter, to send a parameter you must define the block to receive it and then declare the parameters before using them, writing all parameters with their type, separating them with a comma and then ending the parameters list with a bar ('|') to delimit the beginning of the statements:</p>
-
-<pre><code># 1 parameter
-Block&lt;Void, Number&gt; aBlock
-    [ Number aNumber |
-        # code
-    ].
-
-# 2 parameters
-Block&lt;Void, Number, String&gt; aBlock
-    [ Number aNumber, String aString |
-        # code
-    ].
-
-# 3 parameters
-Block&lt;Void, Number, String, Number&gt; aBlock
-    [ Number aNumber, String aString, Number anotherNumber |
-        # code
-    ].
-</code></pre>
       </section>
     </div>
 
@@ -369,8 +304,6 @@ Block&lt;Void, Number, String, Number&gt; aBlock
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
-
-    
 
   </body>
 </html>
