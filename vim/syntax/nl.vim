@@ -24,6 +24,7 @@ syn keyword nlAbstract  abstract
 syn keyword nlExtends   extends
 syn keyword nlStatic    static
 syn keyword nlPrimitive primitive
+syn keyword nlNull      null
 
 syn keyword nlTrue  true
 syn keyword nlFalse false
@@ -49,6 +50,7 @@ if version >= 508 || !exists("did_nl_syn_inits")
   HiLink nlStatic     Define
   HiLink nlAbstract   Define
   HiLink nlPrimitive  Define
+  HiLink nlNull       Constant
   HiLink nlTrue       Constant
   HiLink nlFalse      Constant
   HiLink nlNumber     Constant
