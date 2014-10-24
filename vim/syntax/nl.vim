@@ -22,8 +22,6 @@ syn keyword nlTypeDef   type
 syn keyword nlImport    import
 syn keyword nlAbstract  abstract
 syn keyword nlExtends   extends
-syn keyword nlUsing     using
-syn keyword nlAs        as
 syn keyword nlStatic    static
 syn keyword nlPrimitive primitive
 
@@ -44,24 +42,19 @@ if version >= 508 || !exists("did_nl_syn_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
-  HiLink nlComment    Comment
-  HiLink nlNumber     Constant
-  HiLink nlTrue       Constant
-  HiLink nlFalse      Constant
-  HiLink nlTrailSpace Error
-  HiLink nlSpaceError Error
-  HiLink nlSpaceError Error
-  HiLink nlImport     Include
-  HiLink nlType       Type
-  HiLink nlString     String
   HiLink nlSelf       Keyword
-  HiLink nlTypeDef    Keyword
-  HiLink nlExtends    Keyword
-  HiLink nlUsing      Keyword
-  HiLink nlAs         Keyword
-  HiLink nlStatic     Keyword
+  HiLink nlImport     Include
+  HiLink nlTypeDef    Define
+  HiLink nlExtends    Define
+  HiLink nlStatic     Define
   HiLink nlAbstract   Define
   HiLink nlPrimitive  Define
+  HiLink nlTrue       Constant
+  HiLink nlFalse      Constant
+  HiLink nlNumber     Constant
+  HiLink nlComment    Comment
+  HiLink nlType       Type
+  HiLink nlString     String
 
   delcommand HiLink
 endif
