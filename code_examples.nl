@@ -1,5 +1,3 @@
-# to view this nicely you can download this file and vim/syntax/nl.vim and use vim to watch a syntax highlighted file
-
 # importing a file in same folder
 import aFile.nl
 import aLib.nlib
