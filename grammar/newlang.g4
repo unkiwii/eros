@@ -173,3 +173,5 @@ LOWER_CASE
 UPPER_CASE
     : [A-Z]
     ;
+
+// vim: set filetype=antlr:
