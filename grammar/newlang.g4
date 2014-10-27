@@ -2,7 +2,7 @@ grammar newlang;
 
 // starting point for parsing a file
 compilationUnit
-    : (NL? importDeclaration)* (NL? statement)*
+    : (NL? importDeclaration)* (NL? statement)* NL*
     ;
 
 importDeclaration
@@ -15,9 +15,7 @@ folder
     ;
 
 statement
-    : variableDeclaration NL
-    | blockDeclaration NL
-    | blockEvaluation NL
+    : blockStatement NL
     | typeDeclaration NL
     ;
 
@@ -25,16 +23,25 @@ variableDeclaration
     : TYPE_NAME SPACE NAME SPACE ASSIGNATION SPACE (value END | blockValue)
     ;
 
+block
+    : OPEN_BLOCK SPACE (blockHeader BLOCK_HEADER_SEPARATOR (SPACE | NL))? blockBody (SPACE | NL) CLOSE_BLOCK
+    ;
+
 blockDeclaration
-    : OPEN_BLOCK SPACE (blockHeader BLOCK_HEADER_SEPARATOR (SPACE | NL))? blockBody (SPACE | NL) CLOSE_BLOCK END
+    : block END
     ;
 
 blockHeader
     : (blockReturnType SPACE)? (blockArguments SPACE)?
     ;
 
+// maybe there is a better way to write the classical operators
+paramBlockName
+    : (NAME | '<' '='? | '>' '='? | '=' | '|' | '&' | '+' | '-' | '*' | '/' ) COLON?
+    ;
+
 blockArgument
-    : NAME BLOCK_ARGUMENT_NAME_FINALIZER? SPACE TYPE_NAME SPACE NAME
+    : paramBlockName SPACE TYPE_NAME SPACE NAME
     ;
 
 blockArguments
@@ -46,18 +53,31 @@ blockBody
     : (NL? blockStatement)+
     ;
 
+// blockStatement needs to know about IDENT and DEDENT (like Python) for now
+// just aloud 0 to any number of spaces at the start of any block statement
 blockStatement
-    : variableDeclaration
-    | blockDeclaration
-    | blockEvaluation
+    : SPACE* variableDeclaration
+    | SPACE* blockDeclaration
+    | SPACE* blockEvaluation END
     ;
 
 blockReturnType
     : TYPE_NAME
     ;
 
+argsBlockEvaluation
+    : paramBlockName SPACE value
+    ;
+
+simpleBlockEvaluation
+    : NAME
+    | argsBlockEvaluation (SPACE argsBlockEvaluation)*
+    ;
+
 blockEvaluation
-    : 'eval' END
+    : LPAREN blockEvaluation RPAREN blockEvaluation
+    | (TYPE_NAME | NAME | SELF | block) SPACE simpleBlockEvaluation
+    | simpleBlockEvaluation
     ;
 
 typeDeclaration
@@ -73,7 +93,7 @@ value
     ;
 
 blockValue
-    : blockEvaluation
+    : blockEvaluation END
     | blockDeclaration
     ;
 
@@ -81,9 +101,9 @@ blockValue
 
 // Keywords
 
+IMPORT      : 'import' ;
 SELF        : 'self' ;
 TYPE        : 'type' ;
-IMPORT      : 'import' ;
 ABSTRACT    : 'abstract' ;
 EXTENDS     : 'extends' ;
 STATIC      : 'static' ;
@@ -131,8 +151,10 @@ OPEN_BLOCK : '[' ;
 CLOSE_BLOCK : ']' ;
 
 BLOCK_HEADER_SEPARATOR : '|' ;
-BLOCK_ARGUMENT_NAME_FINALIZER : ':' ;
+COLON : ':' ;
 BLOCK_ARGUMENT_SEPARATOR : ', ' ;
+LPAREN : '(' ;
+RPAREN : ')' ;
 
 // -------------------------- NAMES -------------------------------------
 

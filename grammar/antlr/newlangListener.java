@@ -28,6 +28,16 @@ public interface newlangListener extends ParseTreeListener {
 	 */
 	void exitCompilationUnit(@NotNull newlangParser.CompilationUnitContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link newlangParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(@NotNull newlangParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link newlangParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(@NotNull newlangParser.BlockContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link newlangParser#blockStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -128,6 +138,26 @@ public interface newlangListener extends ParseTreeListener {
 	 */
 	void exitValue(@NotNull newlangParser.ValueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link newlangParser#argsBlockEvaluation}.
+	 * @param ctx the parse tree
+	 */
+	void enterArgsBlockEvaluation(@NotNull newlangParser.ArgsBlockEvaluationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link newlangParser#argsBlockEvaluation}.
+	 * @param ctx the parse tree
+	 */
+	void exitArgsBlockEvaluation(@NotNull newlangParser.ArgsBlockEvaluationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link newlangParser#paramBlockName}.
+	 * @param ctx the parse tree
+	 */
+	void enterParamBlockName(@NotNull newlangParser.ParamBlockNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link newlangParser#paramBlockName}.
+	 * @param ctx the parse tree
+	 */
+	void exitParamBlockName(@NotNull newlangParser.ParamBlockNameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link newlangParser#blockEvaluation}.
 	 * @param ctx the parse tree
 	 */
@@ -137,6 +167,16 @@ public interface newlangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBlockEvaluation(@NotNull newlangParser.BlockEvaluationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link newlangParser#simpleBlockEvaluation}.
+	 * @param ctx the parse tree
+	 */
+	void enterSimpleBlockEvaluation(@NotNull newlangParser.SimpleBlockEvaluationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link newlangParser#simpleBlockEvaluation}.
+	 * @param ctx the parse tree
+	 */
+	void exitSimpleBlockEvaluation(@NotNull newlangParser.SimpleBlockEvaluationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link newlangParser#importDeclaration}.
 	 * @param ctx the parse tree

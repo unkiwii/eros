@@ -1,19 +1,19 @@
-# string
+# string (value)
 SomeType anIdentifier := "some string".
 
-# number
+# number (value)
 SomeType anIdentifier := 123.
 SomeType anIdentifier := 3,1415.
 
-# boolean
+# boolean (value)
 SomeType anIdentifier := true.
 SomeType anIdentifier := false.
 
-# identifier
+# identifier (value)
 SomeType snIdentifier := anotherIdentifier.
 SomeType anIdentifier := SomeType.
 
-# blocks
+# blocks (blockValue)
 SomeType anIdentifier := eval.
 SomeType anIdentifier := [ eval. ].
 SomeType anIdentifier := [ Boolean | eval. ].

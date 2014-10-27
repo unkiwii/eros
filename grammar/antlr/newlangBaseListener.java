@@ -40,6 +40,18 @@ public class newlangBaseListener implements newlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBlock(@NotNull newlangParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlock(@NotNull newlangParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlockStatement(@NotNull newlangParser.BlockStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -160,6 +172,30 @@ public class newlangBaseListener implements newlangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArgsBlockEvaluation(@NotNull newlangParser.ArgsBlockEvaluationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgsBlockEvaluation(@NotNull newlangParser.ArgsBlockEvaluationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParamBlockName(@NotNull newlangParser.ParamBlockNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParamBlockName(@NotNull newlangParser.ParamBlockNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlockEvaluation(@NotNull newlangParser.BlockEvaluationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +203,18 @@ public class newlangBaseListener implements newlangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBlockEvaluation(@NotNull newlangParser.BlockEvaluationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSimpleBlockEvaluation(@NotNull newlangParser.SimpleBlockEvaluationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSimpleBlockEvaluation(@NotNull newlangParser.SimpleBlockEvaluationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
