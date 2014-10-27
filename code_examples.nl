@@ -21,26 +21,26 @@ import ../foo/bar/aLib.nlib
 [ Console println: 9999. ] value.
 
 # ERROR: "block has no method 'value:', maybe you want to invoke 'value' instead."
-[ Console println: 9999. ] value: 'hello'.
+[ Console println: 9999. ] value: "hello".
 
 # calling a block with a parameter
 # the name of the block is 'print:'
 # the signature of the block is '[ print: String ]'
-[ print: String aString | Console println: aString ] print: 'hello'.
+[ print: String aString | Console println: aString ] print: "hello".
 
 # that block had a name 'print:' so you can call it later
-print: 'hello'.
+print: "hello".
 
 # calling a block with more than one parameter
 # the name of the block is 'print:and:'
 # the signature of the block is '[ print: String, and: Number ]'
-[ print: String aString, and: Number aNumber | Console println: aString + aNumber ] print: 'hello' and: 1234.
+[ print: String aString, and: Number aNumber | Console println: aString + aNumber ] print: "hello" and: 1234.
 
 # that block had a name 'print:and:' so you can call it later
-print: 'hello' and: 1234.
+print: "hello" and: 1234.
 
 # ERROR: "block 'print: Number, and: String' does not exists, maybe you want to invoke 'print: String, and: Number' instead
-print: 1234 and: 'hello'.
+print: 1234 and: "hello".
 
 # ERROR: "block 'print: String, and: Number' was invoked with 'and: Number', maybe you want to invoke 'print: String and: Number' instead."
 [ print: String aString, and: Number aNumber | Console println: aString + aNumber ] and: 123.
@@ -60,7 +60,7 @@ doSomething value: 9999.
 [ with: String aString | Console println: aString. ] doSomething.
 
 # calling a named block with parameters
-doSomething with: 'hello'.
+doSomething with: "hello".
 
 # ERROR: "'Block doSomething' has no method 'value', maybe you want to invoke 'with:' instead."
 doSomething value.
@@ -404,4 +404,4 @@ type Block
 
 # MORE IS COMING!
 
-# vim: tabstop=2:shiftwidth=2:softtabstop=2:
+# vim: tabstop=2:shiftwidth=2:softtabstop=2:filetype=nl
