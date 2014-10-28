@@ -18,6 +18,7 @@ let s:cpo_save = &cpo
 set cpo&vim
 
 syn keyword nlSelf      self
+syn keyword nlReturn    return
 syn keyword nlTypeDef   type
 syn keyword nlImport    import
 syn keyword nlAbstract  abstract
@@ -44,6 +45,7 @@ if version >= 508 || !exists("did_nl_syn_inits")
   endif
 
   HiLink nlSelf       Keyword
+  HiLink nlReturn     Keyword
   HiLink nlImport     Include
   HiLink nlTypeDef    Define
   HiLink nlExtends    Define
