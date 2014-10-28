@@ -13,17 +13,19 @@ import ../foo/aFile.nl
 import ../foo/bar/aLib.nlib
 
 # anonymous block with no parameters
-# this is valid but useless, because it's not invoked nor had a name so it's destroyed immediately
+# it's not evaluated nor had a name so it's useless and illegal.
 [ Console println: 9999. ].
 
-# calling an anonymous block with no parameters
-# every block with no parameters had a 'value' method so you can invoke it
+# evaluating an anonymous block with no parameters
 [ Console println: 9999. ] value.
+# it would have the same result to had written:
+[ value | Console println: 9999. ] value.
+# every block with no parameters had a 'value' method so you can evaluate it
 
-# ERROR: "block has no method 'value:', maybe you want to invoke 'value' instead."
+# ERROR: "block has no method 'value:', maybe you want to evaluate 'value' instead."
 [ Console println: 9999. ] value: "hello".
 
-# calling a block with a parameter
+# evaluating a block with a parameter
 # the name of the block is 'print:'
 # the signature of the block is '[ print: String ]'
 [ print: String aString | Console println: aString ] print: "hello".
@@ -31,7 +33,14 @@ import ../foo/bar/aLib.nlib
 # that block had a name 'print:' so you can call it later
 print: "hello".
 
-# calling a block with more than one parameter
+# the ':' in the name of a block is not required, but useful
+# you can write a block of code just like this
+[ print String aString | Console println: aString ].
+
+# that block had a name 'print' so you can call it later
+print "hello".
+
+# evaluating a block with more than one parameter
 # the name of the block is 'print:and:'
 # the signature of the block is '[ print: String, and: Number ]'
 [ print: String aString, and: Number aNumber | Console println: aString + aNumber ] print: "hello" and: 1234.
@@ -39,37 +48,39 @@ print: "hello".
 # that block had a name 'print:and:' so you can call it later
 print: "hello" and: 1234.
 
-# ERROR: "block 'print: Number, and: String' does not exists, maybe you want to invoke 'print: String, and: Number' instead
+# ERROR: "block 'print: Number, and: String' does not exists, maybe you want to
+# evaluate 'print: String, and: Number' instead
 print: 1234 and: "hello".
 
-# ERROR: "block 'print: String, and: Number' was invoked with 'and: Number', maybe you want to invoke 'print: String and: Number' instead."
+# ERROR: "block 'print: String, and: Number' was evaluated with 'and: Number',
+# maybe you want to evaluate 'print: String and: Number' instead."
 [ print: String aString, and: Number aNumber | Console println: aString + aNumber ] and: 123.
 
-# named block with no parameters
-# just assign the block to a variable of type 'Block'
-[ Console println: 9999. ] doSomething.
+# named block with no parameters and no return type
+# just assign the block to a variable of type 'Block<>'
+Block<> doSomething := [ Console println: 9999. ].
 
-# calling a named block with no parameters
-# remember: a block with no parameters has a method called 'value' to invoke it.
+# evaluating a named block with no parameters
+# remember: a block with no parameters has a method called 'value' to evaluate it.
 doSomething value.
 
-# ERROR: "'Block doSomething' has no method 'value:', maybe you want to invoke 'value' instead."
+# ERROR: "'Block doSomething' has no method 'value:', maybe you want to evaluate 'value' instead."
 doSomething value: 9999.
 
 # named block with parameters
-[ with: String aString | Console println: aString. ] doSomething.
+Block<with: String> doSomething := [ with: String aString | Console println: aString. ].
 
-# calling a named block with parameters
+# evaluating a named block with parameters
 doSomething with: "hello".
 
-# ERROR: "'Block doSomething' has no method 'value', maybe you want to invoke 'with:' instead."
+# ERROR: "'Block doSomething' has no method 'value', maybe you want to evaluate 'with:' instead."
 doSomething value.
 
 # a block with a return type
 # this Block returns a Boolean
 [ Boolean isNull: Object anObject | anObject is Null. ].
 
-# calling a block that return something (useless because we do not use the result)
+# evaluating a block that return something (useless because we do not use the result)
 isNull: anObject
 
 # using the result of a returning block
@@ -77,8 +88,27 @@ isNull: anObject
   # this is the way to write an "if" in this language
 ].
 
-# ERROR: "'isNull' doesn't exist, maybe you want to invoke 'isNull: Object' instead"
+# ERROR: "'isNull' doesn't exist, maybe you want to evaluate 'isNull: Object' instead"
 isNull.
+
+# named block with parameters and return type
+# Block<ReturnType param1: Type, param2: Type, ....>
+Block<String with: Object> doSomething := [ String with: Object anObject |
+  String name := anObject name.
+  Console println: name.
+  name.
+].
+
+# evaluating a named block with parameters that returns something
+String result := doSomething with: anObject.
+
+# parametrizized types!
+# as in C++ and C# you can have templates (or Generics)
+# here is a list (this is like a C array, a contiguous piece of memory)
+List<String> aListOfStrings := List<String> new: 40.
+
+# here is a map
+Map<String, Object> aDictionary := Dictionary<String, Object> new.
 
 
 # define a new type (or class)
@@ -136,12 +166,12 @@ TestObject name.
 TestObject test := TestObject new.
 
 # using the created instance:
-#   this gets the 'Number power' object by calling it's "getter"
+#   this gets the 'Number power' object by evaluating it's "getter"
 #   this method signature is 'TestObject [ (Number) power ]'
 #   is a method of type TestObject that returns a Number but receives nothing
 #   the returned power is the Number '9001'
 test power.
-#   this sets the 'Number power' object to a new power by calling it's "setter"
+#   this sets the 'Number power' object to a new power by evaluating it's "setter"
 #   this method signature is 'TestObject [ power: Number ]'
 #   is a method of type TestObject that returns nothing but receives a Number
 #   now power is '123'
@@ -224,28 +254,28 @@ type Boolean
   # Boolean has a method 'ifTrue:' that receives a Block and returns nothing
   # the '[ aBlock ]' type means a block of code that receives nothing and returns nothing
   # it's name is 'aBlock'
-  abstract [ ifTrue: [] aBlock ].
+  abstract [ ifTrue: Block<> aBlock ].
 
   # Boolean has another method 'ifFalse:'
   # but this are interfaces, so parameters names are not required
-  abstract [ ifFalse: [] ].
+  abstract [ ifFalse: Block<> ].
 
   # here is another interface with more parameters
   # again, this is an interface, so parameters with no names are fine
-  abstract [ ifTrue: [], ifFalse: [] ].
+  abstract [ ifTrue: Block<>, ifFalse: Block<> ].
 
   # here is another interface
   # note that 'ifTrue:ifFalse' is not the same that 'ifFalse:ifTrue'
-  abstract [ ifFalse: [], ifTrue: [] ].
+  abstract [ ifFalse: Block<>, ifTrue: Block<> ].
 
   # here is an interface that receives a block that returns something
   # 'or:' is a method that returns a Boolean and receives another block of code
   # that is evaluated if this object is True, so the block that receives must
   # return 'Boolean'
-  abstract [ Boolean or [ Boolean ] ].
+  abstract [ Boolean or Block<Boolean> ].
 
   # the same with and:
-  abstract [ Boolean and [ Boolean ] ].
+  abstract [ Boolean and Block<Boolean> ].
 
 
 # here is an example of extending another type (subclassing)
@@ -253,31 +283,31 @@ type Boolean
 type True extends Boolean
   # here, every parameter needs a name because this is a concrete method, not abstract
   # and with that name it can be used inside the body of the method
-  [ ifTrue: [] aBlock |
+  [ ifTrue: Block<> aBlock |
     # evaluate 'aBlock' since the receiver is True.
     aBlock value.
   ].
 
   # this is just an empty method, it receives a block but does nothing
   # it will be replaced not by a call to a method, but by a 'noop'
-  [ ifFalse: [] aBlock ].
+  [ ifFalse: Block<> aBlock ].
 
-  [ ifTrue: [] trueBlock, ifFalse: [] falseBlock |
+  [ ifTrue: Block<> trueBlock, ifFalse: Block<> falseBlock |
     # evaluate 'trueBlock' since the receiver is True.
     trueBlock value.
   ].
 
-  [ ifFalse: [] falseBlock, ifTrue: [] trueBlock |
+  [ ifFalse: Block<> falseBlock, ifTrue: Block<> trueBlock |
     # evaluate 'trueBlock' since the receiver is True.
     trueBlock value.
   ].
 
-  [ Boolean or [ Boolean ] alternativeBlock ].
+  [ Boolean or Block<Boolean> alternativeBlock ].
     # answer self since the receiver is True.
     self.
   ].
 
-  [ Boolean and [ Boolean ] alternativeBlock ].
+  [ Boolean and Block<Boolean> alternativeBlock ].
     # answer the result of evaluating alternativeBlock since the receiver is True.
     alternativeBlock value.
   ].
@@ -287,29 +317,29 @@ type True extends Boolean
 type False extends Boolean
   # this is just an empty method, it receives a block but does nothing
   # it will be replaced not by a call to a method, but by a 'noop'
-  [ ifTrue: [] aBlock ].
+  [ ifTrue: Block<> aBlock ].
 
-  [ ifFalse: [] aBlock |
+  [ ifFalse: Block<> aBlock |
     # evaluate 'aBlock' since the receiver is False.
     aBlock value.
   ].
 
-  [ ifTrue: [] trueBlock, ifFalse: [] falseBlock |
+  [ ifTrue: Block<> trueBlock, ifFalse: Block<> falseBlock |
     # evaluate 'falseBlock' since the receiver is False.
     falseBlock value.
   ].
 
-  [ ifFalse: [] falseBlock, ifTrue: [] trueBlock |
+  [ ifFalse: Block<> falseBlock, ifTrue: Block<> trueBlock |
     # evaluate 'falseBlock' since the receiver is False.
     falseBlock value.
   ].
 
-  [ Boolean or [ Boolean ] alternativeBlock ].
+  [ Boolean or Block<Boolean> alternativeBlock ].
     # answer the result of evaluating alternativeBlock since the receiver is False.
     alternativeBlock value.
   ].
 
-  [ Boolean and [ Boolean ] alternativeBlock ].
+  [ Boolean and Block<Boolean> alternativeBlock ].
     # answer self since the receiver is False.
     self.
   ].
@@ -378,7 +408,7 @@ Number age := someObject someMethod.
 # [ to: Number, do: [ Number ] ] is defined in the type Number
 # and it use a loop (while) to perform it's job
 type Number
-  [ to: Number end, do: [ Number ] aBlock |
+  [ to: Number end, do: Block<Number> aBlock |
     Number step := self.
     [ Boolean | step <= end. ] whileTrue: [
       aBlock value: step.
@@ -386,9 +416,9 @@ type Number
     ].
   ].
 
-# [ whileTrue: [] ] is defined in the type Block
+# [ whileTrue: Block<> ] is defined in the type Block
 type Block
-  [ whileTrue: [] aBlock |
+  [ whileTrue: Block<> aBlock |
     (self value) ifTrue: [
       aBlock value.
       self whileTrue: aBlock.
