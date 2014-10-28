@@ -78,7 +78,9 @@ doSomething value.
 
 # a block with a return type
 # this Block returns a Boolean
-[ Boolean isNull: Object anObject | anObject is Null. ].
+[ Boolean isNull: Object anObject |
+  return (anObject is null).
+].
 
 # evaluating a block that return something (useless because we do not use the result)
 isNull: anObject
@@ -96,19 +98,11 @@ isNull.
 Block<String with: Object> doSomething := [ String with: Object anObject |
   String name := anObject name.
   Console println: name.
-  name.
+  return name.
 ].
 
 # evaluating a named block with parameters that returns something
 String result := doSomething with: anObject.
-
-# parametrizized types!
-# as in C++ and C# you can have templates (or Generics)
-# here is a list (this is like a C array, a contiguous piece of memory)
-List<String> aListOfStrings := List<String> new: 40.
-
-# here is a map
-Map<String, Object> aDictionary := Dictionary<String, Object> new.
 
 
 # define a new type (or class)
@@ -128,9 +122,13 @@ type TestObject
   # define "setter" and "getter" for instance variables:
   #   this are just common instance methods that just access private variables
   #   getter name: 'power', returns the 'Number power' instance variable
-  [ Number power | power. ].
+  [ Number power |
+    return power.
+  ].
   #   setter name: 'power', returns the Number power
-  [ power: Number aNumber | power := aNumber. ].
+  [ power: Number aNumber |
+    power := aNumber.
+  ].
 
   # define an instance method:
   #   this is always public, never private
@@ -150,7 +148,9 @@ type TestObject
   #   this is always public, never private
   #   just add static in front of the block
   #   this is a getter for the 'static String name' object
-  static [ String name | name. ].
+  static [ String name |
+    return name.
+  ].
 
 
 ## using the new type
@@ -203,7 +203,7 @@ type TestObject
     power := power + aNumber.
     # this last sentence will copy the object and return the new copy
     # by default objects are not copied, just referenced with another name
-    power copy.
+    return power copy.
   ].
 
 
@@ -215,17 +215,21 @@ type Object
   Number id := 0.
 
   # a read-only getter for the id (never a setter or a getter that gives you the reference)
-  [ Number id | id copy ].
+  [ Number id |
+    return id copy.
+  ].
 
   # every object knows it's type
   Type ownType := Object.
 
   # a read-only getter for the type (never a setter or a getter that gives you the reference)
-  [ Type ownType | ownType copy ].
+  [ Type ownType |
+    return ownType copy.
+  ].
 
   # Object comparison using 'is'
   [ Boolean is Object anObject |
-    self id = anObject id.
+    return (self id = anObject id).
   ].
 
   # here, 'primitive' says it's implemented by the compiler
@@ -272,10 +276,10 @@ type Boolean
   # 'or:' is a method that returns a Boolean and receives another block of code
   # that is evaluated if this object is True, so the block that receives must
   # return 'Boolean'
-  abstract [ Boolean or Block<Boolean> ].
+  abstract [ Boolean or: Block<Boolean> ].
 
   # the same with and:
-  abstract [ Boolean and Block<Boolean> ].
+  abstract [ Boolean and: Block<Boolean> ].
 
 
 # here is an example of extending another type (subclassing)
@@ -302,14 +306,14 @@ type True extends Boolean
     trueBlock value.
   ].
 
-  [ Boolean or Block<Boolean> alternativeBlock ].
+  [ Boolean or: Block<Boolean> alternativeBlock ].
     # answer self since the receiver is True.
-    self.
+    return self.
   ].
 
-  [ Boolean and Block<Boolean> alternativeBlock ].
+  [ Boolean and: Block<Boolean> alternativeBlock ].
     # answer the result of evaluating alternativeBlock since the receiver is True.
-    alternativeBlock value.
+    return alternativeBlock value.
   ].
 
 
@@ -334,14 +338,14 @@ type False extends Boolean
     falseBlock value.
   ].
 
-  [ Boolean or Block<Boolean> alternativeBlock ].
+  [ Boolean or: Block<Boolean> alternativeBlock ].
     # answer the result of evaluating alternativeBlock since the receiver is False.
-    alternativeBlock value.
+    return alternativeBlock value.
   ].
 
-  [ Boolean and Block<Boolean> alternativeBlock ].
+  [ Boolean and: Block<Boolean> alternativeBlock ].
     # answer self since the receiver is False.
-    self.
+    return self.
   ].
 
 
@@ -405,12 +409,12 @@ Number age := someObject someMethod.
   Console println: step.
 ].
 
-# [ to: Number, do: [ Number ] ] is defined in the type Number
+# [ to: Number, do: Block<value: Number> ] is defined in the type Number
 # and it use a loop (while) to perform it's job
 type Number
-  [ to: Number end, do: Block<Number> aBlock |
+  [ to: Number end, do: Block<value: Number> aBlock |
     Number step := self.
-    [ Boolean | step <= end. ] whileTrue: [
+    [ Boolean | return step <= end. ] whileTrue: [
       aBlock value: step.
       step add: 1.
     ].
@@ -423,6 +427,83 @@ type Block
       aBlock value.
       self whileTrue: aBlock.
     ].
+  ].
+
+# parametrizized types!
+# as in C++ and C# you can have templates (or Generics)
+# here is a list (this is like a C array, a contiguous piece of memory)
+List<String> aListOfStrings := List<String> new: 40.
+
+# here is a map
+Map<String, Object> aDictionary := Dictionary<String, Object> new.
+
+# here is a definition of List<T>
+type List<ValueType>
+  Number size := 0.
+
+  # new is implemented primitively
+  primitive static [ List<ValueType> new: Number size ].
+
+  # accesors like [] in C to get and set values at different indices
+  primitive [ ValueType at: Number index ].
+
+  primitive [ at: Number index, set: ValueType value ].
+
+  # for each...
+  [ forEach: Block<value: ValueType> do |
+    0 to: size do: [ value: Number step |
+      do value: (self at: step).
+    ].
+  ].
+
+  [ forEach: Block<value: ValueType, index: Number> do |
+    0 to: size do: [ value: Number step |
+      do value: (self at: step) index: step.
+    ].
+  ].
+
+  [ forEach: Block<value: ValueType> do, while: Block<Boolean> condition |
+    Number step := 0.
+    [ Boolean | return (step <= size) and: condition. ] whileTrue: [
+      do value: (self at: step).
+      step += 1.
+    ].
+  ].
+
+  [ forEach: Block<value: ValueType, index: Number> do, while: Block<Boolean> condition |
+    Number step := 0.
+    [ Boolean | return (step <= size) and: condition. ] whileTrue: [
+      do value: (self at: step) index: step.
+      step += 1.
+    ].
+  ].
+
+# here is a definition of map (not very optimal, but one at least)
+type Map<KeyType, ValueType>
+  List<KeyType> keys.
+  List<ValueType> values.
+
+  # new is implemented primitively
+  primitive static [ Map<KeyType, ValueType> new ].
+
+  [ Number indexFor: KeyType key |
+    Number index := -1.
+    keys forEach: [ value: KeyType otherKey, index: Number currentIndex |
+      (aKey = otherKey) ifTrue: [
+        index := currentIndex.
+      ].
+    ] while: [
+      return index != -1.
+    ].
+    return index.
+  ].
+
+  [ ValueType at: KeyType aKey |
+    return values at: (self indexFor: aKey).
+  ].
+
+  [ at: KeyType key, set: ValueType newValue |
+    values at: (self indexFor: aKey) set: newValue.
   ].
 
 # with just that methods and types you have bifurcation and repetition, essential to any
