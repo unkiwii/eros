@@ -37,8 +37,9 @@ import ../foo/bar/aLib.nlib
 # Strings:
 #   "Hello World!"  # inside double quotes
 #
-# in C, for example, a literal value is a legal statement, but not here, you can
-# just write a number or a string alone in a line of code and expect it to work.
+# in C, for example, a literal value is a legal statement, but not here, you
+# can't just write a number or a string alone in a line of code and expect it to
+# work.
 
 
 ########## variable declarations ##########
