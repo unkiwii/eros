@@ -1,3 +1,16 @@
+# IMPORTANT: All code in this file is valid, compilable code. All compiler
+# errors will be inside a comment. You can use this file as a quick reference
+# for the language.
+
+
+########## comments ##########
+
+# any line starting with a '#' character is a comment
+# there are no multi-line comments
+
+
+########## importing code from other files and libraries ##########
+
 # importing a file in same folder
 import aFile.nl
 import aLib.nlib
@@ -11,6 +24,164 @@ import ../aFile.nl
 import ../../aLib.nlib
 import ../foo/aFile.nl
 import ../foo/bar/aLib.nlib
+
+
+########## literals ##########
+
+# this language has only 2 literals: Numbers and Strings
+#
+# Numbers:
+#   123       # an integer
+#   0,123     # a real
+#
+# Strings:
+#   "Hello World!"  # inside double quotes
+#
+# in C, for example, a literal value is a legal statement, but not here, you can
+# just write a number or a string alone in a line of code and expect it to work.
+
+
+########## variable declarations ##########
+
+# the way to declare a variable is:
+Type name := "value".
+
+# where:
+#   'Type'  is the type (or class) of the variable, any type must start with a
+#           upper case character and be followed by any upper or lower case
+#           character, as in: Type, Object, HTTPServer, etc.
+#
+#   'name'  is the name of the variable, any name must start with a lower case
+#           character and be followed by any upper or lower case character:
+#           aName, someVariable, thisNumber, etc.
+#
+#   ':='    is the assignation operator, unlike other languages the ':=' is used
+#           instead of the usual '=' for assignation, because the '=' can be
+#           used to compare if two values are the same.
+#
+#   'value' is the value assigned to the variable, this can be a literal,
+#           another identifier (name of another variable) or any block
+#           evaluation that returns a value.
+#
+#   '.'     the dot character marks the end of any statement in the language
+#
+# NOTE: a variable can't be declared without an initialization, i.e. in C you
+# can have a 'int a;' declared but not initialized, in this language that is
+# illegal.
+
+# you can declare a variable anywhere, it's scope is defined by the place of
+# it's declaration, if you declare it here, it will be global (accessible by the
+# whole code of the program)
+Number aGlobalNumber := 123.
+String aGlobalString := "Hello World".
+
+# if you declare them inside a block of code it will local to that block of code
+# and invisible from anywhere else; same with a type.
+
+
+########## types declarations ##########
+
+# this is a multi paradigm language, and one of the paradigms that supports is
+# object oriented programming, for that you must be allowed to write your own
+# objects, to accomplish this you must declare a new type, as a blueprint for
+# objects to be created from that blueprint, like a 'class' in Java or C++
+type NewType {
+  String data := "some data".
+
+  [ Number someCode |
+    # ...
+    return 0.
+  ].
+}
+
+# where:
+#
+#   'type'      marks the declaration of a new type, as 'class' in Java or C++.
+#
+#   'NewType'   it's the name of the new type, it must start with an upper case
+#               character and be followed by upper or lower case characters, as
+#               in: Type, SomeOtherType or HTTPServer.
+#
+#   '{'         an open curly brace marks the start of the type contents.
+#
+#   '}'         a close curly brace marks the end of the type contents and
+#               declaration.
+#
+# any statement inside the '{' and '}' are the data and code of the new type,
+# the members of that type.
+
+
+########## blocks of code ##########
+
+# there are 3 types of blocks:
+#
+#   global    these work just like any global function from C, they are
+#             available from any part of the program and can be evaluated from
+#             anywhere, they had a name for that.
+
+#   methods   these are blocks of code associated with a particular type and in
+#             run time with a particular object.
+#
+#   lambdas   anonymous blocks of code that are used right in place or passed to
+#             other blocks of code as a parameter to be executed later.
+#
+# all of them are declared in the same way and are always enclosed in square
+# brackets '[' and ']', a block is declared as follows:
+[ ReturnType blockName |
+  # block code
+].
+
+# where:
+#   '['           marks the start of a block, the return type, name, and
+#                 parameters are defined inside this and the ']' characters.
+#
+#   'ReturnType'  is the type of the result returned by the block of code, this
+#                 type is optional only when the block is a lambda, has no name
+#                 and only 1 statement inside. If the block of code doesn't
+#                 return anything a special keyword: 'void' is used to denote
+#                 this fact.
+#
+#   'blockName'   is the name of the block, as with a variable, any name must
+#                 start with a lower case character and be followed by any upper
+#                 or lower case character: aName, someVariable, thisNumber, etc.
+#
+#   '|'           the vertical bar character ('|'), mark the end of the header
+#                 of the block and the beginning of the body of the block that
+#                 has the code.
+#
+#   ']'           marks the end of a block.
+#
+#   '.'           as with any other statement a block declaration ends with a
+#                 dot character
+#
+# blocks has two important parts, the header and the body, in the header we
+# define the return type, the name and it's parameters, the body is the place
+# were all the executable code of the block is placed.
+#
+# in some programming languages, the name and parameters of a block of code
+# (function, method, procedure) are separeted, in C for example:
+#
+#   int add(int a, int b) { return a + b; }
+#
+# the name of that function is 'add', and has 2 parameters: 'a' and 'c', that
+# just adds two integer numbers and returns the computed value, but in this
+# language things change a bit: the name of the block is the name of it's
+# parameters
+[ Number add: Number aNumber, and: Number otherNumber |
+  return aNumber + otherNumber.
+].
+# the above block's name is 'add:and:' and just as before just adds two numbers
+# and returns the computed value and for evaluating that piece of code you just
+# write it like this:
+add: 5 and: 10.
+# note that we are not chaining a call, that is just a call to a single block of
+# code, things that in C-like languages you must write as 'name(param1, param2)'
+# you must write it here as 'name: param1 name2: param2' it may sound silly, but
+# wait a little to see the power behind this structure.
+
+
+
+########################## OLD SHIT ########################################
 
 # anonymous block with no parameters
 # it's not evaluated nor had a name so it's useless and illegal.
