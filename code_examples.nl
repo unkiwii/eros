@@ -12,14 +12,17 @@
 ########## importing code from other files and libraries ##########
 
 # importing a file in same folder
+
 import aFile.nl
 import aLib.nlib
 
 # importing a file in a subfolder
+
 import foo/aFile.nl
 import foo/bar/aLib.nlib
 
 # importing a file in a parent folder
+
 import ../aFile.nl
 import ../../aLib.nlib
 import ../foo/aFile.nl
@@ -45,6 +48,7 @@ import ../foo/bar/aLib.nlib
 ########## variable declarations ##########
 
 # the way to declare a variable is:
+
 Type name := "value".
 
 # where:
@@ -73,6 +77,7 @@ Type name := "value".
 # you can declare a variable anywhere, it's scope is defined by the place of
 # it's declaration, if you declare it here, it will be global (accessible by the
 # whole code of the program)
+
 Number aGlobalNumber := 123.
 String aGlobalString := "Hello World".
 
@@ -86,6 +91,7 @@ String aGlobalString := "Hello World".
 # object oriented programming, for that you must be allowed to write your own
 # objects, to accomplish this you must declare a new type, as a blueprint for
 # objects to be created from that blueprint, like a 'class' in Java or C++
+
 type NewType {
   String data := "some data".
 
@@ -128,6 +134,7 @@ type NewType {
 #
 # all of them are declared in the same way and are always enclosed in square
 # brackets '[' and ']', a block is declared as follows:
+
 [ ReturnType blockName |
   # block code
 ].
@@ -168,13 +175,17 @@ type NewType {
 # just adds two integer numbers and returns the computed value, but in this
 # language things change a bit: the name of the block is the name of it's
 # parameters
+
 [ Number add: Number aNumber, and: Number otherNumber |
   return aNumber + otherNumber.
 ].
+
 # the above block's name is 'add:and:' and just as before just adds two numbers
 # and returns the computed value and for evaluating that piece of code you just
 # write it like this:
+
 add: 5 and: 10.
+
 # note that we are not chaining a call, that is just a call to a single block of
 # code, things that in C-like languages you must write as 'name(param1, param2)'
 # you must write it here as 'name: param1 name2: param2' it may sound silly, but
