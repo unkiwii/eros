@@ -2,6 +2,15 @@
 # errors will be inside a comment. You can use this file as a quick reference
 # for the language.
 
+# if you want to view this file with a highlighted syntax you can do one (or
+# both) of this things:
+#
+# 1. download 'vim/syntax/nl.vim', open this file with vim and use that syntax
+#    file to highlight correctly.
+#
+# 2. go to http://unkiwii.github.io/newlang/code_examples.html and see this file
+#    rendered as an html (but the .html can be older than this file)
+
 
 ########## comments ##########
 
