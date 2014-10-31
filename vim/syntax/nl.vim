@@ -25,8 +25,8 @@ syn keyword nlAbstract  abstract
 syn keyword nlExtends   extends
 syn keyword nlStatic    static
 syn keyword nlPrimitive primitive
-syn keyword nlNull      null
 
+syn keyword nlNull  null
 syn keyword nlTrue  true
 syn keyword nlFalse false
 
