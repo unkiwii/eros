@@ -18,19 +18,19 @@
 
 # importing a file in same folder
 
-import aFile.
+import aFile
 
 # importing a file in a subfolder
 
-import foo/aFile.
-import foo/bar/aLib.
+import foo/aFile
+import foo/bar/aLib
 
 # importing a file in a parent folder
 
-import ../aFile.
-import ../../aLib.
-import ../foo/aFile.
-import ../foo/bar/aLib.
+import ../aFile
+import ../../aLib
+import ../foo/aFile
+import ../foo/bar/aLib
 
 
 ########## literals ##########
@@ -39,7 +39,7 @@ import ../foo/bar/aLib.
 #
 # Numbers:
 #   123       # an integer
-#   0,123     # a real
+#   0.123     # a real
 #
 # Strings:
 #   "Hello World!"  # inside double quotes
@@ -52,7 +52,7 @@ import ../foo/bar/aLib.
 
 # the way to declare a variable is:
 
-Type name := "value".
+Type name := "value"
 
 # where:
 #   Type    is the type (or class) of the variable, any type must start with a upper case character and be followed by
@@ -67,16 +67,14 @@ Type name := "value".
 #   value   is the value assigned to the variable, this can be a literal, another identifier (name of another variable)
 #           or any block evaluation that returns a value.
 #
-#   .       the dot character marks the end of any statement in the language
-#
 # NOTE: a variable can't be declared without an initialization, i.e. in C you can have a 'int a;' declared but not
 # initialized, in this language that is illegal.
 
 # you can declare a variable anywhere, it's scope is defined by the place of it's declaration, if you declare it here,
 # it will be global (accessible by the whole code of the program)
 
-Number aGlobalNumber := 123.
-String aGlobalString := "Hello World".
+Number aGlobalNumber := 123
+String aGlobalString := "Hello World"
 
 # if you declare them inside a block of code it will local to that block of code and invisible from anywhere else; same
 # with a type.
@@ -90,35 +88,35 @@ String aGlobalString := "Hello World".
 
 type NewType
   # member declaration: every instance of 'NewType' will have it's own 'data'
-  String data := "some data".
+  String data := "some data"
 
   # static member declaration: only one instance of this object for all the instances of 'NewType'
-  static Number id := 123.
+  static Number id := 123
 
   # method declaration: this block of code will be associated with every new instance of 'NewType', it must be evaluated
   # by passing the message 'someCode' to an object of type 'NewType':
   #
-  #   anObject someCode.
+  #   anObject someCode
   #
   [ String someCode |
     # ...
-    return (self data).
-  ].
+    return data
+  ]
 
   # static method declaration: this block of code is associated with the type 'NewType' and it must be evaluated by
   # passing the message 'doSomething' to the 'NewType' type:
   #
-  #   NewType doSomething.
+  #   NewType doSomething
   #
-  static [ void doSomething |
+  static [ doSomething |
     # ...
-  ].
+  ]
 
   # in this language there are no constants, for that reason if you want to have a constant value just use a method that
   # returns a literal value
   [ Number pi |
-    return 3,1415.
-  ].
+    return 3.1415
+  ]
 
 # maybe you noticed that no 'public' or 'private' was used, that's because here there are not access modifiers, you can
 # only send messages to an object, never access it's internal representation:
@@ -127,7 +125,7 @@ type NewType
 #
 #   EVERY METHOD OF AN OBJECT IS PUBLIC VISIBLE TO EVERY OTHER OBJECT.
 #
-# you can only evaluate code of an object, never access it's data.
+# you can only evaluate code of an object, never access it's data directly.
 
 
 ########## blocks of code ##########
@@ -147,7 +145,7 @@ type NewType
 
 [ ReturnType blockName |
   # block code
-].
+]
 
 # where:
 #   [             marks the start of a block.
@@ -163,11 +161,9 @@ type NewType
 #
 #   ]             marks the end of a block.
 #
-#   .             as with any other statement a block declaration ends with a dot character
-#
 # blocks have two important parts, the header and the body, they are separated with a vertical bar '|' character:
 #
-#   [ header | body ].
+#   [ header | body ]
 #
 # in the header we define the return type, the name of the block, the type and name of the parameters.
 # in the body we define the executable code of the block itself.
@@ -185,10 +181,10 @@ type NewType
 # integers, in this language the same function is written like this:
 
 [ Number add: Number a and: Number b |
-  return a + b.
-].
+  return a + b
+]
 
-add: 4 and: 5.
+add: 4 and: 5
 
 # the name of the block is 'add:and:' and it's signature is 'add: Number and: Number', and has 2 parameters: 'a' and 'b'
 # both Numbers. In this example maybe it's better the C code, but see the next example:
@@ -202,25 +198,25 @@ add: 4 and: 5.
 # and the language code:
 
 # the declaration is a bit more verbose
-[ void from: Number start to: Number end do: [ value: Number ] aBlock |
+[ from: Number start to: Number end do: [ value: Number ] aBlock |
   # code
-].
+]
 
 # but the evaluation is just as simple as it can get:
 from: 1 to: 10 do: [
   # code
-].
+]
 
 # even more, as the literals '1' and '10' are of type Number we can add that block as a method of Number type:
 type Number
-  [ void to: Number stop do: [ value: Number ] aBlock |
+  [ to: Number stop do: [ value: Number ] aBlock |
     # code
-  ].
+  ]
 
 # and evaluate the above method as:
 1 to: 10 do: [
   # code
-].
+]
 
 # note that we are not chaining a call, that is just a call to a single block of code, things that in C-like languages
 # you must write as 'name(param1, param2)' you must write it here as 'name: param1 name2: param2' it may sound silly,
@@ -230,86 +226,86 @@ type Number
 
 ### no return, no parameters
 # declare
-[ void name |
+[ name |
   # code
-].
+]
 # evaluate
-name.
+name
 
 ### return, no parameters
 # declare
 [ Number name |
   # code
-  return 0.
-].
+  return 0
+]
 # evaluate
-Number result := name.
+Number result := name
 
 ### multiple returns (yes, you can return more than one object from a block of code), no parameters
 # declare
 [ (Number, String) name |
   # code
-  return (0, "Hello").
-].
+  return (0, "Hello")
+]
 # evaluate
-Number a, String b := name.
+Number a, String b := name
 
 ### no return, 1 parameter
 # declare
-[ void name: String param |
+[ name: String param |
   # code
-].
+]
 # evaluate
-name: "Hello".
+name: "Hello"
 
 ### return, 1 parameter
 # declare
 [ Number name: Number param |
-  return param + 123.
-].
+  return param + 123
+]
 # evaluate
-Number result := name: 12.
+Number result := name: 12
 
 ### multiple returns, 1 parameter
 # declare
 [ (Number, String) name: Number param |
-  return (param + 123, param asString).
-].
+  return (param + 123, param asString)
+]
 # evaluate
-Number a, String b := name: 123.
+Number a, String b := name: 123
 
 ### no return, more than 1 parameter
 # declare
-[ void name: Number param, and: String param2 |
+[ name: Number param and: String param2 |
   # code
-].
+]
 # evaluate
-name: 123 and: "Hello".
+name: 123 and: "Hello"
 
 ### return, more than 1 parameter
 # declare
 [ Number name: Number param and: Number param2 |
-  return param + param2.
-].
+  return param + param2
+]
 # evaluate
-Number result := name: 123 and: 345.
+Number result := name: 123 and: 345
 
 ### multiple retuns, more than 1 parameter
 # declare
 [ (Number, Number) sqrt: Number a pow: Number b to: Number c |
-  return (a sqrt, b pow: c).
-].
+  return (a sqrt, b pow: c)
+]
 # evaluate
-Number s, Number p := sqrt: 25 pow: 3 to: 4.
+Number s, Number p := sqrt: 25 pow: 3 to: 4
 
 # in resume, the header has the following structure:
 [ ReturnType name1: Type1 param1 name2: Type2 param2 name3: Type3 param3 |
   # code
-].
+]
 
 # where:
 #
-#   ReturnType    can be any type or 'void' when no returning
+#   ReturnType    can be any type or nothing when no returning
 #
 #   name1         is the name of the first part of the name of the block, if no parameters are passed this will be the
 #                 name of the block, but if a parameter is passed then a ':' is needed at the end of the name with one
@@ -327,83 +323,67 @@ Number s, Number p := sqrt: 25 pow: 3 to: 4.
 # IMPORTANT: there is an exception to all this rules, read this piece:
 
 [ Number pi |
-  return 3,14.
-].
+  return 3.14
+]
 
 # and this one:
 
-Number index := 0.
-Number size := 10.
+Number index := 0
+Number size := 10
 [ Boolean test |
-  return index < size.
-].
+  return index < size
+]
 
-# that is a block that has only one return statement that returns just one object and doesn't receive anything, in this
-# case and ONLY IN THIS CASE you can skip the header completely:
+# that is a block that has only one return statement and doesn't receive anything, in this case and ONLY IN THIS CASE
+# you can skip the header completely:
 
-[ 3,14 ]. # pi
+[ 3.14 ] # this block returns a Number (type inference)
 
-[ index < size ]. # test
+[ index < size ] # this block returns a Boolean (type inference)
 
-# this may seems useless but here you can read a real world example, a foreach algorithm:
-[ void from: Number start to: Number end do: [ void value ] aBlock |
-  Number index := start.
-  [ index < end ] whileTrue: [
-    do value.
-    index := index + 1.
-  ].
-].
-
-# here is the 'whileTrue' method:
-type Block # every block of code is an instance of this type
-  [ void whileTrue: [ void value ] aBlock |
-    (self value) ifTrue: [    # this will halt the program if the return value of 'self' is not Boolean
-      aBlock value.
-      self whileTrue: aBlock.
-    ].
-  ].
+# those may seems useless but just keep this in mind, we will use this constructs
 
 
 ########## assertions ##########
 
 # this language implementes an 'assert' just like in C, with some differences:
 #
-#   assert(bool, char*);
+#   void assert (int expression);
 #
-# that function (in C) checks the value of the boolean parameter and if it's false then prints the message and halts the
-# program, that function is implemented like this:
+# that function (in C) checks the value of the expression parameter and if it's evaluate to 0 then it halts the program,
+# that function is implemented like this:
 [ assert: Boolean test onFalse: String message |
   test ifFalse: [
-    # this prints the message and halts the program, just like exit(int) in C.
-    abort message.
-  ].
-].
+    # this prints the message and halts the program, just like 'void exit(int status);' in C.
+    abort message
+  ]
+]
 # and call it like this:
-assert: (instance = null) onFalse: "The instance is not null".
+assert: (instance = null) onFalse: "The instance is not null"
 
 # but that's not all, you can define other asserts to help with other tests like these:
-assert: instance onNull: "The instance is null".
-assert: instance onNotNull: "The instance is not null".
-assert: (a > 4) onTrue: "a is greater than 4".
+assert: instance onNull: "The instance is null"
+assert: instance onNotNull: "The instance is not null"
+assert: (a > 4) onTrue: "a is greater than 4"
 
 # the implementation of those methods
 [ assert: Object anObject onNull: String message |
   (anObject = null) ifTrue: [
-    abort message.
-  ].
-].
+    abort message
+  ]
+]
 
 [ assert: Object anObject onNotNull: String message |
   (anObject = null) ifFalse: [
-    abort message.
-  ].
-].
+    abort message
+  ]
+]
 
 [ assert: Boolean test onTrue: String message |
   test ifTrue: [
-    abort message.
-  ].
-].
+    abort message
+  ]
+]
 
 # you can define your own assertions as you define any other block of code
 
@@ -417,7 +397,7 @@ assert: (a > 4) onTrue: "a is greater than 4".
 type Boolean
   # in C++ you can define a 'virtual = 0' function, but here you declare just their interfaces, not their bodies and
   # mark the method as 'abstract'
-  abstract [ void ifTrue: [ void value ] ].
+  abstract [ ifTrue: [ value ] ]
   # in that last method called 'ifTrue:' it just returns nothing and receives a parameter (here the name is missing
   # because this is just an interface, not the real method) and that parameter is a block of code that doesn't return
   # anything and doesn't receive anything, the block declaration is '[ void value ]' because it must be evaluated like
@@ -435,65 +415,64 @@ type Boolean
 
   # Boolean has another method 'ifFalse:'
   # but this are interfaces, so parameters names are not required
-  abstract [ void ifFalse: [ void value ] ].
+  abstract [ ifFalse: [ value ] ]
 
   # here is another interface with more parameters
   # again, this is an interface, so parameters with no names are fine
-  abstract [ void ifTrue: [ void value ], ifFalse: [ void value ] ].
+  abstract [ ifTrue: [ value ], ifFalse: [ value ] ]
 
   # here is another interface
   # note that 'ifTrue:ifFalse' is not the same that 'ifFalse:ifTrue'
-  abstract [ void ifFalse: [ void value ], ifTrue: [ void value ] ].
+  abstract [ ifFalse: [ value ], ifTrue: [ value ] ]
 
   # here is an interface that receives a block that returns something
   # 'or:' is a method that returns a Boolean and receives another block of code
   # that is evaluated if this object is True, so the block that receives must
   # return 'Boolean'
-  abstract [ Boolean or [ Boolean value ] ].
+  abstract [ Boolean or [ Boolean value ] ]
 
   # the same with and:
-  abstract [ Boolean and [ Boolean value ] ].
+  abstract [ Boolean and [ Boolean value ] ]
 
-# now, all those methods are just too verbose, for all the '[ void value ]' the compiler can assume 2 things: if the
-# method (or any block of code) doesn't have a return type, then it doesn't returns anything so you could just skip the
-# 'void' keyword, then the 'value', every block of code can be evaluated, so it must have a name, a way to call it, so
-# if any block has no header a 'value' is inserted to be able to evaluate it so '[ void value ]' can be written just
-# '[]', here is a better declaration of Boolean (without the comments):
+# now, all those methods are just too verbose, for all the '[ value ]' the compiler can assume the 'value': every block
+# of code can be evaluated, so it must have a name, a way to call it, so if any block has no header a 'value' is
+# inserted to be able to evaluate it so '[ value ]' can be written just as '[]', here is a smaller declaration of
+# Boolean (without the comments):
 
 type Boolean
-  abstract [ ifTrue: [] ].
-  abstract [ ifFalse: [] ].
-  abstract [ ifTrue: [] ifFalse: [] ].
-  abstract [ ifFalse: [] ifTrue: [] ].
-  abstract [ Boolean or [ Boolean ] ].
-  abstract [ Boolean and [ Boolean ] ].
+  abstract [ ifTrue: [] ]
+  abstract [ ifFalse: [] ]
+  abstract [ ifTrue: [] ifFalse: [] ]
+  abstract [ ifFalse: [] ifTrue: [] ]
+  abstract [ Boolean or [ Boolean ] ]
+  abstract [ Boolean and [ Boolean ] ]
 
 # and the calls to those methods:
-Boolean aBool := true.
+Boolean aBool := true
 
 # declaring a method that doesn't return anything and has a 'value' name
 aBool ifTrue: [ void value |
   # code...
-].
+]
 
 # is the same to write just this (a method with a body but without a header)
 aBool ifTrue: [
   # code...
-].
+]
 
 # or if without a explicit Boolean variable: (note the use of parenthesis)
 (age < 18) ifTrue: [
   # code when age is less than 18
 ] ifFalse: [
   # code when age is equals or greater than 18
-].
+]
 
 # NOTE: maybe you are wondering why 'or' and 'and' both receive a block that returns a Boolean and not a Boolean itself,
 # that's to be able to perform lazy evaluation:
-Driver aDriver := Driver age: 15 license: false.
+Driver aDriver := Driver age: 15 license: false
 (aDriver age > 18) and: [ aDriver hasLicense ] ifTrue: [
   # code when a driver can drive a vehicle
-].
+]
 # in the above code, if age is less than 18, then the block '[ aDriver hasLicense ]' is never executed, but if 'and:'
 # would receive a Boolean instead, first that block is evaluated to get the retunr value and then that value (true or
 # false) is passed to 'and:' method.
@@ -506,98 +485,98 @@ type True extends Boolean
   # the method code and a vertical bar '|' is used to separate the header of the method from it's body:
   [ ifTrue: [] aBlock |
     # evaluate 'aBlock' since the receiver is true.
-    aBlock value.
-  ].
+    aBlock value
+  ]
 
   [ ifFalse: [] aBlock |
     # do nothing since the receiver is true, this method will be replaced by nothing in the final compiled code
-  ].
+  ]
 
   [ ifTrue: [] trueBlock ifFalse: [] falseBlock |
     # evaluate 'trueBlock' since the receiver is true.
-    trueBlock value.
-  ].
+    trueBlock value
+  ]
 
   [ ifFalse: [] falseBlock ifTrue: [] trueBlock |
     # evaluate 'trueBlock' since the receiver is true.
-    trueBlock value.
-  ].
+    trueBlock value
+  ]
 
   [ Boolean or [ Boolean ] aBlock |
     # answer self since the receiver is true, here you can see the lazy evaluation: 'aBlock' is never evaluated when the
     # receiver of 'or' method is the true object.
-    return self.
-  ].
+    return self
+  ]
 
   [ Boolean and [ Boolean ] aBlock |
     # answer the result of evaluating aBlock since the receiver is true, again the lazy evaluation: 'aBlock' is
     # evaluated here because the left part of the and is the true object, so the block must be evaluated to see if the
     # whole method 'and' is true or false.
-    return aBlock value.
-  ].
+    return aBlock value
+  ]
 
 
 # here is the False declaration
 type False extends Boolean
   [ ifTrue: [] aBlock |
     # do nothing since the receiver is false, this method will be replaced by nothing in the final compiled code
-  ].
+  ]
 
   [ ifFalse: [] aBlock |
     # evaluate 'aBlock' since the receiver is false.
-    aBlock value.
-  ].
+    aBlock value
+  ]
 
   [ ifTrue: [] trueBlock ifFalse: [] falseBlock |
     # evaluate 'falseBlock' since the receiver is false.
-    falseBlock value.
-  ].
+    falseBlock value
+  ]
 
   [ ifFalse: [] falseBlock ifTrue: [] trueBlock |
     # evaluate 'falseBlock' since the receiver is false.
-    falseBlock value.
-  ].
+    falseBlock value
+  ]
 
   [ Boolean or [ Boolean ] aBlock |
     # answer the result of evaluating aBlock since the receiver is false.
-    return aBlock value.
-  ].
+    return aBlock value
+  ]
 
   [ Boolean and [ Boolean ] aBlock |
     # answer self since the receiver is false.
-    return self.
-  ].
+    return self
+  ]
 
 
 # NOTE: there are two global variables in the environment: 'true' and 'false', both are instances of types 'True' and
 # 'False', this special variables can't be overridden, the compiler will see that as an error.
 type Boolean
   # any type can be initialized to 'null' or with the value of other method or literal.
-  Boolean instance := Boolean new.
+  Boolean instance := Boolean new
 
   # a method to retrieve the only instance of this type
   static [ Boolean instance |
-    return instance.
-  ].
+    return instance
+  ]
 
   # an abstract method that defines how a Boolean is created, this can be overridden by the types that extends this one:
   # True and False respectively.
-  abstract static [ Boolean new ].
+  abstract static [ Boolean new ]
 
 type True extends Boolean
   # here is the 'new' method that returns a new instance of a type
   static [ Boolean new |
     assert: instance onNotNull: "true was already created, use 'True instance' or just 'true' instead".
     # here is a special call: it tells the 'system' to allocate (and return) a new object of type 'True'
-    return System alloc: True.
-  ].
+    return System alloc: True
+  ]
 
 # same for False
 type False extends Boolean
   static [ Boolean new |
     assert: instance onNotNull: "false was already created, use 'False instance' or just 'false' instead".
-    return System alloc: False.
-  ].
+    return System alloc: False
+  ]
 
 # maybe you noticed that severtal times a write a type with just one method and then we write the same type again with
 # other method, well that is legal code, you can write a partial type and in the future add a new method to it.
@@ -617,30 +596,30 @@ type False extends Boolean
 # you need to define a new way to call a function, here operators are introduced, but to make things simple, in this
 # language you don't have to write a different thing, if you see again the statement above you'll se the next structure:
 #
-#   Number + Number.
+#   Number + Number
 #
 # and even so:
 #
-#   object message object.
+#   object message object
 #
 # that's valid code for this language, so here is the Number type with some operators:
 type Number
   [ Number + Number a |
     # code to add self and 'a'.
-  ].
+  ]
 
   [ Number - Number a |
     # code to substract 'a' from self.
-  ].
+  ]
 
   # this also works with comparison operators:
   [ Boolean < Number a |
     # code to check if self is less than 'a'.
-  ].
+  ]
 
   [ Boolean = Number a |
     # code to check if self is equals to 'a'.
-  ].
+  ]
 
 # you can define all the operators (existing or not) in your own types, the '+' is not part of the language as is in C,
 # C++ or Java, the '+' is just another method name that can be used as you will use 'add' or 'sum' or any other name you
@@ -649,10 +628,10 @@ type Number
 # but with numbers there is a special case, this methods: add, substract, multiply, etc. are a lot better if they are
 # performed by the CPU directly, so this methods (in the real code) will be defined as 'primitive' methods:
 type Number
-  primitive [ Number + Number ].
-  primitive [ Number - Number ].
-  primitive [ Boolean < Number ].
-  primitive [ Boolean = Number ].
+  primitive [ Number + Number ]
+  primitive [ Number - Number ]
+  primitive [ Boolean < Number ]
+  primitive [ Boolean = Number ]
 # the 'primitive' keyword states that those methods are not written in this language, they are written directly in
 # machine code by the compiler, later we will be able to write our own primitive methods to extend the language.
 
@@ -697,10 +676,10 @@ type Number
 # Boolean type definition, every boolean object (remember, there are two boolean objects: 'true' and 'false') has a
 # collection of methods to evaluate a block or not, this collection of methods are use to implemente the branches:
 type Boolean
-  abstract [ ifTrue: [] ].
-  abstract [ ifFalse: [] ].
-  abstract [ ifTrue: [] ifFalse: [] ].
-  abstract [ ifFalse: [] ifTrue: [] ].
+  abstract [ ifTrue: [] ]
+  abstract [ ifFalse: [] ]
+  abstract [ ifTrue: [] ifFalse: [] ]
+  abstract [ ifFalse: [] ifTrue: [] ]
 
 # the loops are implemented in the Block type we saw before a 'whileTrue' method, here is again without all the 'void'
 # declarations
@@ -708,28 +687,28 @@ type Block
   # this method works just like a 'while (bool) {}' in C
   [ whileTrue: [] aBlock |
     (self value) ifTrue: [
-      aBlock value.
-      self whileTrue: aBlock. # recursive call
-    ].
-  ].
+      aBlock value
+      self whileTrue: aBlock # recursive call
+    ]
+  ]
 
   # this method works just like a 'do {} while(bool)' in C
   [ whileTrue |
     (self value) ifTrue: [
-      self whileTrue.
-    ].
-  ].
+      self whileTrue
+    ]
+  ]
 
 # and a range loop is implemented in the Number type, note that this uses the 'whileTrue: []' from Block
 type Number
   # this method works just like a 'for (...) {}' in C
   [ to: Number end by: Number step do: [] aBlock |
-    Number index := self.
+    Number index := self
     [ current < end ] whileTrue: [
-      aBlock value.
-      index := index + step.
-    ].
-  ].
+      aBlock value
+      index := index + step
+    ]
+  ]
 
 # of course we can have other methods like 'whileFalse' in Block but as you can see you can define those methods
 # yourself with no problem.
