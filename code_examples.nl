@@ -203,7 +203,7 @@ add: 4 and: 5
 ]
 
 # but the evaluation is just as simple as it can get:
-from: 1 to: 10 do: [
+from: 1 to: 10 do: [ value: Number index |
   # code
 ]
 
@@ -214,7 +214,7 @@ type Number
   ]
 
 # and evaluate the above method as:
-1 to: 10 do: [
+1 to: 10 do: [ value: Number index |
   # code
 ]
 
@@ -568,14 +568,14 @@ type True extends Boolean
   static [ Boolean new |
     assert: instance onNotNull: "true was already created, use 'True instance' or just 'true' instead".
     # here is a special call: it tells the 'system' to allocate (and return) a new object of type 'True'
-    return System alloc: True
+    return Memory alloc: True
   ]
 
 # same for False
 type False extends Boolean
   static [ Boolean new |
     assert: instance onNotNull: "false was already created, use 'False instance' or just 'false' instead".
-    return System alloc: False
+    return Memory alloc: False
   ]
 
 # maybe you noticed that severtal times a write a type with just one method and then we write the same type again with
@@ -702,10 +702,10 @@ type Block
 # and a range loop is implemented in the Number type, note that this uses the 'whileTrue: []' from Block
 type Number
   # this method works just like a 'for (...) {}' in C
-  [ to: Number end by: Number step do: [] aBlock |
+  [ to: Number end by: Number step do: [ value: Number ] aBlock |
     Number index := self
-    [ current < end ] whileTrue: [
-      aBlock value
+    [ current <= end ] whileTrue: [
+      aBlock value: index.
       index := index + step
     ]
   ]
@@ -713,6 +713,82 @@ type Number
 # of course we can have other methods like 'whileFalse' in Block but as you can see you can define those methods
 # yourself with no problem.
 
+
+########## parametrized types ##########
+
+# you can have types that are parametrized with another types, as when you want a 'list of strings' or a 'map from
+# strings to numbers' or any other type you can think of:
+List<String> names := List<String> new
+Map<String, String> dictionary := Map<String, String> new
+
+# here is an example of a List<T>
+type List<T>
+  Number size := 0
+
+  # size getter
+  [ size | size ]
+
+  # default constructor
+  static [ List<T> new |
+    return List<T> new: 0
+  ]
+
+  # default constructor
+  static [ List<T> new: Number size |
+    List<T> instance := Memory alloc: List<T>
+    Object last := instance
+    0 to: size do: [
+      last := Memory alloc: T after: last
+      add: last
+    ]
+    return instance
+  ]
+
+  # adds an element to the given index
+  primitive [ add: T at: Number ]
+
+  # adds an element to the end of the list
+  [ add: T element |
+    Number oldSize := self size
+    self add: element at: size
+    assert: (size = (oldSize + 1)) onFalse: "add always increment the size of the List<T> in one unit"
+  ]
+
+  # removes an element from the given index
+  primitive [ remove: T at: Number ]
+
+  # removes an element from the end
+  [ remove: T element |
+    Number oldSize := self size
+    self remove: element at: size - 1
+    assert: (size = (oldSize - 1)) onFalse: "remove always decrement the size of the List<T> in one unit"
+  ]
+
+  # returns the nth element starting from 0
+  primitive [ T at: Number ]
+
+# a global 'sort' block of code that uses the '<' method on the elements
+[ sort: List<T> aList |
+  Number end := (aList size) - 1
+  1 to: end do: [ value: Number index |
+    T current := aList at: (index - 1)
+    T next := aList at: index
+    (current < next) ifTrue: [   # if T has no method '<' that receives a T then this will halt the program
+      aList swap: (index - 1) and: index
+    ]
+  ]
+]
+
+# another 'sort' block of code that uses a provided block of code to check for order between the elements of the list
+[ sort: List<T> aList using: [ Boolean is: T lessThan: T ] comparator |
+  1 to: ((aList size) - 1) do: [ value: Number index |
+    T current := aList at: (index - 1)
+    T next := aList at: index
+    (comparator is: current lessThan: next) ifTrue: [
+      aList swap: (index - 1) and: index
+    ]
+  ]
+]
 
 # TODO:
 #
@@ -722,6 +798,17 @@ type Number
 #
 # Parametrizized types?
 #   maybe with templates like C++ or just with a type as it's argument
+#
+# Conditional compilation in the language (not with macros or a preprocessor)
+#   * define a type only if some condition is held (something like #ifdef)
+#   * define a variable only if some condition is held (something like #ifdef)
+#   * define the value of a variable only if some condition is held (something like #ifdef)
+#
+# Define a way to use some resource and release it at the end:
+#   * open a file, do something, close it (automatically, or something like that)
+#
+# Define a way to allocate and deacllocate memory:
+#   * pool? continuous?
 
 ########## OLD THINGS (will be changed) ###########
 # as in C++ and C# you can have templates (or Generics)
