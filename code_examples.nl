@@ -3,7 +3,7 @@
 
 # if you want to view this file with a highlighted syntax you can do one (or both) of this things:
 #
-#   1. Download 'vim/syntax/nl.vim', open this file with vim and use that syntax file to highlight correctly.
+#   1. Go to https://github.com/unkiwii/newlang-vim and install the vim plugin
 #
 #   2. Go to http://unkiwii.github.io/newlang/code_examples.html and see this file rendered as an html (but the .html
 #      can be older than this file)
@@ -887,4 +887,4 @@ type List<T>
 #     values at: (self indexFor: aKey) set: newValue.
 #   ].
 
-# vim: tabstop=2:shiftwidth=2:softtabstop=2:filetype=nl
+# vim: tabstop=2:shiftwidth=2:softtabstop=2:
