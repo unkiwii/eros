@@ -6,7 +6,11 @@ compilationUnit
     ;
 
 importDeclaration
-    : IMPORT SPACE (folder* NAME) (FILE_EXTENSION | LIBRARY_EXTENSION) NL
+    : IMPORT SPACE path (FILE_EXTENSION | LIBRARY_EXTENSION) NL
+    ;
+
+path
+    : folder* NAME
     ;
 
 folder
@@ -127,11 +131,12 @@ COMMENT
     ;
 
 NUMBER
-    : '-'? INT ',' [0-9]+ // 1,35 0,3 -4,5
+    : '-'? INT ',' DIGIT+ // 1,35 0,3 -4,5
     | '-'? INT            // -3 45
     ;
 
-fragment INT : '0' | [1-9] [0-9]* ; // no leading zeros
+fragment INT : '0' | [1-9] DIGIT* ; // no leading zeros
+fragment DIGIT : [0-9] ; // no leading zeros
 
 // Specials
 
@@ -159,11 +164,11 @@ RPAREN : ')' ;
 // -------------------------- NAMES -------------------------------------
 
 NAME
-    : LOWER_CASE (LOWER_CASE | UPPER_CASE | INT)*
+    : LOWER_CASE (LOWER_CASE | UPPER_CASE | DIGIT)*
     ;
 
 TYPE_NAME
-    : UPPER_CASE (LOWER_CASE | UPPER_CASE | INT)*
+    : UPPER_CASE (LOWER_CASE | UPPER_CASE | DIGIT)*
     ;
 
 LOWER_CASE
