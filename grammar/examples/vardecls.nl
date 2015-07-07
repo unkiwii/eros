@@ -14,9 +14,9 @@ SomeType snIdentifier := anotherIdentifier
 SomeType anIdentifier := SomeType
 
 # blocks (blockValue)
-SomeType anIdentifier := eval
-SomeType anIdentifier := [ eval ]
-SomeType anIdentifier := [ Boolean | eval ]
-SomeType anIdentifier := [ Boolean value | eval ]
-SomeType anIdentifier := [ Boolean value: String v | eval ]
-SomeType anIdentifier := [ Boolean value: String v fork: Boolean fuck | eval ]
+SomeType anIdentifier := block value
+SomeType anIdentifier := [ 13 ]
+SomeType anIdentifier := [ Boolean | true ]
+SomeType anIdentifier := [ Boolean value | false ]
+SomeType anIdentifier := [ Boolean value: String v | true ]
+SomeType anIdentifier := [ Boolean value: String v fork: Boolean fuck | false ]

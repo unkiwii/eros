@@ -1,5 +1,5 @@
 # one line, no return type, no parameters
-[ printMessage | Console println: "Hello World!". ]
+[ printMessage | Console println: "Hello World!" ]
 
 # same as above, but in multiple lines
 [ printMessage |
@@ -7,47 +7,47 @@
 ]
 
 # one line, with return type but no parameters
-[ String name | return name ]
-[ String name | return self name ]
-[ String name | return print: "hola" ]
-[ String name | return self print: "hola" ]
+[ String name | name ]
+[ String name | self name ]
+[ String name | print: "hola" ]
+[ String name | self print: "hola" ]
 
 # same blocks than above, but in multiple lines
 [ String name |
-  return name
+  name
 ]
 
 [ String name |
-  return self name
+  self name
 ]
 
 [ String name |
-  return print: "hola"
+  print: "hola"
 ]
 
 [ String name |
-  return self print: "hola"
+  self print: "hola"
 ]
 
 # 2 parameters, one line
-[ Boolean compare: Object anObject, with: Object anotherObject | return anObject is anotherObject. ]
+[ Boolean compare: Object anObject, with: Object anotherObject | anObject is anotherObject. ]
 
 # 2 parameters, multi line
 [ Boolean compare: Object anObject, with: Object anotherObject |
-  return anObject is anotherObject
+  anObject is anotherObject
 ]
 
 # 2 parameters, multi line, "operators"
 [ Boolean compare: Number a, with: Number b |
+  a + b
+  a * b
+  a - b
+  a / b
   a > b
   a < b
   a <= b
   a >= b
   a = b
-  a + b
-  a * b
-  a - b
-  return a / b
 ]
 
 # operator-like declaration (inside type Number)

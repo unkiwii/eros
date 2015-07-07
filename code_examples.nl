@@ -14,23 +14,23 @@
 # any line starting with a '#' character is a comment, there are no multi-line comments
 
 
-########## importing code from other files and libraries ##########
+########## useing code from other files and libraries ##########
 
-# importing a file in same folder
+# useing a file in same folder
 
-import aFile
+use aFile.nl
 
-# importing a file in a subfolder
+# useing a file in a subfolder
 
-import foo/aFile
-import foo/bar/aLib
+use foo/aFile.nl
+use foo/bar/aLib.nlib
 
-# importing a file in a parent folder
+# useing a file in a parent folder
 
-import ../aFile
-import ../../aLib
-import ../foo/aFile
-import ../foo/bar/aLib
+use ../aFile.nl
+use ../../aLib.nlib
+use ../foo/aFile.nl
+use ../foo/bar/aLib.nlib
 
 
 ########## variable and constant declarations ##########
@@ -71,6 +71,13 @@ const Type PI := 3.14159
 
 # and from that moment on the value of NAME can't change
 
+# this language has type inference, so you can (in some cases) omit the type, so the next constructs are valid:
+name := "Jhon Doe"
+age := 24
+const PI := 3.14159
+
+# in each case, the types are inferred
+
 
 ########## literals ##########
 
@@ -87,13 +94,13 @@ const Type PI := 3.14159
 # Strings:
 #   "Hello World!"  # inside double quotes
 #
-# Lists:
+# Lists: (lists are homogeneous: all values have the same type)
 #   [1, 2, 3]           # list of integers
 #   [0.12, 0.13, 0.15]  # list of reals
 #   ["a", "b", "c"]     # list of strings (or chars)
 #   [a, b, c]           # list of objects (of some type)
 #
-# Tuples:
+# Tuples: (tuples can be heterogeneous: each value can have it's own type)
 #   (1, 2)          # a pair of integers
 #   ("a", 0.2, s)   # a triple of a string, a number and an object
 #
@@ -115,21 +122,28 @@ Number anInteger := 123
 Number aReal := 3.14159
 
 # Lists are a parametrized type, as templates in C++ or generics in Java
-List<Number> aListOfNumbers := [1, 2, 3]
-List<String> aListOfStrings := ["a", "b", "c"]
-List<Object> aListOfObjects := [a, b, c]
+[Number] aListOfNumbers := [1, 2, 3]
+[String] aListOfStrings := ["a", "b", "c"]
+[Object] aListOfObjects := [a, b, c]
+# or:
+aListOfNumbers := [1, 2, 3]
+aListOfStrings := ["a", "b", "c"]
+aListOfObjects := [a, b, c]
+
+# Tuples are parametrized too:
+(Number, Number) aPairOfNumbers := (12, 34)
+(Number, String) someTuple := (1337, "l33t")
+(String, Number, [Object]) aPerson := ("Jhon Doe", 34, [a, b, c])
 
 # the next both constructions are equivalent
-List<Char> aString := ['a', 'b', 'c']
+[Char] aString := ['a', 'b', 'c']
 String aString := "abc"
 
-# Tuples are parametrized also, but the number of parameters are also the size of the tuple
-Tuple<Number, Number> aPair := (1, 2)
-Tuple<String, String, Number> aPerson := ("Joseph", "Smith", 32145612)
-
 # Maps (or dictionaries) associate a value to another
-Map<String, Number> ages := {"Ana": 23, "Joseph": 45, "Milton": 65}
-Map<String, String> aMap := {"a": "asd", "b": "bsd"}
+{String:Number} ages := {"Ana": 23, "Joseph": 45, "Milton": 65}
+{String:String} aMap := {"a": "asd", "b": "bsd"}
+
+# in all the previous examples, the types can be ommited, because the literals mark the exact type of each variable
 
 
 ########## types declarations ##########
@@ -138,7 +152,7 @@ Map<String, String> aMap := {"a": "asd", "b": "bsd"}
 # must be allowed to write your own objects, to accomplish this you must declare a new type, as a blueprint for objects
 # to be created from that blueprint, like a 'class' in Java or C++
 
-type NewType {
+type NewType
   # member declaration: every instance of 'NewType' will have it's own 'data'
   String data := "some data"
 
@@ -156,9 +170,9 @@ type NewType {
   #
   #   anObject someCode
   #
-  { String someCode |
+  { someCode -> String |
     # ...
-    return data
+    data
   }
 
   # static method declaration: this block of code is associated with the type 'NewType' and it must be evaluated by
@@ -169,7 +183,6 @@ type NewType {
   static { doSomething |
     # ...
   }
-}
 
 # maybe you noticed that no 'public' or 'private' was used, that's because here there are not access modifiers, you can
 # only send messages to an object, never access it's internal representation:
@@ -196,18 +209,20 @@ type NewType {
 # all of them are declared in the same way and are always enclosed in square brackets '{' and '}', a block is declared
 # as follows:
 
-{ ReturnType blockName |
+{ blockName -> ReturnType |
   # block code
 }
 
 # where:
 #   {             marks the start of a block.
 #
-#   ReturnType    is the type of the result returned by the block of code. If the block doesn't return anything a
-#                 special keyword: 'void' is used to denote this fact.
-#
 #   blockName     is the name of the block, as with a variable, any name must start with a lower case character and be
 #                 followed by any upper or lower case character: aName, someVariable, thisNumber, etc.
+#
+#   ->            marks that the next thing is the return type of the block.
+#
+#   ReturnType    is the type of the result returned by the block of code. If this is missing then the block returns
+#                 nothing.
 #
 #   |             the vertical bar character ('|'), marks the end of the header of the block and the beginning of the
 #                 body of the block that has the code.
@@ -233,17 +248,34 @@ type NewType {
 # the name of that function is 'add', it's signature is 'int add(int, int), and has 2 parameters: 'a' and 'b' both
 # integers, in this language the same function is written like this:
 
-{ Number add: Number a and: Number b |
-  return a + b
+{ add: Number a and: Number b -> Number |
+  a + b
 }
 
 add: 4 and: 5
 
-# the name of the block is 'add:and:' and it's signature is 'add: Number and: Number', and has 2 parameters: 'a' and 'b'
-# both Numbers. In this example maybe it's better the C code, but see the next example:
+# the type (and name) of the block is:
+#
+#   add:Number and:Number -> Number
+#
+# it receives two Numbers, one from add: and one from and:, and returns a Number.
+# there is no "return" statement, because every block of code returns the last line as it's result.
+# the return type can be omitted, because the compiler knows that 'a' and 'b' are of type Number, and the method '+'
+# from type Number returns a Number, so the result of this block MUST be a Number and can't be anything else
+#
+# here is a shorter version:
+{ add: Number a and: Number b | a + b }
+
+# if you want to use polymorphism you can go even further and omit the type of the parameters:
+{ add: a and: b | a + b }
+# but, if a or b doesn't have a '+' valid method then this will throw an error and abort the execution of the program.
+
+# in this example maybe it's better the C code, but see the next example:
 #
 #   void iterate(int from, int to, void (do*)(int)) {
-#     ...
+#     for (int i = from; i < to; ++i) {
+#       do(i);
+#     }
 #   }
 #
 #   iterate(1, 10, &func);
@@ -256,13 +288,13 @@ add: 4 and: 5
 }
 
 # but the evaluation is just as simple as it can get:
-from: 1 to: 10 do: { value: Number index |
+from: 1 to: 10 do: { value: index |
   # code
 }
 
 # even more, as the literals '1' and '10' are of type Number we can add that block as a method of Number type:
 type Number {
-  { to: Number stop do: { value: Number } aBlock |
+  { to: Number end do: { value: Number } aBlock |
     # code
   }
 }
@@ -278,37 +310,38 @@ type Number {
 
 # here are multiple examples of various types of blocks that return and receive objects.
 
-### no return, no parameters (this has no sense, but it's legal)
-# declare
-{ name |
-  # code
+### no return, no parameters (no sense also, but usefull in some cases)
+{ name -> void |
+  # you have to explicitly write '-> void' to say that this doesn't return anyhing or the last line of the block will be
+  # evaluated and returned and the return type will be the type of that result
 }
-# evaluate
-name
 
 ### return, no parameters
-# declare
-{ Number name |
-  # code
-  return 0
-}
+# declare:
+{ zero -> Number | 0 }
+# or:
+{ zero | 0 }
+
 # evaluate
-Number result := name
+Number result := zero value
+# or
+result := zero value
 
 ### multiple returns (yes, you can return more than one object from a block of code), no parameters
 # declare
-{ (Number, String) name |
-  # code
-  return (0, "Hello")
-}
+{ name -> (Number, String) | (0, "Hello") }
 # evaluate
 Number a, String b := name
 # or
+a, b := name
+# or
 (Number, String) tuple := name
+# or
+tuple := name
 
 ### no return, 1 parameter
 # declare
-{ name: String param |
+{ name: String param -> void |
   # code
 }
 # evaluate
@@ -316,16 +349,16 @@ name: "Hello"
 
 ### return, 1 parameter
 # declare
-{ Number name: Number param |
-  return param + 123
+{ name: Number param |
+  param + 123
 }
 # evaluate
 Number result := name: 12
 
 ### multiple returns, 1 parameter
 # declare
-{ (Number, String) name: Number param |
-  return (param + 123, param asString)
+{ name: Number param -> (Number, String) |
+  (param + 123, param asString)
 }
 # evaluate
 Number a, String b := name: 123
@@ -334,7 +367,7 @@ Number a, String b := name: 123
 
 ### no return, more than 1 parameter
 # declare
-{ name: Number param and: String param2 |
+{ name: Number param and: String param2 -> void |
   # code
 }
 # evaluate
@@ -342,16 +375,16 @@ name: 123 and: "Hello"
 
 ### return, more than 1 parameter
 # declare
-{ Number name: Number param and: Number param2 |
-  return param + param2
+{ name: Number param and: Number param2 |
+  param + param2
 }
 # evaluate
 Number result := name: 123 and: 345
 
 ### multiple retuns, more than 1 parameter
 # declare
-{ (Number, Number) sqrt: Number a pow: Number b to: Number c |
-  return (a sqrt, b pow: c)
+{ sqrt: Number a pow: Number b to: Number c -> (Number, Number) |
+  (a sqrt, b pow: c)
 }
 # evaluate
 Number s, Number p := sqrt: 25 pow: 3 to: 4
@@ -359,13 +392,11 @@ Number s, Number p := sqrt: 25 pow: 3 to: 4
 (Number, Number) tuple := sqrt: 25 pow: 3 to: 4
 
 # in resume, the header has the following structure:
-{ ReturnType name1: Type1 param1 name2: Type2 param2 name3: Type3 param3 |
+{ name1: Type1 param1 name2: Type2 param2 name3: Type3 param3 -> ReturnType |
   # code
 }
 
 # where:
-#
-#   ReturnType    can be any type or nothing when no returning
 #
 #   name1         is the name of the first part of the name of the block, if no parameters are passed this will be the
 #                 name of the block, but if a parameter is passed then a ':' is needed at the end of the name with one
@@ -377,21 +408,23 @@ Number s, Number p := sqrt: 25 pow: 3 to: 4
 #   param1        is the name of the first parameter, this is the name used in the code of the block to refer to the
 #                 first parameter, it could be any identifier valid name.
 #
+#   ReturnType    can be any type or 'void' when no returning
+#
 # the rest of names, types and params are the ones for the rest of the parameters in the block, you can pass any number
 # of parameter to a block and the name is formed by: 'name1:name2:name3:...' and so on
 
 # IMPORTANT: there is an exception to all this rules, read this piece:
 
-{ Number pi |
-  return 3.14
+{ pi -> Number |
+  3.14
 }
 
 # and this one:
 
 Number index := 0
 Number size := 10
-{ Boolean test |
-  return index < size
+{ test -> Boolean |
+  index < size
 }
 
 # that is a block that has only one return statement and doesn't receive anything, in this case and ONLY IN THIS CASE
@@ -404,48 +437,49 @@ Number size := 10
 # those may seems useless but just keep this in mind, we will use this constructs
 
 
-########## assertions ##########
+########## tests ##########
 
-# this language implementes an 'assert' just like in C, with some differences:
+# this language implementes a 'test' method just like 'assert' in C:
 #
 #   void assert (int expression);
 #
-# that function (in C) checks the value of the expression parameter and if it's evaluate to 0 then it halts the program,
-# that function is implemented like this:
-{ assert: Boolean test onFalse: String message |
-  test ifFalse: {
+# that function (in C) checks the value of the expression parameter and if it's evaluate to 0 then it halts the program
+#
+# implementation:
+{ test: Boolean value onFalse: String message |
+  value ifFalse: {
     # this prints the message and halts the program, just like 'void exit(int status);' in C.
     abort message
   }
 }
 # and call it like this:
-assert: (instance = null) onFalse: "The instance is not null"
+test: (instance = null) onFalse: "The instance is not null"
 
-# but that's not all, you can define other asserts to help with other tests like these:
-assert: instance onNull: "The instance is null"
-assert: instance onNotNull: "The instance is not null"
-assert: (a > 4) onTrue: "a is greater than 4"
+# but that's not all, you can define other tests to help with other tests like these:
+test: instance onNull: "The instance is null"
+test: instance onNotNull: "The instance is not null"
+test: (a > 4) onTrue: "a is greater than 4"
 
 # the implementation of those methods
-{ assert: Object anObject onNull: String message |
+{ test: Object anObject onNull: String message |
   (anObject = null) ifTrue: {
     abort message
   }
 }
 
-{ assert: Object anObject onNotNull: String message |
+{ test: Object anObject onNotNull: String message |
   (anObject = null) ifFalse: {
     abort message
   }
 }
 
-{ assert: Boolean test onTrue: String message |
+{ test: Boolean test onTrue: String message |
   test ifTrue: {
     abort message
   }
 }
 
-# you can define your own assertions as you define any other block of code
+# you can define your own tests as you define any other block of code
 
 
 ########## more types ##########
@@ -457,7 +491,7 @@ assert: (a > 4) onTrue: "a is greater than 4"
 type Boolean
   # in C++ you can define a 'virtual = 0' function, but here you declare just their interfaces, not their bodies and
   # mark the method as 'abstract'
-  abstract { ifTrue: { value } }
+  abstract { ifTrue: {} }
   # in that last method called 'ifTrue:' it just returns nothing and receives a parameter (here the name is missing
   # because this is just an interface, not the real method) and that parameter is a block of code that doesn't return
   # anything and doesn't receive anything, the block declaration is '{ void value }' because it must be evaluated like
@@ -475,47 +509,34 @@ type Boolean
 
   # Boolean has another method 'ifFalse:'
   # but this are interfaces, so parameters names are not required
-  abstract { ifFalse: { value } }
+  abstract { ifFalse: {} -> void }
 
   # here is another interface with more parameters
   # again, this is an interface, so parameters with no names are fine
-  abstract { ifTrue: { value }, ifFalse: { value } }
+  abstract { ifTrue: {}, ifFalse: {} -> void }
 
   # here is another interface
   # note that 'ifTrue:ifFalse' is not the same that 'ifFalse:ifTrue'
-  abstract { ifFalse: { value }, ifTrue: { value } }
+  abstract { ifFalse: {}, ifTrue: {} -> void }
 
   # here is an interface that receives a block that returns something
   # 'or:' is a method that returns a Boolean and receives another block of code
   # that is evaluated if this object is True, so the block that receives must
   # return 'Boolean'
-  abstract { Boolean or { Boolean value } }
+  abstract { or { _ -> Boolean } -> Boolean }
 
   # the same with and:
-  abstract { Boolean and { Boolean value } }
+  abstract { and { _ -> Boolean } -> Boolean }
 
-# now, all those methods are just too verbose, for all the '{ value }' the compiler can assume the 'value': every block
-# of code can be evaluated, so it must have a name, a way to call it, so if any block has no header a 'value' is
-# inserted to be able to evaluate it so '{ value }' can be written just as '{}', here is a smaller declaration of
-# Boolean (without the comments):
-
-type Boolean
-  abstract { ifTrue: {} }
-  abstract { ifFalse: {} }
-  abstract { ifTrue: {} ifFalse: {} }
-  abstract { ifFalse: {} ifTrue: {} }
-  abstract { Boolean or { Boolean } }
-  abstract { Boolean and { Boolean } }
+# the { _ -> Boolean } means that both 'or' and 'and' expect a block of code that returns a Boolean, the '_' is just a
+# placeholder to denote that the block has no parameters
 
 # and the calls to those methods:
 Boolean aBool := true
+# or:
+aBool := true
 
 # declaring a method that doesn't return anything and has a 'value' name
-aBool ifTrue: { void value |
-  # code...
-}
-
-# is the same to write just this (a method with a body but without a header)
 aBool ifTrue: {
   # code...
 }
@@ -530,12 +551,34 @@ aBool ifTrue: {
 # NOTE: maybe you are wondering why 'or' and 'and' both receive a block that returns a Boolean and not a Boolean itself,
 # that's to be able to perform lazy evaluation:
 Driver aDriver := Driver age: 15 license: false
-(aDriver age > 18) and: { aDriver hasLicense } ifTrue: {
+((aDriver age > 18) and: { aDriver hasLicense }) ifTrue: {
   # code when a driver can drive a vehicle
 }
 # in the above code, if age is less than 18, then the block '{ aDriver hasLicense }' is never executed, but if 'and:'
 # would receive a Boolean instead, first that block is evaluated to get the retunr value and then that value (true or
 # false) is passed to 'and:' method.
+
+# but that seems weird because of the () and {}:
+(() and: {}) ifTrue: {}
+(() or: {}) ifTrue: {}
+
+# will be nice if this could be written:
+({} and: {}) ifTrue: {}
+({} or: {}) ifTrue: {}
+
+# so and: and or: are implemented also in block:
+
+type Block
+  # TODO: define wich type of block can have this methods ==> { _ -> Boolean }
+
+  { or { _ -> Boolean } aBlock -> Boolean |
+    (self value) and: aBlock
+  }
+
+  { and { _ -> Boolean } -> Boolean |
+    (self value) or: aBlock
+  }
+
 
 # now an inheritance example, we can have simple inheritance only, never multiple inheritance
 type True extends Boolean
@@ -562,17 +605,17 @@ type True extends Boolean
     trueBlock value
   }
 
-  { Boolean or { Boolean } aBlock |
+  { or { _ -> Boolean } aBlock -> Boolean |
     # answer self since the receiver is true, here you can see the lazy evaluation: 'aBlock' is never evaluated when the
     # receiver of 'or' method is the true object.
-    return self
+    self
   }
 
-  { Boolean and { Boolean } aBlock |
+  { and { _ -> Boolean } aBlock -> Boolean |
     # answer the result of evaluating aBlock since the receiver is true, again the lazy evaluation: 'aBlock' is
     # evaluated here because the left part of the and is the true object, so the block must be evaluated to see if the
     # whole method 'and' is true or false.
-    return aBlock value
+    aBlock value
   }
 
 
@@ -597,45 +640,51 @@ type False extends Boolean
     falseBlock value
   }
 
-  { Boolean or { Boolean } aBlock |
+  { or { _ -> Boolean } aBlock -> Boolean |
     # answer the result of evaluating aBlock since the receiver is false.
-    return aBlock value
+    aBlock value
   }
 
-  { Boolean and { Boolean } aBlock |
+  { and { _ -> Boolean } aBlock -> Boolean |
     # answer self since the receiver is false.
-    return self
+    self
   }
 
 
 # NOTE: there are two global variables in the environment: 'true' and 'false', both are instances of types 'True' and
 # 'False', this special variables can't be overridden, the compiler will see that as an error.
 type Boolean
-  # any type can be initialized to 'null' or with the value of other method or literal.
-  Boolean instance := Boolean new
-
-  # a method to retrieve the only instance of this type
-  static { Boolean instance |
-    return instance
-  }
-
   # an abstract method that defines how a Boolean is created, this can be overridden by the types that extends this one:
   # True and False respectively.
-  abstract static { Boolean new }
+  abstract static { new -> Boolean }
+
 
 type True extends Boolean
+  # any type can be initialized to 'null' or with the value of other method or literal.
+  instance := True new
+
+  # a method to retrieve the only instance of this type
+  static { instance | instance }
+
   # here is the 'new' method that returns a new instance of a type
-  static { Boolean new |
+  static { new -> Boolean |
     assert: instance onNotNull: "true was already created, use 'True instance' or just 'true' instead".
     # here is a special call: it tells the 'system' to allocate (and return) a new object of type 'True'
-    return Memory alloc: True
+    Memory alloc: True
   }
+
 
 # same for False
 type False extends Boolean
+  # any type can be initialized to 'null' or with the value of other method or literal.
+  instance := False new
+
+  # a method to retrieve the only instance of this type
+  static { instance | instance }
+
   static { Boolean new |
     assert: instance onNotNull: "false was already created, use 'False instance' or just 'false' instead".
-    return Memory alloc: False
+    Memory alloc: False
   }
 
 # maybe you noticed that severtal times a write a type with just one method and then we write the same type again with
@@ -664,20 +713,20 @@ type False extends Boolean
 #
 # that's valid code for this language, so here is the Number type with some operators:
 type Number
-  { Number + Number a |
+  { + Number a -> Number |
     # code to add self and 'a'.
   }
 
-  { Number - Number a |
+  { - Number a -> Number |
     # code to substract 'a' from self.
   }
 
   # this also works with comparison operators:
-  { Boolean < Number a |
+  { < Number a -> Boolean |
     # code to check if self is less than 'a'.
   }
 
-  { Boolean = Number a |
+  { = Number a -> Boolean |
     # code to check if self is equals to 'a'.
   }
 
@@ -688,10 +737,10 @@ type Number
 # but with numbers there is a special case, this methods: add, substract, multiply, etc. are a lot better if they are
 # performed by the CPU directly, so this methods (in the real code) will be defined as 'primitive' methods:
 type Number
-  primitive { Number + Number }
-  primitive { Number - Number }
-  primitive { Boolean < Number }
-  primitive { Boolean = Number }
+  primitive { + Number -> Number }
+  primitive { - Number -> Number }
+  primitive { < Number -> Boolean }
+  primitive { = Number -> Boolean }
 # the 'primitive' keyword states that those methods are not written in this language, they are written directly in
 # machine code by the compiler, later we will be able to write our own primitive methods to extend the language.
 
@@ -778,34 +827,35 @@ type Number
 
 # you can have types that are parametrized with another types, as when you want a 'list of strings' or a 'map from
 # strings to numbers' or any other type you can think of:
-List<String> names := List<String> new
-Map<String, String> dictionary := Map<String, String> new
+[String] names := [String] new
+{String: String} dictionary := {String: String} new
 
-# here is an example of a List<T>
-type List<T>
+# here is an example implementation of a parametrized list
+# TODO: check this
+type [_T_]
   Number size := 0
 
   # size getter
   { size | size }
 
   # default constructor
-  static { List<T> new |
-    return List<T> new: 0
+  static { new -> [_T_] |
+    []
   }
 
   # default constructor
-  static { List<T> new: Number size |
-    List<T> instance := Memory alloc: List<T>
+  static { new: Number size -> [_T_] |
+    [_T_] instance := Memory alloc: [_T_]
     Object last := instance
     0 to: size do: {
       last := Memory alloc: T after: last
       add: last
     }
-    return instance
+    instance
   }
 
   # adds an element to the given index
-  primitive { add: T at: Number }
+  primitive { add: _T_ at: Number }
 
   # adds an element to the end of the list
   { add: T element |
