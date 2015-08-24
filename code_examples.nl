@@ -16,21 +16,29 @@
 
 ########## useing code from other files and libraries ##########
 
-# useing a file in same folder
+# using a file in same folder
 
 use aFile.nl
 
-# useing a file in a subfolder
+# using a file in a subfolder
 
 use foo/aFile.nl
 use foo/bar/aLib.nlib
 
-# useing a file in a parent folder
+# using a file in a parent folder
 
 use ../aFile.nl
 use ../../aLib.nlib
 use ../foo/aFile.nl
 use ../foo/bar/aLib.nlib
+
+# using several files
+use (
+  aFile.nl
+  anotherFile.nl
+  aLib.nlib
+  anotherLib.nlib
+)
 
 
 ########## variable and constant declarations ##########
@@ -73,8 +81,13 @@ const Type PI := 3.14159
 
 # this language has type inference, so you can (in some cases) omit the type, so the next constructs are valid:
 name := "Jhon Doe"
+# type of name is 'String'
+
 age := 24
+# type of age is 'Number'
+
 const PI := 3.14159
+# type of PI i 'const Number'
 
 # in each case, the types are inferred
 
@@ -90,18 +103,19 @@ const PI := 3.14159
 # Chars:
 #   'a'
 #   'z'
+#   '\u31f3'  #unicode
 #
 # Strings:
 #   "Hello World!"  # inside double quotes
 #
 # Lists: (lists are homogeneous: all values have the same type)
-#   [1, 2, 3]           # list of integers
-#   [0.12, 0.13, 0.15]  # list of reals
-#   ["a", "b", "c"]     # list of strings (or chars)
-#   [a, b, c]           # list of objects (of some type)
+#   [1, 2, 3]           # list of integers  (Number)
+#   [0.12, 0.13, 0.15]  # list of reals     (Number)
+#   ["a", "b", "c"]     # list of strings   (String or [Char])
+#   [a, b, c]           # list of objects   (Object or any given type)
 #
 # Tuples: (tuples can be heterogeneous: each value can have it's own type)
-#   (1, 2)          # a pair of integers
+#   (1, 2)          # a pair of numbers
 #   ("a", 0.2, s)   # a triple of a string, a number and an object
 #
 # Map:
@@ -135,9 +149,9 @@ aListOfObjects := [a, b, c]
 (Number, String) someTuple := (1337, "l33t")
 (String, Number, [Object]) aPerson := ("Jhon Doe", 34, [a, b, c])
 
-# the next both constructions are equivalent
-[Char] aString := ['a', 'b', 'c']
+# A String is just a list of chars, the next both constructions are equivalent
 String aString := "abc"
+[Char] aString := ['a', 'b', 'c']
 
 # Maps (or dictionaries) associate a value to another
 {String:Number} ages := {"Ana": 23, "Joseph": 45, "Milton": 65}
