@@ -18,7 +18,7 @@ clean:
 	rm -f $(OBJECTS)
 
 $(EXECUTABLE): $(OBJECTS)
-	$(CC) -o $@ $< $(CFLAGS)
+	$(CC) -o $@ $^ $(CFLAGS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
