@@ -1,1 +1,4 @@
 *.class
+
+tool/obj/*
+tool/newlang
