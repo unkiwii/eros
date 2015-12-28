@@ -22,11 +22,14 @@ void nlinput_del(nlinput* input)
 
 void nlinput_parse(nlinput* input, int argc, char** argv)
 {
-  for (int i = 0; i < argc; i++) {
+  for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-c") == 0) {
       input->compile_flag = 1;
     } else {
-      //TODO: parse input files
+      input->files_count++;
+      input->files = realloc(input->files, sizeof(char*) * input->files_count);
+      input->files[input->files_count - 1] = malloc(strlen(argv[i]) + 1);
+      strcpy(input->files[input->files_count - 1], argv[i]);
     }
   }
 }
