@@ -13,13 +13,39 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef _WIN32
+#include "prompt_win.h"
+#else
+#include <editline/readline.h>
+#endif
+
+#include "nlprogram.h"
 #include "nlrepl.h"
+#include "nlrepl_cmd.h"
+
+#define PROGRAM_REPL_HELP "Type '.help' for more information"
 
 int nl_repl(nlinput* input)
 {
-  puts("repl");
-  for (int i = 0; i < input->files_count; i++) {
-    printf("  file: %s\n", input->files[i]);
+  printf("\n%s repl %s (%s)\n%s\n\n", PROGRAM_NAME, PROGRAM_VERSION, COMPILE_DATE, PROGRAM_REPL_HELP);
+
+  while (1) {
+    char* line = readline("> ");
+    add_history(line);
+
+    if      (strcmp(line, ".help") == 0)      { cmd_help();       }
+    else if (strcmp(line, ".quit") == 0)      { cmd_quit();       }
+    else if (strcmp(line, ".license") == 0)   { cmd_license();    }
+    else {
+      // eval
+      // print
+    }
+
+    free(line);
   }
+
   return 0;
 }
