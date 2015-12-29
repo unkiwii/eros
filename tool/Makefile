@@ -5,7 +5,7 @@ LIB_DIR = lib
 SRC_DIR = src
 INC_DIR = inc
 
-CFLAGS += -std=c99 -I$(INC_DIR)
+CFLAGS += -pedantic -std=c99 -I$(INC_DIR)
 
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
 
