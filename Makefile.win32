@@ -1,0 +1,37 @@
+NAME = eros
+EXECUTABLE = eros.exe
+
+OBJ_DIR = obj
+BIN_DIR = bin
+SRC_DIR = src
+
+YEAR = 2015
+MONTH = Dec
+DAY = 30
+
+DEFINES = /DCOMPILE_YEAR=\"$(YEAR)\" /DCOMPILE_MONTH=\"$(MONTH)\" /DCOMPILE_DAY=\"$(DAY)\" /DPROGRAM_NAME=\"$(NAME)\"
+
+CFLAGS = $(CFLAGS) /nologo /TC /Wall /wd4127 /wd4710 /D_CRT_SECURE_NO_WARNINGS $(DEFINES)
+
+all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+
+clean:
+	@echo Cleaning...
+	@rmdir /q /s $(OBJ_DIR) >NUL 2>&1
+	@rmdir /q /s $(BIN_DIR) >NUL 2>&1
+
+$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
+	@echo Compiling $**
+	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**
+
+$(EXECUTABLE): $(OBJ_DIR)\*.obj
+	@echo Linking $(EXECUTABLE)
+	@link /nologo $** /out:$(BIN_DIR)\$(EXECUTABLE)
+
+$(OBJ_DIR):
+	@echo Creating $@ folder
+	@mkdir $@
+
+$(BIN_DIR):
+	@echo Creating $@ folder
+	@mkdir $@
