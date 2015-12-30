@@ -1,302 +1,46 @@
 <!DOCTYPE html>
-<!--
-  vim: tabstop=2:shiftwidth=2:softtabstop=2:
--->
 <html>
-
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="newlang : A language with some influence from Python and a lot from Smalltalk, but compiled and that runs natively without a virtual machine.">
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <title>newlang</title>
+    <title>eros by unkiwii</title>
   </head>
 
   <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-      <header class="inner">
-        <a id="forkme_banner" href="https://github.com/unkiwii/newlang">View on GitHub</a>
-
-        <h1 id="project_title">newlang</h1>
-        <h2 id="project_tagline">A language with some influence from Python and a lot from Smalltalk, but compiled and that runs natively without a virtual machine.</h2>
+    <header>
+      <div class="container">
+        <h1>eros</h1>
+        <h2>A programming language Easy to Read and Outstanding Syntax</h2>
 
         <section id="downloads">
-          <a class="zip_download_link" href="https://github.com/unkiwii/newlang/zipball/master">Download this project as a .zip file</a>
-          <a class="tar_download_link" href="https://github.com/unkiwii/newlang/tarball/master">Download this project as a tar.gz file</a>
+          <a href="https://github.com/unkiwii/eros/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/unkiwii/eros/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/unkiwii/eros" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
         </section>
-      </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p><strong><em>This is a work in progress, anything defined here can be modified in the future</em></strong></p>
-
-        <p>For some code examples please, check <a href="code_examples.html">this</></p>
-
-        <h2>
-          <a name="features-of-the-language" class="anchor" href="#features-of-the-language"><span class="octicon octicon-link"></span></a>Features of the language</h2>
-
-        <h4>
-          <a name="multiparadigm" class="anchor" href="#multiparadigm"><span class="octicon octicon-link"></span></a>Multiparadigm</h4>
-
-        <p>At least Object-oriented, Functional and Structured</p>
-        <p><ul>
-          <li>For OOP: Single inheritance with interfaces? (or separate interface from implementation)</li>
-          <br>
-          <li>For Functional: Pattern Matching</li>
-        </ul></p>
-
-        <h4>
-          <a name="strong-typed" class="anchor" href="#strong-typed"><span class="octicon octicon-link"></span></a>Strong typed</h4>
-
-        <p>When defining some construct, you must explicitly declare it's type. In some places, if a type can be inferred then that type can be optional to write, but it will be there</p>
-
-        <h4>
-          <a name="whitespace-matters" class="anchor" href="#whitespace-matters"><span class="octicon octicon-link"></span></a>Whitespace matters</h4>
-
-        <p>Statement ends with a newline, spaces between words and some characters are required and as with Python indentation mark the start and end of some definitions, use of 2 spaces for indentation is required, the tab character and empty lines are forbidden</p>
-
-        <h4>
-          <a name="no-exceptions" class="anchor" href="#no-exceptions"><span class="octicon octicon-link"></span></a>No exceptions</h4>
-
-        <p>If a process fails for any reason it terminates the program with a human readable message.</p>
-
-        <h4>
-          <a name="all-objects-are-first-class-objects" class="anchor" href="#all-objects-are-first-class-objects"><span class="octicon octicon-link"></span></a>All objects are first-class objects</h4>
-
-        <p>Blocks of code (functions, methods, lambdas) and Type definitions (classes) are first-class objects and had methods of their own.</p>
-
-        <h4>
-          <a name="objects-receive-messages-like-smalltalk" class="anchor" href="#objects-receive-messages-like-smalltalk"><span class="octicon octicon-link"></span></a>Objects receive messages like Smalltalk</h4>
-
-        <pre><code>object message
-object message: param</code></pre>
-
-        <h4>
-          <a name="conditionals-and-loops" class="anchor" href="#conditionals-and-loops"><span class="octicon octicon-link"></span></a>Conditionals and loops</h4>
-
-        <p>Are not part of the language, they are implemented as messages to objects (like Smalltalk)</p>
-
-        <pre><code>boolean ifTrue: block       # Branches (if)
-boolean ifFalse: block
-
-block1 whileTrue: block2    # Loops (while)
-block1 whileFalse: block2
-
-1 to: 10 do: block          # Range-loops (for)
-begin to: end do: block </code></pre>
-
-        <h4>
-          <a name="initialization-is-required-always" class="anchor" href="#initialization-is-required-always"><span class="octicon octicon-link"></span></a>Initialization is required. Always</h4>
-
-        <p>You can't define a variable, you must always declare it (give it a type and a value), i.e. in C you can write the following:</p>
-
-        <div class="highlight highlight-C"><pre><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
-<span class="n">a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span></pre></div>
-
-          <p>or this:</p>
-
-          <div class="highlight highlight-C"><pre><span class="kt">int</span> <span class="n">aVeryLongVariableName</span><span class="p">;</span>
-<span class="kt">int</span> <span class="n">aVeriLongVariableName</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">aVeriLongVariableName</span><span class="p">);</span></pre></div>
-
-            <p>Because pieces of code like those brought pain to me and are just to difficult to debug, a definition without an initialization will be illegal. For more details see <strong>Variables</strong> in the code examples below.</p>
-
-            <h2>
-              <a name="nice-to-have" class="anchor" href="#nice-to-have"><span class="octicon octicon-link"></span></a>Nice to have</h2>
-
-            <ul>
-              <li>Every object must have an 'id', a unique number that represents that object in memory and can be used to check if two objects are the same.</li>
-              <br>
-              <li>Iterating through a collection make that collection 'sealed'. You can't change a collection while you are iterating through it.</li>
-              <br>
-              <li>Abstract classes and abstract methods. (complete and partial interfaces)</li>
-              <br>
-              <li>Compilation must be "incremental". You pass 1 file to the compiler and only compile the files that are imported in the first file, then compile the ones that are imported in the imported files and so on. Never compile something that is not part of the objects and functions used by a program, even the "standard" objects. If a Boolean is never used, it is never compiled or added to the final program.</li>
-              <br>
-              <li>Automatic memory management, but without a garbage collector.</li>
-              <br>
-              <li>No pointers.</li>
-              <br>
-              <li>Unless "global" return values are returned not by copy, but by moving.</li>
-              <br>
-              <li>Standard functions:
-                <ul>
-                  <li><code>abort: String</code>: prints a message and terminate the program.</li>
-                  <li><code>assert: Boolean onFalse: String</code>: if bool is false call <code>abort: String</code></li>
-                </ul>
-              </li>
-              <br>
-              <li>Standard objects:
-                <ul>
-                  <li>Boolean: 2 instances 'true' and 'false'</li>
-                  <li>String: strings must be easy to use</li>
-                  <li>Number: ideally only 1 numeric type</li>
-                  <li>List: like an Array but with knowledge of it's size and content type</li>
-                  <li>Map: a table-like data structure, maps keys to values</li>
-                  <li>StandardAllocator: manage memory like C.</li>
-                  <li>DynamicPoolAllocator: manage memory like a dynamic growing pool.</li>
-                  <li>FixedSizePoolAllocator: manage memory like a pool, but it have a fixed size pool.</li>
-                </ul>
-              </li>
-            </ul>
-
-            <h2>
-              <a name="naming-requirements" class="anchor" href="#naming-requirements"><span class="octicon octicon-link"></span></a>Naming requirements</h2>
-
-            <p>The names of all types, variables and messages (functions names) must comply with the following rules:  </p>
-
-            <ol>
-              <li>The use of '_' is forbidden, only letters ('a' to 'z' and 'A' to 'Z') and digits (0 to 9) can be used.</li>
-              <br>
-              <li>All types must start with uppercase letters and follow the <code>CamelCase</code> style.</li>
-              <br>
-              <pre><code>GoodType
-badType
-OTHERBadType</code></pre>
-              <br>
-              <li>All variables and messages must start with lowercase letters and follow the <code>camelCase</code> style.</li>
-              <br>
-              <pre><code>aGoodName
-anotherGoodName
-BadVariableName
-another_bad_name
-REALLY_BAD_NAME</code></pre>
-            </ol>
-
-              <h2>
-                <a name="code-examples" class="anchor" href="#code-examples"><span class="octicon octicon-link"></span></a>Some code</h2>
-
-              <h4>
-                <a name="comments" class="anchor" href="#comments"><span class="octicon octicon-link"></span></a>Comments</h4>
-
-              <p>Every line starting with a <code>#</code> is a comment:</p>
-
-              <pre><code># Line comments start with #
-# No multi line comments</code></pre>
-
-              <p>This allow the use of <a href="http://en.wikipedia.org/wiki/Shebang_(Unix)">shebang</a></p>
-
-              <h4>
-                <a name="values-or-primitives" class="anchor" href="#values-or-primitives"><span class="octicon octicon-link"></span></a>Values (or primitives)</h4>
-
-              <pre><code>123                 # Integer Number
-123.34              # Real Number
-"string"            # Strings are enclosed in double quotes</code></pre>
-
-              <h4>
-                <a name="variables" class="anchor" href="#variables"><span class="octicon octicon-link"></span></a>Variables</h4>
-
-              <p>Simple declarations:</p>
-
-              <pre><code>Object anObject := anotherVariable
-Number aNumber := 123
-String aString := "a string"</code></pre>
-
-              <p>Initialized with the return value of a block of code:</p>
-
-              <pre><code>Object a := anObject message
-Object b := anObject message: param
-Object c := anObject message: param1 with: param2</code></pre>
-
-              <p>Any Type and any block of code are first-class objects, so they can be assigned to any variable:</p>
-
-              <pre><code>Type aType := String
-[] aBlockOfCode</code></pre>
-
-              <p>Declaration errors:</p>
-
-              <pre><code>Object anObject           # ERROR: No initialization is illegal...
-Object anObject := null   # ...but you can initialize it to null.
-
-Object var := anObject message: var   # ERROR: 'var' is not defined yet.
-
-Number aNumber := 123   # Good.
-Number aNumber := 456   # ERROR: can't redefine a variable...
-aNumber := 789          # ...but you can change it's value.
-
-Number aNumber := 123   # Good.
-String aNumber := "str" # ERROR: can't redefine a variable.
-
-String aString := 123               # ERROR: assigned an incompatible type...
-String aString := 123 asString      # ...but you can get the correct type...
-String aString := aNumber asString  # ...or from another variable.</code></pre>
-
-              <h2>
-                <a name="standard-types" class="anchor" href="#standard-types"><span class="octicon octicon-link"></span></a>Standard Types</h2>
-
-              <h4>
-                <a name="number" class="anchor" href="#number"><span class="octicon octicon-link"></span></a>Number</h4>
-
-              <p>At the moment we will use it just like a <code>long double</code> in C. This is the only numeric type and any literal is an object, so code like this is valid:</p>
-
-              <pre><code>Number two := 2
-Number four := 4
-Number eight := two times: four
-
-Number two := 2
-Number eight := two times: 4
-
-Number four := 4
-Number eight := 2 times: four
-
-Number eight := 2 times: 4</code></pre>
-
-              <p>Reals use the dot ('.') as the decimal point:</p>
-
-              <pre><code>Number pi := 3.1415
-Number twoPi := 3.1415 times: 2</code></pre>
-
-              <h4>
-                <a name="string" class="anchor" href="#string"><span class="octicon octicon-link"></span></a>String</h4>
-
-              <p>Only text type, there is no notion of <em>char</em>. As with <code>Number</code> any literal string is also of this type, so code like this is valid:</p>
-
-              <pre><code>String aString := "Hello World!"
-
-Number aLength := aString length
-Number anotherLength := "Hello World!" length</code></pre>
-
-              <p>Strings must be enclosed in double quotes (") never in single quotes ('). To write a double quote character inside a string just escape it with a backslash (\) like this: "\"" and to write a backslash character write it twice like this "\\", those are the only two exceptions.</p>
-
-              <h4>
-                <a name="boolean" class="anchor" href="#boolean"><span class="octicon octicon-link"></span></a>Boolean</h4>
-
-              <p>There are only 2 instances of this type: <code>true</code> and <code>false</code>. Some operations return a <code>Boolean</code> and can be used as any other object:</p>
-
-              <pre><code>String aString := 'Hello World!'
-Boolean hasWorld := aString contains: 'World'</code></pre>
-
-              <p>Some methods:</p>
-
-              <pre><code>Boolean isNew := true
-Boolean isOdd := 4 isOdd
-
-# Conditionals
-isNew ifTrue: doSomething
-isNew ifFalse: doSomethingElse
-isNew ifTrue: doSomething ifFalse: doSomethingElse
-
-# Operators
-Boolean newOrOdd := isNew or isOdd
-Boolean newAndOdd := isNew and isOdd
-Boolean newXorOdd := isNew xor isOdd
-Boolean notNew := not isNew</code></pre>
-
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p><strong><em>This is a work in progress</em></strong></p>
+
+<p><strong>eros</strong> is a statically typed, general-purpose programming language. <strong>eros</strong> is being developed right now and must:</p>
+
+<ul>
+<li>Be easy to read and write</li>
+<li>Provide a fast and nice write-compile-run-debug cycle</li>
+<li>Be able to produce native code in any machine</li>
+<li>Have a small footprint (no runtime environment or virtual machine involved)</li>
+</ul>
       </section>
     </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">newlang maintained by <a href="https://github.com/unkiwii">unkiwii</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
+    
   </body>
 </html>
