@@ -12,8 +12,24 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#define PROGRAM_NAME "newlang"
-#define PROGRAM_VERSION "0.0.1"
+#ifndef EROS_DEFINES_H
+#define EROS_DEFINES_H
+
+#ifndef PROGRAM_NAME
+  #define PROGRAM_NAME "eros"
+#endif
+
+#ifndef PROGRAM_VERSION
+  #define PROGRAM_VERSION "0.0.1"
+#endif
+
+#ifndef PROGRAM_AUTHOR
+  #define PROGRAM_AUTHOR "Lucas Gabriel Sanchez"
+#endif
+
+#ifndef PROGRAM_AUTHOR_EMAIL
+  #define PROGRAM_AUTHOR_EMAIL "unkiwii@gmail.com"
+#endif
 
 #ifndef COMPILE_YEAR
   #define COMPILE_YEAR "2016"
@@ -31,10 +47,4 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
   #define COMPILE_DATE COMPILE_MONTH " " COMPILE_DAY ", " COMPILE_YEAR
 #endif
 
-#ifndef PROGRAM_AUTHOR
-  #define PROGRAM_AUTHOR "Lucas Gabriel Sanchez"
-#endif
-
-#ifndef PROGRAM_AUTHOR_EMAIL
-  #define PROGRAM_AUTHOR_EMAIL "unkiwii@gmail.com"
-#endif
+#endif // EROS_DEFINES_H

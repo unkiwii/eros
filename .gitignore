@@ -1,4 +1,4 @@
 *.class
 
-tool/obj/*
-tool/newlang
+obj*
+eros

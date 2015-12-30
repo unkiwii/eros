@@ -12,14 +12,23 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#include <stdio.h>
-#include "nlcompile.h"
+#ifndef EROS_INPUT_H
+#define EROS_INPUT_H
 
-int nl_compile(nlinput* input)
+typedef struct eros_input
 {
-  puts("compile");
-  for (int i = 0; i < input->files_count; i++) {
-    printf("  file: %s\n", input->files[i]);
-  }
-  return 0;
-}
+  /** list of files to compile or load to interpreter **/
+  char** files;
+
+  /** number of files **/
+  int files_count;
+
+  /** compile or run repl **/
+  int compile_flag;
+} eros_input;
+
+eros_input* eros_input_new(int argc, char** argv);
+
+void eros_input_del(eros_input* input);
+
+#endif // EROS_INPUT_H

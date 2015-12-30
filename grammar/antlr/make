@@ -1,3 +1,0 @@
-antlr ../newlang.g4
-javac *.java
-grun newlang compilationUnit "$@"

@@ -14,28 +14,16 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include <stdlib.h>
 #include <string.h>
-#include "nlinput.h"
 
-nlinput* nlinput_new(void)
+#include "eros_input.h"
+
+eros_input* eros_input_new(int argc, char** argv)
 {
-  nlinput* input = malloc(sizeof(nlinput));
+  eros_input* input = malloc(sizeof(eros_input));
   input->files = NULL;
   input->files_count = 0;
   input->compile_flag = 0;
-  return input;
-}
 
-void nlinput_del(nlinput* input)
-{
-  for (int i = 0; i < input->files_count; i++) {
-    free(input->files[i]);
-  }
-  free(input->files);
-  free(input);
-}
-
-void nlinput_parse(nlinput* input, int argc, char** argv)
-{
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-c") == 0) {
       input->compile_flag = 1;
@@ -46,4 +34,15 @@ void nlinput_parse(nlinput* input, int argc, char** argv)
       strcpy(input->files[input->files_count - 1], argv[i]);
     }
   }
+
+  return input;
+}
+
+void eros_input_del(eros_input* input)
+{
+  for (int i = 0; i < input->files_count; i++) {
+    free(input->files[i]);
+  }
+  free(input->files);
+  free(input);
 }

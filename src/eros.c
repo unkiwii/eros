@@ -12,24 +12,22 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.  */
 
-#include "nlinput.h"
-#include "nlcompile.h"
-#include "nlrepl.h"
+#include "eros_input.h"
+#include "eros_compile.h"
+#include "eros_repl.h"
 
 int main(int argc, char** argv)
 {
-  nlinput* input = nlinput_new();
-
-  nlinput_parse(input, argc, argv);
+  eros_input* input = eros_input_new(argc, argv);
 
   int exit_code = 0;
   if (input->compile_flag) {
-    exit_code = nl_compile(input);
+    exit_code = eros_compile(input);
   } else {
-    exit_code = nl_repl(input);
+    exit_code = eros_repl(input);
   }
 
-  nlinput_del(input);
+  eros_input_del(input);
 
   return exit_code;
 }

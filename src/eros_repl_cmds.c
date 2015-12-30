@@ -15,10 +15,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "nlrepl_cmd.h"
-#include "nlprogram.h"
+#include "eros_defines.h"
+#include "eros_repl_cmds.h"
 
-void cmd_help(void)
+void eros_repl_cmd_help(void)
 {
   puts("\n\
 repl commands:\n\
@@ -29,12 +29,12 @@ repl commands:\n\
 ");
 }
 
-void cmd_quit(void)
+void eros_repl_cmd_quit(void)
 {
   exit(0);
 }
 
-void cmd_license(void)
+void eros_repl_cmd_license(void)
 {
   printf("\n\
        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n\

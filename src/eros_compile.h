@@ -12,11 +12,11 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#ifndef NL_COMPILE_H
-#define NL_COMPILE_H
+#ifndef EROS_COMPILE_H
+#define EROS_COMPILE_H
 
-#include "nlinput.h"
+#include "eros_input.h"
 
-int nl_compile(nlinput* input);
+int eros_compile(eros_input* input);
 
-#endif // NL_COMPILE_H
+#endif // EROS_COMPILE_H

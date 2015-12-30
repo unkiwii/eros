@@ -12,13 +12,15 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#ifndef NL_NLREPL_CMD_H
-#define NL_NLREPL_CMD_H
+#include <stdio.h>
 
-void cmd_help(void);
+#include "eros_compile.h"
 
-void cmd_quit(void);
-
-void cmd_license(void);
-
-#endif // NL_NLREPL_CMD_H
+int eros_compile(eros_input* input)
+{
+  puts("compile");
+  for (int i = 0; i < input->files_count; i++) {
+    printf("  file: %s\n", input->files[i]);
+  }
+  return 0;
+}

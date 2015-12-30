@@ -22,13 +22,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <editline/readline.h>
 #endif
 
-#include "nlprogram.h"
-#include "nlrepl.h"
-#include "nlrepl_cmd.h"
+#include "eros_defines.h"
+#include "eros_repl.h"
+#include "eros_repl_cmds.h"
 
 #define PROGRAM_REPL_HELP "Type '.help' for more information"
 
-int nl_repl(nlinput* input)
+int eros_repl(eros_input* input)
 {
   printf("\n%s repl %s (%s)\n%s\n\n", PROGRAM_NAME, PROGRAM_VERSION, COMPILE_DATE, PROGRAM_REPL_HELP);
 
@@ -36,9 +36,9 @@ int nl_repl(nlinput* input)
     char* line = readline("> ");
     add_history(line);
 
-    if      (strcmp(line, ".help") == 0)      { cmd_help();       }
-    else if (strcmp(line, ".quit") == 0)      { cmd_quit();       }
-    else if (strcmp(line, ".license") == 0)   { cmd_license();    }
+    if      (strcmp(line, ".help") == 0)      { eros_repl_cmd_help();       }
+    else if (strcmp(line, ".quit") == 0)      { eros_repl_cmd_quit();       }
+    else if (strcmp(line, ".license") == 0)   { eros_repl_cmd_license();    }
     else {
       // eval
       // print

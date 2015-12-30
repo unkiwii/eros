@@ -12,25 +12,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#ifndef NL_INPUT_H
-#define NL_INPUT_H
+#ifndef EROS_REPL_CMDS_H
+#define EROS_REPL_CMDS_H
 
-typedef struct nlinput
-{
-  /** list of files to compile or load to interpreter **/
-  char** files;
+void eros_repl_cmd_help(void);
 
-  /** number of files **/
-  int files_count;
+void eros_repl_cmd_quit(void);
 
-  /** compile or run repl **/
-  int compile_flag;
-} nlinput;
+void eros_repl_cmd_license(void);
 
-nlinput* nlinput_new(void);
-
-void nlinput_del(nlinput* input);
-
-void nlinput_parse(nlinput* input, int argc, char** argv);
-
-#endif // NL_INPUT_H
+#endif // EROS_REPL_CMDS_H
