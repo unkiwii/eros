@@ -14,11 +14,18 @@ int main(int argc, char** argv)
   }
 
   int c;
-  printf("unsigned char %s[] = {\n  ", argv[1]);
+  long int l = 0;
+  char* name = argv[1];
+
+  printf("#ifndef %s_h\n", name);
+  printf("#define %s_h\n\n", name);
+  printf("unsigned char %s[] = {\n  ", name);
   while ((c = fgetc(stdin)) != EOF) {
     printf("'\\x%X',", (unsigned)c);
+    l++;
   }
-  printf("'\\0'");
+  printf("'\\0'\n};\nunsigned long int %s_len = %ld;\n", name, l);
+  printf("\n#endif // %s_h\n", name);
 
   return 0;
 }
