@@ -1,0 +1,7 @@
+comment     : /# [^\\r\\n]*/ ;
+number      : /-?[0-9]+/ ;
+string      : /\"(\\\\.|[^\"])*\"/ ;
+
+expression  : <number> | <string> | <comment> ;
+
+eros        : /^/ <expression>* /$/;
