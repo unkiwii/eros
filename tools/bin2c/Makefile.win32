@@ -1,0 +1,31 @@
+NAME = bin2c
+EXECUTABLE = bin2c.exe
+
+OBJ_DIR = obj
+BIN_DIR = bin
+SRC_DIR = src
+
+CFLAGS = $(CFLAGS) /nologo /TC /Wall /wd4255 /wd4127 /wd4710 /D_CRT_SECURE_NO_WARNINGS
+
+all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+
+clean:
+	@echo Cleaning...
+	@rmdir /q /s $(OBJ_DIR) >NUL 2>&1
+	@rmdir /q /s $(BIN_DIR) >NUL 2>&1
+
+$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
+	@echo Compiling $**
+	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**
+
+$(EXECUTABLE): $(OBJ_DIR)\*.obj
+	@echo Linking $(EXECUTABLE)
+	@link /nologo $** /out:$(BIN_DIR)\$(EXECUTABLE)
+
+$(OBJ_DIR):
+	@echo Creating $@ folder
+	@mkdir $@
+
+$(BIN_DIR):
+	@echo Creating $@ folder
+	@mkdir $@
