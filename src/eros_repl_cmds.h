@@ -15,10 +15,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_REPL_CMDS_H
 #define EROS_REPL_CMDS_H
 
-void eros_repl_cmd_help(void);
+#define CMD(NAME) eros_repl_cmd_ ## NAME ## ()
 
-void eros_repl_cmd_quit(void);
-
-void eros_repl_cmd_license(void);
+void CMD(help);
+void CMD(exit);
+void CMD(license);
 
 #endif // EROS_REPL_CMDS_H

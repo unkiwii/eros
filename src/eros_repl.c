@@ -36,9 +36,9 @@ int eros_repl(eros_input* input)
     char* line = readline("> ");
     add_history(line);
 
-    if      (strcmp(line, ".help") == 0)      { eros_repl_cmd_help();       }
-    else if (strcmp(line, ".quit") == 0)      { eros_repl_cmd_quit();       }
-    else if (strcmp(line, ".license") == 0)   { eros_repl_cmd_license();    }
+    if      (strcmp(line, ".help") == 0)     { CMD(help);    }
+    else if (strcmp(line, ".exit") == 0)     { CMD(exit);    }
+    else if (strcmp(line, ".license") == 0)  { CMD(license); }
     else {
       // eval
       // print
