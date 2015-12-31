@@ -1,10 +1,4 @@
 /*
- * mpc - Micro Parser Combinator library for C
- *
- * https://github.com/orangeduck/mpc
- *
- * Daniel Holden - contact@daniel-holden.com
- *
  * Licensed Under BSD
  *
  * Copyright (c) 2013, Daniel Holden
@@ -34,6 +28,15 @@
  * of the authors and should not be interpreted as representing official policies, 
  * either expressed or implied, of the FreeBSD Project.
  */
+
+/*
+** mpc - Micro Parser Combinator library for C
+**
+** https://github.com/orangeduck/mpc
+**
+** Daniel Holden - contact@daniel-holden.com
+** Licensed under BSD3
+*/
 
 #ifndef mpc_h
 #define mpc_h
@@ -342,10 +345,13 @@ mpc_err_t *mpca_lang_pipe(int flags, FILE *f, ...);
 mpc_err_t *mpca_lang_contents(int flags, const char *filename, ...);
 
 /*
-** Debug & Testing
+** Misc
 */
 
+
 void mpc_print(mpc_parser_t *p);
+void mpc_optimise(mpc_parser_t *p);
+void mpc_stats(mpc_parser_t *p);
 
 int mpc_test_pass(mpc_parser_t *p, const char *s, const void *d,
   int(*tester)(const void*, const void*), 
