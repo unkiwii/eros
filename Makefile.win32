@@ -2,6 +2,7 @@ NAME = eros
 EXECUTABLE = eros.exe
 
 GRAMMAR_NAME = eros_grammar
+GRAMMAR_INPUT = grammar
 GRAMMAR = src\$(GRAMMAR_NAME).h
 
 OBJ_DIR = obj
@@ -30,7 +31,7 @@ $(GRAMMAR):
 	@$(MAKE) /nologo /f Makefile.win32
 	@cd ..\..
 	@echo Building Grammar...
-	@tools\bin2c\bin\bin2c.exe $(GRAMMAR_NAME) < grammar > $(GRAMMAR)
+	@tools\bin2c\bin\bin2c.exe $(GRAMMAR_NAME) < $(GRAMMAR_FILE) > $(GRAMMAR)
 
 $(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
 	@echo Compiling $**
