@@ -2,6 +2,11 @@ comment     : /# [^\\r\\n]*/ ;
 number      : /-?[0-9]+/ ;
 string      : /\"(\\\\.|[^\"])*\"/ ;
 
+identifier  : /[a-z][a-zA-Z0-9]*/ ;
+type        : /[A-Z][a-zA-Z0-9]*/ ;
+slot        : <type> <identifier> | <identifier> ;
+slot_decl   : <slot> = <expression> ;
+
 expression  : <number> | <string> | <comment> ;
 
 eros        : /^/ <expression>* /$/;
