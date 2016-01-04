@@ -3,7 +3,7 @@
 
 void usage(char* program)
 {
-  printf("Usage: %s name\n", program);
+  fprintf(stderr, "Usage: %s name\n", program);
   exit(-1);
 }
 
