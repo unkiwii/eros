@@ -1,3 +1,4 @@
+#include "eros_defines.h"
 #include "eros_parser.h"
 
 eros_parser* eros_parser_new(void)
@@ -29,24 +30,30 @@ eros_parser* eros_parser_new(void)
 
 void eros_parser_delete(eros_parser* parser)
 {
+  UNUSED(parser);
 }
 
 eros_value* eros_parser_read_number(mpc_ast_t* ast)
 {
+  UNUSED(ast);
   return NULL;
 }
 
 eros_value* eros_parser_read_string(mpc_ast_t* ast)
 {
+  UNUSED(ast);
   return NULL;
 }
 
 eros_value* eros_parser_read(mpc_ast_t* ast)
 {
+  UNUSED(ast);
   return NULL;
 }
 
 eros_value* eros_parser_parse(eros_context* context, char* data)
 {
+  UNUSED(context);
+  UNUSED(data);
   return NULL;
 }

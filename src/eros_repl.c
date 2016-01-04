@@ -30,6 +30,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 int eros_repl(eros_input* input)
 {
+  UNUSED(input);
+
   printf("\n%s repl %s (%s)\n%s\n\n", PROGRAM_NAME, PROGRAM_VERSION, COMPILE_DATE, PROGRAM_REPL_HELP);
 
   while (1) {
