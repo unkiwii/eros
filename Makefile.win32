@@ -1,6 +1,8 @@
 NAME = eros
 EXECUTABLE = eros.exe
 
+BIN2C = tools\bin2c\bin\bin2c.exe
+
 GRAMMAR_NAME = eros_grammar
 GRAMMAR_INPUT = grammar
 GRAMMAR = src\$(GRAMMAR_NAME).h
@@ -9,42 +11,52 @@ OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src
 
-YEAR = 2015
-MONTH = Dec
-DAY = 30
+YEAR = 2016
+MONTH = Jan
+DAY = 31
 
 DEFINES = /DCOMPILE_YEAR=\"$(YEAR)\" /DCOMPILE_MONTH=\"$(MONTH)\" /DCOMPILE_DAY=\"$(DAY)\" /DPROGRAM_NAME=\"$(NAME)\"
 
-CFLAGS = $(CFLAGS) /nologo /TC /Wall /wd4702 /wd4820 /wd4242 /wd4244 /wd4267 /wd4255 /wd4127 /wd4710 /D_CRT_SECURE_NO_WARNINGS $(DEFINES)
+CFLAGS = $(CFLAGS) /nologo /TC /WX /Wall /wd4702 /wd4820 /wd4242 /wd4244 /wd4267 /wd4255 /wd4127 /wd4710 /D_CRT_SECURE_NO_WARNINGS $(DEFINES)
 
 all: $(GRAMMAR) $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 clean:
-	@echo Cleaning...
-	@del $(GRAMMAR) >NUL 2>&1
-	@rmdir /q /s $(OBJ_DIR) >NUL 2>&1
-	@rmdir /q /s $(BIN_DIR) >NUL 2>&1
+	@echo|set /p d=Cleaning .
+	@-del $(GRAMMAR) >NUL 2>&1
+	@-rmdir /q /s $(OBJ_DIR) >NUL 2>&1
+	@-rmdir /q /s $(BIN_DIR) >NUL 2>&1
+	@cd tools\bin2c
+	@$(MAKE) /nologo /f Makefile.win32 clean >NUL
+	@cd ..\..
+	@echo...............OK
 
-$(GRAMMAR):
-	@echo Building bin2c
+$(BIN2C):
+	@echo Building bin2c:
 	@cd tools\bin2c
 	@$(MAKE) /nologo /f Makefile.win32
 	@cd ..\..
-	@echo Building Grammar...
-	@tools\bin2c\bin\bin2c.exe $(GRAMMAR_NAME) < $(GRAMMAR_FILE) > $(GRAMMAR)
 
-$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
-	@echo Compiling $**
-	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**
+$(GRAMMAR): $(BIN2C)
+	@echo|set /p d=Building Grammar .
+	@$(BIN2C) $(GRAMMAR) < $(GRAMMAR_INPUT) 1>$(GRAMMAR) 2>NUL
+	@echo.......OK
 
 $(EXECUTABLE): $(OBJ_DIR)\*.obj
-	@echo Linking $(EXECUTABLE)
+	@echo|set /p d=Linking $(EXECUTABLE) .
 	@link /nologo $** /out:$(BIN_DIR)\$(EXECUTABLE)
+	@echo.......OK
 
 $(OBJ_DIR):
-	@echo Creating $@ folder
+	@echo|set /p d=Creating $@ folder .
 	@mkdir $@
+	@echo....OK
 
 $(BIN_DIR):
-	@echo Creating $@ folder
+	@echo|set /p d=Creating $@ folder .
 	@mkdir $@
+	@echo....OK
+
+$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
+	@echo Compiling:
+	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**

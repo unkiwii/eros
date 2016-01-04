@@ -10,22 +10,26 @@ CFLAGS = $(CFLAGS) /nologo /TC /Wall /wd4255 /wd4127 /wd4710 /D_CRT_SECURE_NO_WA
 all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 clean:
-	@echo Cleaning...
-	@rmdir /q /s $(OBJ_DIR) >NUL 2>&1
-	@rmdir /q /s $(BIN_DIR) >NUL 2>&1
-
-$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
-	@echo Compiling $**
-	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**
+	@echo|set /p d=Cleaning .
+	@-rmdir /q /s $(OBJ_DIR) >NUL 2>&1
+	@-rmdir /q /s $(BIN_DIR) >NUL 2>&1
+	@echo...............OK
 
 $(EXECUTABLE): $(OBJ_DIR)\*.obj
-	@echo Linking $(EXECUTABLE)
+	@echo|set /p d=Linking $(EXECUTABLE) .
 	@link /nologo $** /out:$(BIN_DIR)\$(EXECUTABLE)
+	@echo......OK
 
 $(OBJ_DIR):
-	@echo Creating $@ folder
+	@echo|set /p d=Creating $@ folder .
 	@mkdir $@
+	@echo....OK
 
 $(BIN_DIR):
-	@echo Creating $@ folder
+	@echo|set /p d=Creating $@ folder .
 	@mkdir $@
+	@echo....OK
+
+$(OBJ_DIR)\*.obj: $(SRC_DIR)\*.c
+	@echo Compiling:
+	@$(CC) /Fo.\$(OBJ_DIR)\ $(CFLAGS) /c $**

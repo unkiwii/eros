@@ -1,6 +1,8 @@
 NAME = eros
 EXECUTABLE = eros
 
+BIN2C = tools/bin2c/bin/bin2c
+
 GRAMMAR_NAME = eros_grammar
 GRAMMAR_INPUT = grammar
 GRAMMAR = src/$(GRAMMAR_NAME).h
@@ -35,14 +37,14 @@ clean:
 	@rm -rf $(BIN_DIR) >/dev/null 2>&1 || true
 	@echo Done!
 
-bin2c:
+$(BIN2C):
 	@echo Building bin2c...
 	@cd tools/bin2c && make
 	@echo Done!
 
-$(GRAMMAR): bin2c
+$(GRAMMAR): $(BIN2C)
 	@echo Building Grammar...
-	@cat $(GRAMMAR_INPUT) | tools/bin2c/bin/bin2c $(GRAMMAR_NAME) > $(GRAMMAR)
+	@cat $(GRAMMAR_INPUT) | $(BIN2C) $(GRAMMAR_NAME) > $(GRAMMAR)
 	@echo Done!
 
 $(EXECUTABLE): $(OBJECTS)
