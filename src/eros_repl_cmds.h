@@ -15,7 +15,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_REPL_CMDS_H
 #define EROS_REPL_CMDS_H
 
-#define CMD(NAME) eros_repl_cmd_ ## NAME ## ()
+// the '_()' at the end is neccesary to be compatible with GCC and Clang
+#define CMD(NAME) eros_repl_cmd_ ## NAME ## _()
 
 void CMD(help);
 void CMD(exit);
