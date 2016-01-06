@@ -6,13 +6,18 @@
 
 struct eros_parser
 {
-  mpc_parser_t* Comment;    /* #\s[^\r\n]*                        */
-  mpc_parser_t* Eros;       /* Expression*                        */
-  mpc_parser_t* Expression; /* Variable | Function | Application  */
-  mpc_parser_t* String;     /* "*"                                */
-  mpc_parser_t* Number;     /* -?[0-9]+                           */
-  mpc_parser_t* Symbol;     /* [a-zA-Z0-9_+-*\/=<>!:?]+           */
-  mpc_parser_t* Assignment; /* Symbol = Expression                */
+  mpc_parser_t* Comment;
+  mpc_parser_t* Number;
+  mpc_parser_t* String;
+
+  mpc_parser_t* Identifier;
+  mpc_parser_t* Type;
+  mpc_parser_t* Slot;
+  mpc_parser_t* Assignment;
+
+  mpc_parser_t* Expression;
+
+  mpc_parser_t* Eros;
 };
 
 eros_parser* eros_parser_new(void);

@@ -5,7 +5,7 @@ string      : /\"(\\\\.|[^\"])*\"/ ;
 identifier  : /[a-z][a-zA-Z0-9]*/ ;
 type        : /[A-Z][a-zA-Z0-9]*/ ;
 slot        : <type> <identifier> | <identifier> ;
-slot_decl   : <slot> = <expression> ;
+assignment  : <slot> = <expression> ;
 
 expression  : <number> | <string> | <comment> ;
 
