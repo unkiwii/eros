@@ -31,34 +31,38 @@ prep_debug:
 	$(eval CFLAGS += -g)
 
 clean:
-	@echo Cleaning...
+	@echo -n Cleaning
 	@rm $(GRAMMAR) >/dev/null 2>&1 || true
 	@rm -rf $(OBJ_DIR) >/dev/null 2>&1 || true
 	@rm -rf $(BIN_DIR) >/dev/null 2>&1 || true
-	@echo Done!
+	@cd tools/bin2c && make clean >/dev/null
+	@scripts/echo_success
 
 $(BIN2C):
-	@echo Building bin2c...
+	@echo Building bin2c:
 	@cd tools/bin2c && make
-	@echo Done!
 
 $(GRAMMAR): $(BIN2C)
-	@echo Building Grammar...
+	@echo -n Building Grammar
 	@cat $(GRAMMAR_INPUT) | $(BIN2C) $(GRAMMAR_NAME) > $(GRAMMAR)
-	@echo Done!
+	@scripts/echo_success
 
 $(EXECUTABLE): $(OBJECTS)
-	@echo Linking $(EXECUTABLE)
+	@echo -n Linking $(EXECUTABLE)
 	@$(CC) -o $(BIN_DIR)/$@ $^ $(CFLAGS) -ledit
+	@scripts/echo_success
 
 $(OBJ_DIR):
-	@echo Creating $@ folder
+	@echo -n Creating $@ folder
 	@mkdir $@
+	@scripts/echo_success
 
 $(BIN_DIR):
-	@echo Creating $@ folder
+	@echo -n Creating $@ folder
 	@mkdir $@
+	@scripts/echo_success
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@echo Compiling $@
+	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS)
+	@scripts/echo_success up

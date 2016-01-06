@@ -1,0 +1,7 @@
+#!/bin/bash
+
+MOVE_TO_COL="echo -en \\033[50G"
+MOVE_LINE_UP="echo -en \\033[1A"
+SET_SUCCESS_COLOR="echo -en \\033[1;32m"
+SET_FAILURE_COLOR="echo -en \\033[1;31m"
+SET_NORMAL_COLOR="echo -en \\033[0;39m"

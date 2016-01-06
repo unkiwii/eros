@@ -14,23 +14,27 @@ OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
 all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 clean:
-	@echo Cleaning...
+	@echo -n Cleaning
 	@rm -rf $(OBJ_DIR) >/dev/null 2>&1 || true
 	@rm -rf $(BIN_DIR) >/dev/null 2>&1 || true
-	@echo Done!
+	@cd ../.. && scripts/echo_success
 
 $(EXECUTABLE): $(OBJECTS)
-	@echo Linking $(EXECUTABLE)
+	@echo -n Linking $(EXECUTABLE)
 	@$(CC) -o $(BIN_DIR)/$@ $^ $(CFLAGS) -ledit
+	@cd ../.. && scripts/echo_success
 
 $(OBJ_DIR):
-	@echo Creating $@ folder
+	@echo -n Creating $@ folder
 	@mkdir $@
+	@cd ../.. && scripts/echo_success
 
 $(BIN_DIR):
-	@echo Creating $@ folder
+	@echo -n Creating $@ folder
 	@mkdir $@
+	@cd ../.. && scripts/echo_success
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@echo Compiling $@
+	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS)
+	@cd ../.. && scripts/echo_success up
