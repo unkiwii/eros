@@ -17,9 +17,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_input.h"
 
-eros_input* eros_input_new(int argc, char** argv)
+eros_input_t* eros_input_new(int argc, char** argv)
 {
-  eros_input* input = malloc(sizeof(eros_input));
+  eros_input_t* input = malloc(sizeof(eros_input_t));
   input->files = NULL;
   input->files_count = 0;
   input->compile_flag = 0;
@@ -38,7 +38,7 @@ eros_input* eros_input_new(int argc, char** argv)
   return input;
 }
 
-void eros_input_del(eros_input* input)
+void eros_input_delete(eros_input_t* input)
 {
   for (int i = 0; i < input->files_count; i++) {
     free(input->files[i]);

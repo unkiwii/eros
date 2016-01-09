@@ -15,7 +15,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_INPUT_H
 #define EROS_INPUT_H
 
-typedef struct eros_input
+typedef struct eros_input_t
 {
   /** list of files to compile or load to interpreter **/
   char** files;
@@ -25,10 +25,10 @@ typedef struct eros_input
 
   /** compile or run repl **/
   int compile_flag;
-} eros_input;
+} eros_input_t;
 
-eros_input* eros_input_new(int argc, char** argv);
+eros_input_t* eros_input_new(int argc, char** argv);
 
-void eros_input_del(eros_input* input);
+void eros_input_delete(eros_input_t* input);
 
 #endif // EROS_INPUT_H

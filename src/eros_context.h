@@ -19,13 +19,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 typedef long long int symbols_count_t;
 
-struct eros_context
+struct eros_context_t
 {
   /** the parser is here to be used by any builtin needing it **/
-  eros_parser* parser;
+  eros_parser_t* parser;
 
   /** parent context, if null this would be the global context **/
-  eros_context* parent;
+  eros_context_t* parent;
 
   /** quantity of symbols in this context **/
   symbols_count_t symbols_count;
@@ -34,13 +34,13 @@ struct eros_context
   char** symbols;
 
   /** list of values associated to symbols by index **/
-  eros_value** values;
+  eros_value_t** values;
 };
 
-eros_context* eros_context_new(void);
+eros_context_t* eros_context_new(void);
 
-void eros_context_delete(eros_context* context);
+void eros_context_delete(eros_context_t*);
 
-eros_parser* eros_context_getparser(eros_context*);
+eros_parser_t* eros_context_getparser(eros_context_t*);
 
 #endif // EROS_CONTEXT_H

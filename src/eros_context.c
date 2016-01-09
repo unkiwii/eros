@@ -18,9 +18,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_parser.h"
 #include "eros_value.h"
 
-eros_context* eros_context_new(void)
+eros_context_t* eros_context_new(void)
 {
-  eros_context* context = malloc(sizeof(eros_context));
+  eros_context_t* context = malloc(sizeof(eros_context_t));
 
   context->parser = eros_parser_new();
   context->parent = NULL;
@@ -31,7 +31,7 @@ eros_context* eros_context_new(void)
   return context;
 }
 
-void eros_context_delete(eros_context* context)
+void eros_context_delete(eros_context_t* context)
 {
   if (context->parser) {
     eros_parser_delete(context->parser);
@@ -49,7 +49,7 @@ void eros_context_delete(eros_context* context)
   free(context);
 }
 
-eros_parser* eros_context_getparser(eros_context* context)
+eros_parser_t* eros_context_getparser(eros_context_t* context)
 {
   if (context->parser) {
     return context->parser;

@@ -21,16 +21,22 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 char* eros_value_name(int type)
 {
   switch (type) {
-    case EROS_VALUE_MODULE:  return "Module";
+    case EROS_VALUE_MODULE: return "Module";
+    case EROS_VALUE_ERROR:  return "Error";
   }
 
   return "Unknown";
 }
 
-void eros_value_delete(eros_value* value)
+void eros_value_delete(eros_value_t* value)
 {
   switch (value->type) {
+
     case EROS_VALUE_MODULE:
+      free(value->str);
+      break;
+
+    case EROS_VALUE_ERROR:
       free(value->str);
       break;
   }
@@ -38,11 +44,20 @@ void eros_value_delete(eros_value* value)
   free(value);
 }
 
-eros_value* eros_value_module(char* name)
+eros_value_t* eros_value_module(char* name)
 {
-  eros_value* module = malloc(sizeof(eros_value));
+  eros_value_t* module = malloc(sizeof(eros_value_t));
   module->type = EROS_VALUE_MODULE;
   module->str = malloc(strlen(name) + 1);
   strcpy(module->str, name);
   return module;
+}
+
+eros_value_t* eros_value_error(char* data)
+{
+  eros_value_t* error = malloc(sizeof(eros_value_t));
+  error->type = EROS_VALUE_ERROR;
+  error->str = malloc(strlen(data) + 1);
+  strcpy(error->str, data);
+  return error;
 }

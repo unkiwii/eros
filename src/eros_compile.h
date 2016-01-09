@@ -17,6 +17,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_input.h"
 
-int eros_compile(eros_input* input);
+int eros_compile(eros_input_t* input);
 
 #endif // EROS_COMPILE_H

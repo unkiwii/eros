@@ -18,7 +18,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 int main(int argc, char** argv)
 {
-  eros_input* input = eros_input_new(argc, argv);
+  eros_input_t* input = eros_input_new(argc, argv);
 
   int exit_code = 0;
   if (input->compile_flag) {
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
     exit_code = eros_repl(input);
   }
 
-  eros_input_del(input);
+  eros_input_delete(input);
 
   return exit_code;
 }

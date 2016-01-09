@@ -16,7 +16,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_compile.h"
 
-int eros_compile(eros_input* input)
+int eros_compile(eros_input_t* input)
 {
   puts("compile");
   for (int i = 0; i < input->files_count; i++) {

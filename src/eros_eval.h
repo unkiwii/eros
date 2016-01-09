@@ -12,16 +12,12 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#ifndef EROS_FWD_H
-#define EROS_FWD_H
+#ifndef EROS_EVAL_H
+#define EROS_EVAL_H
 
-struct eros_parser_t;
-typedef struct eros_parser_t eros_parser_t;
+#include "eros_context.h"
+#include "eros_value.h"
 
-struct eros_context_t;
-typedef struct eros_context_t eros_context_t;
+eros_value_t* eros_eval(eros_context_t* context, eros_value_t* value);
 
-struct eros_value_t;
-typedef struct eros_value_t eros_value_t;
-
-#endif // EROS_FWD_H
+#endif // EROS_EVAL_H

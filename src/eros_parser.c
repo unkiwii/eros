@@ -19,67 +19,68 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_parser.h"
 #include "eros_value.h"
 
-eros_parser* eros_parser_new(void)
+eros_parser_t* eros_parser_new(void)
 {
-  eros_parser* parser = malloc(sizeof(eros_parser));
+  eros_parser_t* parser = malloc(sizeof(eros_parser_t));
 
-  parser->value = NULL;
+  parser->step = NULL;
+  parser->result = NULL;
   parser->column = 1;
   parser->line = 1;
 
   return parser;
 }
 
-void eros_parser_delete(eros_parser* parser)
+void eros_parser_delete(eros_parser_t* parser)
 {
   UNUSED(parser);
 }
 
-eros_value* eros_parser_parse(eros_context* context, char* input)
+eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
 {
-  eros_parser* parser = eros_context_getparser(context);
+  eros_parser_t* parser = eros_context_getparser(context);
 
   parser->step = eros_parser_step_module;
-  parser->value = eros_value_module("<main>");  //TODO: get name from some place
+  parser->result = NULL;
 
   long long int idx = 0;
   char rune = 0;
 
   do {
     rune = input[idx++];
+
     parser->step(parser, rune);
     parser->column++;
+
+    if (parser->result->type == EROS_VALUE_ERROR) {
+      return parser->result;
+    }
+
   } while (rune != 0);
 
-  return parser->value;
+  return parser->result;
 }
 
-void eros_parser_step_module(eros_parser* parser, char rune)
+void eros_parser_step_module(eros_parser_t* parser, char rune)
+{
+}
+
+void eros_parser_step_assignment(eros_parser_t* parser, char rune)
 {
   UNUSED(parser);
 }
 
-void eros_parser_step_expression(eros_parser* parser, char rune)
+void eros_parser_step_slot(eros_parser_t* parser, char rune)
 {
   UNUSED(parser);
 }
 
-void eros_parser_step_assignment(eros_parser* parser, char rune)
+void eros_parser_step_type(eros_parser_t* parser, char rune)
 {
   UNUSED(parser);
 }
 
-void eros_parser_step_slot(eros_parser* parser, char rune)
-{
-  UNUSED(parser);
-}
-
-void eros_parser_step_type(eros_parser* parser, char rune)
-{
-  UNUSED(parser);
-}
-
-void eros_parser_step_identifier(eros_parser* parser, char rune)
+void eros_parser_step_identifier(eros_parser_t* parser, char rune)
 {
   UNUSED(parser);
 }

@@ -17,14 +17,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_fwd.h"
 
-typedef void (*eros_parser_step)(eros_parser*, char);
+typedef void (*eros_parser_step_t)(eros_parser_t*, char);
 
-struct eros_parser
+struct eros_parser_t
 {
-  eros_parser_step step;
+  eros_parser_step_t step;
 
-  /** result of the parse **/
-  eros_value* value;
+  eros_value_t* result;
 
   /** current column being parsed **/
   int column;
@@ -33,22 +32,16 @@ struct eros_parser
   int line;
 };
 
-eros_parser* eros_parser_new(void);
+eros_parser_t* eros_parser_new(void);
 
-void eros_parser_delete(eros_parser* parser);
+void eros_parser_delete(eros_parser_t* parser);
 
-eros_value* eros_parser_parse(eros_context* context, char* input);
+eros_value_t* eros_parser_parse(eros_context_t* context, char* input);
 
-void eros_parser_step_module(eros_parser*, char);
-
-void eros_parser_step_expression(eros_parser*, char);
-
-void eros_parser_step_assignment(eros_parser*, char);
-
-void eros_parser_step_slot(eros_parser*, char);
-
-void eros_parser_step_type(eros_parser*, char);
-
-void eros_parser_step_identifier(eros_parser*, char);
+void eros_parser_step_module(eros_parser_t*, char);
+void eros_parser_step_assignment(eros_parser_t*, char);
+void eros_parser_step_slot(eros_parser_t*, char);
+void eros_parser_step_type(eros_parser_t*, char);
+void eros_parser_step_identifier(eros_parser_t*, char);
 
 #endif // EROS_PARSER_H

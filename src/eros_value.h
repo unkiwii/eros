@@ -19,12 +19,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 /** types of values in the language **/
 enum {
-  EROS_VALUE_MODULE
+  EROS_VALUE_MODULE,
+  EROS_VALUE_ERROR
 };
 
 char* eros_value_name(int type);
 
-struct eros_value
+struct eros_value_t
 {
   /* type of the value (number, string, type, etc) */
   int type;
@@ -33,8 +34,10 @@ struct eros_value
   char* str;
 };
 
-void eros_value_delete(eros_value* value);
+void eros_value_delete(eros_value_t* value);
 
-eros_value* eros_value_module(char* name);
+eros_value_t* eros_value_module(char* name);
+
+eros_value_t* eros_value_error(char* data);
 
 #endif // EROS_VALUE_H
