@@ -9,4 +9,4 @@ assignment  : <slot> = <expression> ;
 
 expression  : <number> | <string> | <comment> ;
 
-eros        : /^/ <expression>* /$/;
+module      : /^/ <expression>* /$/;
