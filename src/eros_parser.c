@@ -1,42 +1,31 @@
+/*     DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                   Version 2, December 2004
+
+Copyright (C) 2016 Lucas Gabriel Sanchez <unkiwii@gmail.com>
+
+Everyone is permitted to copy and distribute verbatim or modified
+copies of this license document, and changing it is allowed as long
+as the name is changed.
+
+           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+0. You just DO WHAT THE FUCK YOU WANT TO.   */
+
+#include <stdlib.h>
+
+#include "eros_context.h"
 #include "eros_defines.h"
 #include "eros_parser.h"
-#include "eros_grammar.h"
+#include "eros_value.h"
 
 eros_parser* eros_parser_new(void)
 {
   eros_parser* parser = malloc(sizeof(eros_parser));
 
-  parser->Comment = mpc_new("comment");
-  parser->Number = mpc_new("number");
-  parser->String = mpc_new("string");
-
-  parser->Identifier = mpc_new("identifier");
-  parser->Type = mpc_new("type");
-  parser->Slot = mpc_new("slot");
-  parser->Assignment = mpc_new("assignment");
-
-  parser->Expression = mpc_new("expression");
-
-  parser->Eros = mpc_new("eros");
-
-  mpc_err_t* err = mpca_lang(MPCA_LANG_WHITESPACE_SENSITIVE,
-      eros_grammar,
-      parser->Comment,
-      parser->Number,
-      parser->String,
-      parser->Identifier,
-      parser->Type,
-      parser->Slot,
-      parser->Assignment,
-      parser->Expression,
-      parser->Eros,
-      NULL);
-
-  if (err) {
-    mpc_err_print(err);
-    mpc_err_delete(err);
-    return NULL;
-  }
+  parser->value = NULL;
+  parser->column = 1;
+  parser->line = 1;
 
   return parser;
 }
@@ -46,27 +35,51 @@ void eros_parser_delete(eros_parser* parser)
   UNUSED(parser);
 }
 
-eros_value* eros_parser_read_number(mpc_ast_t* ast)
+eros_value* eros_parser_parse(eros_context* context, char* input)
 {
-  UNUSED(ast);
-  return NULL;
+  eros_parser* parser = eros_context_getparser(context);
+
+  parser->step = eros_parser_step_module;
+  parser->value = eros_value_module("<main>");  //TODO: get name from some place
+
+  long long int idx = 0;
+  char rune = 0;
+
+  do {
+    rune = input[idx++];
+    parser->step(parser, rune);
+    parser->column++;
+  } while (rune != 0);
+
+  return parser->value;
 }
 
-eros_value* eros_parser_read_string(mpc_ast_t* ast)
+void eros_parser_step_module(eros_parser* parser, char rune)
 {
-  UNUSED(ast);
-  return NULL;
+  UNUSED(parser);
 }
 
-eros_value* eros_parser_read(mpc_ast_t* ast)
+void eros_parser_step_expression(eros_parser* parser, char rune)
 {
-  UNUSED(ast);
-  return NULL;
+  UNUSED(parser);
 }
 
-eros_value* eros_parser_parse(eros_context* context, char* data)
+void eros_parser_step_assignment(eros_parser* parser, char rune)
 {
-  UNUSED(context);
-  UNUSED(data);
-  return NULL;
+  UNUSED(parser);
+}
+
+void eros_parser_step_slot(eros_parser* parser, char rune)
+{
+  UNUSED(parser);
+}
+
+void eros_parser_step_type(eros_parser* parser, char rune)
+{
+  UNUSED(parser);
+}
+
+void eros_parser_step_identifier(eros_parser* parser, char rune)
+{
+  UNUSED(parser);
 }
