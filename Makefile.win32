@@ -1,12 +1,6 @@
 NAME = eros
 EXECUTABLE = eros.exe
 
-BIN2C = tools\bin2c\bin\bin2c.exe
-
-GRAMMAR_NAME = eros_grammar
-GRAMMAR_INPUT = grammar
-GRAMMAR = src\$(GRAMMAR_NAME).h
-
 OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src
@@ -19,28 +13,13 @@ DEFINES = /DCOMPILE_YEAR=\"$(YEAR)\" /DCOMPILE_MONTH=\"$(MONTH)\" /DCOMPILE_DAY=
 
 CFLAGS = $(CFLAGS) /nologo /TC /WX /Wall /wd4702 /wd4820 /wd4242 /wd4244 /wd4267 /wd4255 /wd4127 /wd4710 /D_CRT_SECURE_NO_WARNINGS $(DEFINES)
 
-all: $(GRAMMAR) $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 clean:
 	@echo|set /p d=Cleaning .
-	@-del $(GRAMMAR) >NUL 2>&1
 	@-rmdir /q /s $(OBJ_DIR) >NUL 2>&1
 	@-rmdir /q /s $(BIN_DIR) >NUL 2>&1
-	@cd tools\bin2c
-	@$(MAKE) /nologo /f Makefile.win32 clean >NUL
-	@cd ..\..
 	@echo...............OK
-
-$(BIN2C):
-	@echo Building bin2c:
-	@cd tools\bin2c
-	@$(MAKE) /nologo /f Makefile.win32
-	@cd ..\..
-
-$(GRAMMAR): $(BIN2C)
-	@echo|set /p d=Building Grammar .
-	@$(BIN2C) $(GRAMMAR) < $(GRAMMAR_INPUT) 1>$(GRAMMAR) 2>NUL
-	@echo.......OK
 
 $(EXECUTABLE): $(OBJ_DIR)\*.obj
 	@echo|set /p d=Linking $(EXECUTABLE) .
