@@ -33,7 +33,7 @@ eros_parser_t* eros_parser_new(void)
 
 void eros_parser_delete(eros_parser_t* parser)
 {
-  UNUSED(parser);
+  UNUSEDP(parser);
 }
 
 eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
@@ -63,24 +63,25 @@ eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
 
 void eros_parser_step_module(eros_parser_t* parser, char rune)
 {
+  UNUSEDP(parser); UNUSED(rune);
 }
 
 void eros_parser_step_assignment(eros_parser_t* parser, char rune)
 {
-  UNUSED(parser);
+  UNUSEDP(parser); UNUSED(rune);
 }
 
 void eros_parser_step_slot(eros_parser_t* parser, char rune)
 {
-  UNUSED(parser);
+  UNUSEDP(parser); UNUSED(rune);
 }
 
 void eros_parser_step_type(eros_parser_t* parser, char rune)
 {
-  UNUSED(parser);
+  UNUSEDP(parser); UNUSED(rune);
 }
 
 void eros_parser_step_identifier(eros_parser_t* parser, char rune)
 {
-  UNUSED(parser);
+  UNUSEDP(parser); UNUSED(rune);
 }
