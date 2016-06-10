@@ -21,7 +21,9 @@ const char* TAG = "eros_main";
 
 int main(int argc, char** argv)
 {
-  eros_log_init(EROS_LOG_LEVEL_DEBUG);
+  eros_log_init(EROS_LOG_LEVEL_DEBUG, "eros.log");
+  eros_log_debug("", "");
+  eros_log_debug(TAG, "===== start =====");
 
   eros_input_t* input = eros_input_new(argc, argv);
 
@@ -37,6 +39,7 @@ int main(int argc, char** argv)
   eros_log_debug(TAG, "exit with code %d", exit_code);
 
   eros_input_delete(input);
+  eros_log_deinit();
 
   return exit_code;
 }

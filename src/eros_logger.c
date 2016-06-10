@@ -14,6 +14,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_logger.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifdef DEBUG
 int eros_log_level = EROS_LOG_LEVEL_DEBUG;
@@ -23,6 +24,8 @@ int eros_log_level = EROS_LOG_LEVEL_WARN;
 
 char eros_log_message[512];
 int eros_log_message_size = 0;
+
+FILE* eros_log_file = NULL;
 
 void eros_log_print(int level, const char* tag, const char* fmt, va_list args)
 {
@@ -34,16 +37,30 @@ void eros_log_print(int level, const char* tag, const char* fmt, va_list args)
     eros_log_message_size = sizeof(eros_log_message) * sizeof(char);
   }
 
-  int start = sprintf(eros_log_message, "[%s] ", tag);
+  int start = 0;
+  if (strlen(tag)) {
+    start = sprintf(eros_log_message, "[%s] ", tag);
+  }
   vsnprintf(eros_log_message + start, eros_log_message_size - start, fmt, args);
 
-  puts(eros_log_message);
+  if (eros_log_file) {
+    fputs(eros_log_message, eros_log_file);
+    fputs("\n", eros_log_file);
+  } else {
+    puts(eros_log_message);
+  }
 }
 
-void eros_log_init(int level)
+void eros_log_init(int level, const char* filename)
 {
   eros_log_level = level;
   //TODO: use file as output
+  eros_log_file = fopen(filename, "a+");
+}
+
+void eros_log_deinit()
+{
+  fclose(eros_log_file);
 }
 
 void eros_log_debug(const char* tag, const char* fmt, ...)
