@@ -35,6 +35,12 @@ struct eros_context_t
 
   /** list of values associated to symbols by index **/
   eros_value_t** values;
+
+  /** is this context alive? (see error) **/
+  int is_alive;
+
+  /** why is not alive anymore **/
+  char* error;
 };
 
 eros_context_t* eros_context_new(void);
@@ -42,5 +48,7 @@ eros_context_t* eros_context_new(void);
 void eros_context_delete(eros_context_t*);
 
 eros_parser_t* eros_context_getparser(eros_context_t*);
+
+void eros_context_seterror(eros_context_t*, char* error);
 
 #endif // EROS_CONTEXT_H

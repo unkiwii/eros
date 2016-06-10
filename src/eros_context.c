@@ -13,6 +13,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "eros_context.h"
 #include "eros_parser.h"
@@ -27,6 +28,8 @@ eros_context_t* eros_context_new(void)
   context->symbols_count = 0;
   context->symbols = NULL;
   context->values = NULL;
+  context->is_alive = 1;
+  context->error = NULL;
 
   return context;
 }
@@ -44,8 +47,21 @@ void eros_context_delete(eros_context_t* context)
     eros_value_delete(context->values[i]);
   }
 
-  free(context->symbols);
-  free(context->values);
+  if (context->error) {
+    free(context->error);
+    context->error = NULL;
+  }
+
+  if (context->symbols) {
+    free(context->symbols);
+    context->symbols = NULL;
+  }
+
+  if (context->values) {
+    free(context->values);
+    context->values = NULL;
+  }
+
   free(context);
 }
 
@@ -60,4 +76,16 @@ eros_parser_t* eros_context_getparser(eros_context_t* context)
   }
 
   return NULL;
+}
+
+void eros_context_seterror(eros_context_t* context, char* error)
+{
+  if (context->error) {
+    free(context->error);
+  }
+
+  if (error) {
+    context->error = malloc(strlen(error) + 1);
+    strcpy(context->error, error);
+  }
 }

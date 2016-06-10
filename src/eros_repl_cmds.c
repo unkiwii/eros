@@ -18,7 +18,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_defines.h"
 #include "eros_repl_cmds.h"
 
-void CMD(help)
+void CMD(help)()
 {
   puts("\n\
 repl commands:\n\
@@ -29,12 +29,13 @@ repl commands:\n\
 ");
 }
 
-void CMD(exit)
+void CMD(exit)(eros_context_t* context)
 {
-  exit(0);
+  context->is_alive = 0;
+  eros_context_seterror(context, NULL);
 }
 
-void CMD(license)
+void CMD(license)()
 {
   printf("\n\
        DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n\

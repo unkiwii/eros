@@ -44,13 +44,13 @@ int eros_repl(eros_input_t* input)
 
   printf("\n%s repl %s (%s)\n%s\n\n", PROGRAM_NAME, PROGRAM_VERSION, COMPILE_DATE, PROGRAM_REPL_HELP);
 
-  while (1) {
+  while (context->is_alive) {
     char* line = readline("> ");
     add_history(line);
 
-    if      (strcmp(line, ".help") == 0)     { CMD(help);    }
-    else if (strcmp(line, ".exit") == 0)     { CMD(exit);    }
-    else if (strcmp(line, ".license") == 0)  { CMD(license); }
+    if      (strcmp(line, ".help") == 0)     { CMD(help)();         }
+    else if (strcmp(line, ".exit") == 0)     { CMD(exit)(context);  }
+    else if (strcmp(line, ".license") == 0)  { CMD(license)();      }
     else {
       UNUSEDP(context);
       //eros_value_t* result = eros_parser_parse(context, line);
@@ -62,6 +62,11 @@ int eros_repl(eros_input_t* input)
     }
 
     free(line);
+  }
+
+  if (context->error) {
+    printf("FATAL: %s\n", context->error);
+    return 1;
   }
 
   return 0;

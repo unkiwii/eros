@@ -12,16 +12,23 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO.   */
 
-#ifndef EROS_REPL_CMDS_H
-#define EROS_REPL_CMDS_H
+#ifndef EROS_LOGGER_H
+#define EROS_LOGGER_H
 
-// the '_()' at the end is neccesary to be compatible with GCC and Clang
-#define CMD(NAME) eros_repl_cmd_ ## NAME ## _
+#include <stdarg.h>
 
-#include "eros_context.h"
+enum {
+  EROS_LOG_LEVEL_DEBUG,
+  EROS_LOG_LEVEL_INFO,
+  EROS_LOG_LEVEL_WARN,
+  EROS_LOG_LEVEL_ERROR
+};
 
-void CMD(help)();
-void CMD(exit)(eros_context_t*);
-void CMD(license)();
+void eros_log_init(int level);
 
-#endif // EROS_REPL_CMDS_H
+void eros_log_debug(const char* tag, const char* fmt, ...);
+void eros_log_info(const char* tag, const char* fmt, ...);
+void eros_log_warn(const char* tag, const char* fmt, ...);
+void eros_log_error(const char* tag, const char* fmt, ...);
+
+#endif // EROS_LOGGER_H
