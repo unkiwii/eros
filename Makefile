@@ -17,9 +17,9 @@ OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
 
 .PHONY: all clean prep_debug debug
 
-all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+debug: clean prep_debug all
 
-debug: clean prep_debug $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 prep_debug:
 	$(eval CFLAGS += -g)
