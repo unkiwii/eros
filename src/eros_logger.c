@@ -67,7 +67,7 @@ void eros_log(int level, const char* file, int line, const char* fmt, va_list ar
   time_t timer;
   time(&timer);
   char* strtime = calloc(128, sizeof(char*));
-  strftime(strtime, 128, "%a %b %d %H:%M:%S %Y", localtime(&timer));
+  strftime(strtime, 128, "%d/%m/%Y %H:%M:%S", localtime(&timer));
   eros_log_print_time(strtime, eros_log_message);
   free(strtime);
 }
