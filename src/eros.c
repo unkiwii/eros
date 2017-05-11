@@ -17,26 +17,26 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_repl.h"
 #include "eros_logger.h"
 
-const char* TAG = "eros_main";
+const char* EROS_TAG = "eros_main";
 
 int main(int argc, char** argv)
 {
   eros_log_init(EROS_LOG_LEVEL_DEBUG, "eros.log");
-  eros_log_debug("", "");
-  eros_log_debug(TAG, "===== start =====");
+
+  LOGD("===== start =====");
 
   eros_input_t* input = eros_input_new(argc, argv);
 
   int exit_code = 0;
   if (input->compile_flag) {
-    eros_log_debug(TAG, "compiling...");
+    LOGD("compiling...");
     exit_code = eros_compile(input);
   } else {
-    eros_log_debug(TAG, "going into repl mode");
+    LOGD("going into repl mode");
     exit_code = eros_repl(input);
   }
 
-  eros_log_debug(TAG, "exit with code %d", exit_code);
+  LOGD("exit with code %d", exit_code);
 
   eros_input_delete(input);
   eros_log_deinit();

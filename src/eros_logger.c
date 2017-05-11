@@ -14,7 +14,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_logger.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <string.h>
+#include <stdarg.h>
 
 #ifdef DEBUG
 int eros_log_level = EROS_LOG_LEVEL_DEBUG;
@@ -25,9 +28,31 @@ int eros_log_level = EROS_LOG_LEVEL_WARN;
 char eros_log_message[512];
 int eros_log_message_size = 0;
 
-FILE* eros_log_file = NULL;
+char* eros_log_filename = NULL;
 
-void eros_log_print(int level, const char* tag, const char* fmt, va_list args)
+void eros_log_print(const char* message)
+{
+  if (eros_log_filename) {
+    FILE* f = fopen(eros_log_filename, "a+");
+    fprintf(f, "%s\n", message);
+    fclose(f);
+  } else {
+    printf("%s\n", message);
+  }
+}
+
+void eros_log_print_time(const char* strtime, const char* message)
+{
+  if (eros_log_filename) {
+    FILE* f = fopen(eros_log_filename, "a+");
+    fprintf(f, "%s %s\n", strtime, message);
+    fclose(f);
+  } else {
+    printf("%s %s\n", strtime, message);
+  }
+}
+
+void eros_log(int level, const char* file, int line, const char* fmt, va_list args)
 {
   if (level < eros_log_level) {
     return;
@@ -37,60 +62,62 @@ void eros_log_print(int level, const char* tag, const char* fmt, va_list args)
     eros_log_message_size = sizeof(eros_log_message) * sizeof(char);
   }
 
-  int start = 0;
-  if (strlen(tag)) {
-    start = sprintf(eros_log_message, "[%s] ", tag);
-  }
-  vsnprintf(eros_log_message + start, eros_log_message_size - start, fmt, args);
+  vsnprintf(eros_log_message, eros_log_message_size, fmt, args);
 
-  if (eros_log_file) {
-    fputs(eros_log_message, eros_log_file);
-    fputs("\n", eros_log_file);
-  } else {
-    puts(eros_log_message);
-  }
+  time_t timer;
+  time(&timer);
+  char* strtime = calloc(128, sizeof(char*));
+  strftime(strtime, 128, "%a %b %d %H:%M:%S %Y", localtime(&timer));
+  eros_log_print_time(strtime, eros_log_message);
+  free(strtime);
 }
 
 void eros_log_init(int level, const char* filename)
 {
   eros_log_level = level;
-  //TODO: use file as output
-  eros_log_file = fopen(filename, "a+");
+
+  size_t len = strlen(filename);
+  eros_log_filename = (char*) calloc(len, sizeof(char*));
+  strncpy(eros_log_filename, filename, len);
 }
 
 void eros_log_deinit()
 {
-  fclose(eros_log_file);
+  eros_log_print("");
+  if (eros_log_filename) {
+    free(eros_log_filename);
+    eros_log_filename = NULL;
+  }
 }
 
-void eros_log_debug(const char* tag, const char* fmt, ...)
+void eros_log_debug(const char* file, int line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  eros_log_print(EROS_LOG_LEVEL_DEBUG, tag, fmt, args);
+  eros_log(EROS_LOG_LEVEL_DEBUG, file, line, fmt, args);
   va_end(args);
 }
 
-void eros_log_info(const char* tag, const char* fmt, ...)
+void eros_log_info(const char* file, int line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  eros_log_print(EROS_LOG_LEVEL_INFO, tag, fmt, args);
+  eros_log(EROS_LOG_LEVEL_INFO, file, line, fmt, args);
   va_end(args);
 }
 
-void eros_log_warn(const char* tag, const char* fmt, ...)
+void eros_log_warn(const char* file, int line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  eros_log_print(EROS_LOG_LEVEL_WARN, tag, fmt, args);
+  eros_log(EROS_LOG_LEVEL_WARN, file, line, fmt, args);
   va_end(args);
 }
 
-void eros_log_error(const char* tag, const char* fmt, ...)
+void eros_log_error(const char* file, int line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
-  eros_log_print(EROS_LOG_LEVEL_ERROR, tag, fmt, args);
+  eros_log(EROS_LOG_LEVEL_ERROR, file, line, fmt, args);
   va_end(args);
 }

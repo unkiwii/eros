@@ -18,6 +18,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_defines.h"
 #include "eros_parser.h"
 #include "eros_value.h"
+#include "eros_logger.h"
 
 eros_parser_t* eros_parser_new(void)
 {
@@ -33,7 +34,12 @@ eros_parser_t* eros_parser_new(void)
 
 void eros_parser_delete(eros_parser_t* parser)
 {
-  //TOOD
+  if (parser->result) {
+    eros_value_delete(parser->result);
+    parser->result = NULL;
+  }
+
+  free(parser);
 }
 
 eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
@@ -52,7 +58,7 @@ eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
     parser->step(parser, rune);
     parser->column++;
 
-    if (parser->result->type == EROS_VALUE_ERROR) {
+    if (parser->result && parser->result->type == EROS_VALUE_ERROR) {
       return parser->result;
     }
 
@@ -63,6 +69,7 @@ eros_value_t* eros_parser_parse(eros_context_t* context, char* input)
 
 void eros_parser_step_module(eros_parser_t* parser, char rune)
 {
+  LOGD("step_module: %c", rune);
   //TODO
 }
 

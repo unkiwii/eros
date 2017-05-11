@@ -29,8 +29,21 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_print.h"
 #include "eros_repl.h"
 #include "eros_repl_cmds.h"
+#include "eros_logger.h"
 
 #define PROGRAM_REPL_HELP "Type '.help' for more information"
+
+int eros_repl_stop(eros_context_t* context)
+{
+  int status = 0;
+  if (context->error) {
+    LOGE("FATAL: %s", context->error);
+    status = 1;
+  }
+
+  eros_context_delete(context);
+  return status;
+}
 
 int eros_repl(eros_input_t* input)
 {
@@ -51,21 +64,17 @@ int eros_repl(eros_input_t* input)
     else if (strcmp(line, ".exit") == 0)     { CMD(exit)(context);  }
     else if (strcmp(line, ".license") == 0)  { CMD(license)();      }
     else {
-      //eros_value_t* result = eros_parser_parse(context, line);
-      //if (result) {
-      //  eros_value_t* value = eros_eval(context, result);
-      //  eros_println(value);
-      //  eros_value_delete(value);
-      //}
+      LOGD("evaluating '%s'", line);
+      eros_value_t* result = eros_parser_parse(context, line);
+      if (result) {
+        eros_value_t* value = eros_eval(context, result);
+        eros_println(value);
+        eros_value_delete(value);
+      }
     }
 
     free(line);
   }
 
-  if (context->error) {
-    printf("FATAL: %s\n", context->error);
-    return 1;
-  }
-
-  return 0;
+  return eros_repl_stop(context);
 }
