@@ -18,6 +18,5 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 eros_value_t* eros_eval(eros_context_t* context, eros_value_t* value)
 {
   //TODO: complete eval
-  UNUSED(context);
   return value;
 }

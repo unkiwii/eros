@@ -15,9 +15,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_DEFINES_H
 #define EROS_DEFINES_H
 
-#define UNUSEDP(arg) (void*)arg
-#define UNUSED(arg) (void)arg
-
 #ifndef PROGRAM_NAME
   #define PROGRAM_NAME "eros"
 #endif

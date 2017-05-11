@@ -35,7 +35,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 int eros_repl(eros_input_t* input)
 {
   //TODO: load input (files)
-  UNUSEDP(input);
 
   eros_context_t* context = eros_context_new();
 
@@ -52,7 +51,6 @@ int eros_repl(eros_input_t* input)
     else if (strcmp(line, ".exit") == 0)     { CMD(exit)(context);  }
     else if (strcmp(line, ".license") == 0)  { CMD(license)();      }
     else {
-      UNUSEDP(context);
       //eros_value_t* result = eros_parser_parse(context, line);
       //if (result) {
       //  eros_value_t* value = eros_eval(context, result);
