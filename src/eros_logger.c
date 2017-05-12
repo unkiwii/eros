@@ -12,12 +12,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include "eros_logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
+
+#include "eros_logger.h"
 
 #ifdef DEBUG
 int eros_log_level = EROS_LOG_LEVEL_DEBUG;
