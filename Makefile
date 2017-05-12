@@ -9,43 +9,41 @@ YEAR = $(shell date +%Y)
 MONTH = $(shell date +%h)
 DAY = $(shell date +%d)
 
-DEFINES = -DCOMPILE_YEAR=\"$(YEAR)\" -DCOMPILE_MONTH=\"$(MONTH)\" -DCOMPILE_DAY=\"$(DAY)\" -DPROGRAM_NAME=\"$(NAME)\"
+DEFINES = -DCOMPILE_HASH=\"$(shell git rev-parse --short HEAD)\" -DCOMPILE_YEAR=\"$(YEAR)\" -DCOMPILE_MONTH=\"$(MONTH)\" -DCOMPILE_DAY=\"$(DAY)\" -DPROGRAM_NAME=\"$(NAME)\"
 
 CFLAGS += -pedantic -Wall -std=c99 $(DEFINES)
 
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
 
-.PHONY: all clean prep_debug debug
+.PHONY: all clean prep_debug debug run
+
+all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
 
 debug: clean prep_debug all
 
-all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+run:
+	@$(BIN_DIR)/$(EXECUTABLE)
 
 prep_debug:
 	$(eval CFLAGS += -g)
 
 clean:
-	@echo -n Cleaning
+	@echo Cleaning
 	@rm -rf $(OBJ_DIR) >/dev/null 2>&1 || true
 	@rm -rf $(BIN_DIR) >/dev/null 2>&1 || true
-	@scripts/echo_success
 
 $(EXECUTABLE): $(OBJECTS)
-	@echo -n Linking $(EXECUTABLE)
+	@echo Linking $(EXECUTABLE)
 	@$(CC) -o $(BIN_DIR)/$@ $^ $(CFLAGS) -ledit
-	@scripts/echo_success
 
 $(OBJ_DIR):
-	@echo -n Creating $@ folder
+	@echo Creating $@ folder
 	@mkdir $@
-	@scripts/echo_success
 
 $(BIN_DIR):
-	@echo -n Creating $@ folder
+	@echo Creating $@ folder
 	@mkdir $@
-	@scripts/echo_success
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS)
-	@scripts/echo_success up
