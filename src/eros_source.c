@@ -16,6 +16,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <string.h>
 
 #include "eros_source.h"
+#include "eros_mem.h"
 
 eros_source_t* eros_source_from_file(char* filename)
 {
@@ -58,14 +59,19 @@ eros_source_t* eros_source_from_string(char* str)
   eros_source_t* source = malloc(sizeof(eros_source_t));
   source->file = NULL;
   source->size = strlen(str);
-  source->data = malloc(source->size + 1);
-  strcpy(source->data, str);
-
+  source->data = eros_strdup(str);
   return source;
 }
 
 void eros_source_delete(eros_source_t* source)
 {
-  free(source->data);
+  if (!source) {
+    return;
+  }
+
+  if (source->data) {
+    free(source->data);
+  }
+
   free(source);
 }

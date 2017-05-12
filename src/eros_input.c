@@ -10,12 +10,13 @@ as the name is changed.
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-0. You just DO WHAT THE FUCK YOU WANT TO.   */
+0. You just DO WHAT THE FUCK YOU WANT TO. */
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "eros_input.h"
+#include "eros_mem.h"
 
 eros_input_t* eros_input_new(int argc, char** argv)
 {

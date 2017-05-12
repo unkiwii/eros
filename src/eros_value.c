@@ -10,13 +10,14 @@ as the name is changed.
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-0. You just DO WHAT THE FUCK YOU WANT TO.   */
+0. You just DO WHAT THE FUCK YOU WANT TO. */
 
 #include <stdlib.h>
 #include <string.h>
 
 #include "eros_value.h"
 #include "eros_defines.h"
+#include "eros_mem.h"
 
 char* eros_value_name(int type)
 {
@@ -48,8 +49,7 @@ eros_value_t* eros_value_module(char* name)
 {
   eros_value_t* module = malloc(sizeof(eros_value_t));
   module->type = EROS_VALUE_MODULE;
-  module->str = malloc(strlen(name) + 1);
-  strcpy(module->str, name);
+  module->str = eros_strdup(name);
   return module;
 }
 
@@ -57,7 +57,6 @@ eros_value_t* eros_value_error(char* data)
 {
   eros_value_t* error = malloc(sizeof(eros_value_t));
   error->type = EROS_VALUE_ERROR;
-  error->str = malloc(strlen(data) + 1);
-  strcpy(error->str, data);
+  error->str = eros_strdup(data);
   return error;
 }

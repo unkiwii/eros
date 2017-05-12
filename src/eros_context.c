@@ -18,6 +18,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_context.h"
 #include "eros_parser.h"
 #include "eros_value.h"
+#include "eros_mem.h"
 
 eros_context_t* eros_context_new(void)
 {
@@ -85,7 +86,6 @@ void eros_context_seterror(eros_context_t* context, char* error)
   }
 
   if (error) {
-    context->error = malloc(strlen(error) + 1);
-    strcpy(context->error, error);
+    context->error = eros_strdup(error);
   }
 }

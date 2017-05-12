@@ -12,31 +12,14 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#ifndef PROMPT_WIN_H
-#define PROMPT_WIN_H
-
-#include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "eros_mem.h"
 
-#define BUFFER_SIZE 2048
-
-static char _readline_in[BUFFER_SIZE];
-
-/* readline for windows */
-char* readline(char* prompt)
+char* eros_strdup(char* s)
 {
-  fputs(prompt, stdout);
-  fgets(_readline_in, BUFFER_SIZE, stdin);
-  char* cpy = eros_strdup(_readline_in);
-  cpy[strlen(cpy) - 1] = '\0';
-  return cpy;
+  char* r = malloc(strlen(s) + 1);
+  strcpy(r, s);
+  return r;
 }
-
-/* Fake add_history function */
-void add_history(char* ignored) {
-  (void*)ignored;
-}
-
-#endif // PROMPT_WIN_H
