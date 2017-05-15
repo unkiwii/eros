@@ -17,9 +17,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_mem.h"
 
-char* eros_strdup(char* s)
+char* eros_strdup(const char* s)
 {
-  char* r = malloc(strlen(s) + 1);
-  strcpy(r, s);
+  size_t length = strlen(s);
+  char* r = (char*) calloc(length + 1, sizeof(char*));
+  strncpy(r, s, length);
   return r;
 }

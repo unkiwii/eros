@@ -12,9 +12,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#ifndef EROS_MEM_H
-#define EROS_MEM_H
+#ifndef EROS_ERROR_H
+#define EROS_ERROR_H
 
-char* eros_strdup(const char* s);
+static const int EROS_ERR_BAD_INPUT = 1;
+static const int EROS_ERR_CONTEXT = 2;
 
-#endif // EROS_MEM_H
+#endif // EROS_ERROR_H

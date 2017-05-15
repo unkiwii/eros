@@ -16,16 +16,19 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_compile.h"
 #include "eros_repl.h"
 #include "eros_logger.h"
+#include "eros_error.h"
 
-const char* EROS_TAG = "eros_main";
+#include <stdio.h>
 
 int main(int argc, char** argv)
 {
-  eros_log_init(EROS_LOG_LEVEL_DEBUG, "eros.log");
-
-  LOGD("===== start =====");
-
   eros_input_t* input = eros_input_new(argc, argv);
+  if (!input) {
+    return EROS_ERR_BAD_INPUT; // bad input
+  }
+
+  eros_log_init(EROS_LOG_LEVEL_DEBUG, input->log_filename, input->log_flag);
+  LOGD("===== start =====");
 
   int exit_code = 0;
   if (input->compile_flag) {

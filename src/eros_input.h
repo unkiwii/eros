@@ -17,14 +17,22 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 typedef struct eros_input_t
 {
-  /** list of files to compile or load to interpreter **/
-  char** files;
+  /**
+   * -d [FILE], optional: to log to stderr or FILE
+   */
+  int log_flag;
+  char* log_filename;
 
-  /** number of files **/
-  int files_count;
-
-  /** compile or run repl **/
+  /**
+   * -c, optional: to compile, is absent go into repl mode
+   */
   int compile_flag;
+
+  /**
+   * the rest of the arguments are treated as files to load or compile
+   */
+  char** files;
+  int files_count;
 } eros_input_t;
 
 eros_input_t* eros_input_new(int argc, char** argv);

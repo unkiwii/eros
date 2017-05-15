@@ -19,17 +19,19 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <stdarg.h>
 
 #include "eros_logger.h"
+#include "eros_mem.h"
 
 #ifdef DEBUG
-int eros_log_level = EROS_LOG_LEVEL_DEBUG;
+static int eros_log_level = EROS_LOG_LEVEL_DEBUG;
 #else
-int eros_log_level = EROS_LOG_LEVEL_WARN;
+static int eros_log_level = EROS_LOG_LEVEL_WARN;
 #endif
 
-char eros_log_message[512];
-int eros_log_message_size = 0;
+static char eros_log_message[512];
+static int eros_log_message_size = 0;
 
-char* eros_log_filename = NULL;
+static char* eros_log_filename = NULL;
+static int eros_log_flag = 0;
 
 void eros_log_print(const char* message)
 {
@@ -38,7 +40,7 @@ void eros_log_print(const char* message)
     fprintf(f, "%s\n", message);
     fclose(f);
   } else {
-    printf("%s\n", message);
+    fprintf(stderr, "%s\n", message);
   }
 }
 
@@ -49,13 +51,13 @@ void eros_log_print_time(const char* strtime, const char* message)
     fprintf(f, "%s %s\n", strtime, message);
     fclose(f);
   } else {
-    printf("%s %s\n", strtime, message);
+    fprintf(stderr, "%s %s\n", strtime, message);
   }
 }
 
 void eros_log(int level, const char* file, int line, const char* fmt, va_list args)
 {
-  if (level < eros_log_level) {
+  if (level < eros_log_level || !eros_log_flag) {
     return;
   }
 
@@ -73,13 +75,13 @@ void eros_log(int level, const char* file, int line, const char* fmt, va_list ar
   free(strtime);
 }
 
-void eros_log_init(int level, const char* filename)
+void eros_log_init(int level, const char* filename, int log_flag)
 {
+  eros_log_flag = log_flag;
   eros_log_level = level;
-
-  size_t len = strlen(filename);
-  eros_log_filename = (char*) calloc(len, sizeof(char*));
-  strncpy(eros_log_filename, filename, len);
+  if (filename) {
+    eros_log_filename = eros_strdup(filename);
+  }
 }
 
 void eros_log_deinit()

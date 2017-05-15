@@ -17,6 +17,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_input.h"
 #include "eros_mem.h"
+#include "eros_logger.h"
 
 eros_input_t* eros_input_new(int argc, char** argv)
 {
@@ -24,15 +25,22 @@ eros_input_t* eros_input_new(int argc, char** argv)
   input->files = NULL;
   input->files_count = 0;
   input->compile_flag = 0;
+  input->log_flag = 0;
+  input->log_filename = NULL;
 
   for (int i = 1; i < argc; i++) {
+    LOGD("arg %s", argv[i]);
     if (strcmp(argv[i], "-c") == 0) {
       input->compile_flag = 1;
+    } else if (strcmp(argv[i], "-d") == 0) {
+      input->log_flag = 1;
+      if (argc > (i + 1)) {
+        input->log_filename = eros_strdup(argv[++i]);
+      }
     } else {
       input->files_count++;
       input->files = realloc(input->files, sizeof(char*) * input->files_count);
-      input->files[input->files_count - 1] = malloc(strlen(argv[i]) + 1);
-      strcpy(input->files[input->files_count - 1], argv[i]);
+      input->files[input->files_count - 1] = eros_strdup(argv[i]);
     }
   }
 
@@ -41,9 +49,18 @@ eros_input_t* eros_input_new(int argc, char** argv)
 
 void eros_input_delete(eros_input_t* input)
 {
+  if (!input) {
+    return;
+  }
+
   for (int i = 0; i < input->files_count; i++) {
     free(input->files[i]);
   }
   free(input->files);
+
+  if (input->log_filename) {
+    free(input->log_filename);
+  }
+
   free(input);
 }

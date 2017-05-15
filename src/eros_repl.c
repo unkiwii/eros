@@ -30,6 +30,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_repl.h"
 #include "eros_repl_cmds.h"
 #include "eros_logger.h"
+#include "eros_error.h"
 
 #define PROGRAM_REPL_HELP "Type '.help' for more information"
 
@@ -38,7 +39,7 @@ int eros_repl_stop(eros_context_t* context)
   int status = 0;
   if (context->error) {
     LOGE("FATAL: %s", context->error);
-    status = 1;
+    status = EROS_ERR_CONTEXT;
   }
 
   eros_context_delete(context);

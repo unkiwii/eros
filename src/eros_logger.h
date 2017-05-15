@@ -27,7 +27,7 @@ enum {
   EROS_LOG_LEVEL_ERROR
 };
 
-void eros_log_init(int level, const char* filename);
+void eros_log_init(int level, const char* filename, int eros_log_flag);
 void eros_log_deinit();
 
 void eros_log_debug(const char* file, int line, const char* fmt, ...);
