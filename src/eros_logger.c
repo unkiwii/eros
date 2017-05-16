@@ -12,26 +12,27 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include <stdarg.h>
-
+#include "eros_defines.h"
 #include "eros_logger.h"
 #include "eros_mem.h"
 
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
 #ifdef DEBUG
-static int eros_log_level = EROS_LOG_LEVEL_DEBUG;
+static log_level_t eros_log_level = EROS_LOG_LEVEL_DEBUG;
 #else
-static int eros_log_level = EROS_LOG_LEVEL_WARN;
+static log_level_t eros_log_level = EROS_LOG_LEVEL_WARN;
 #endif
 
 static char eros_log_message[512];
 static int eros_log_message_size = 0;
 
 static char* eros_log_filename = NULL;
-static int eros_log_flag = 0;
+static flag_t eros_log_flag = 0;
 
 void eros_log_print(const char* message)
 {
@@ -55,7 +56,7 @@ void eros_log_print_time(const char* strtime, const char* message)
   }
 }
 
-void eros_log(int level, const char* file, int line, const char* fmt, va_list args)
+void eros_log(log_level_t level, const char* file, file_line_t line, const char* fmt, va_list args)
 {
   if (level < eros_log_level || !eros_log_flag) {
     return;
@@ -69,13 +70,13 @@ void eros_log(int level, const char* file, int line, const char* fmt, va_list ar
 
   time_t timer;
   time(&timer);
-  char* strtime = calloc(128, sizeof(char*));
+  char* strtime = (char*) calloc(128, sizeof(char*));
   strftime(strtime, 128, "%d/%m/%Y %H:%M:%S", localtime(&timer));
   eros_log_print_time(strtime, eros_log_message);
   free(strtime);
 }
 
-void eros_log_init(int level, const char* filename, int log_flag)
+void eros_log_init(log_level_t level, const char* filename, flag_t log_flag)
 {
   eros_log_flag = log_flag;
   eros_log_level = level;
@@ -93,7 +94,7 @@ void eros_log_deinit()
   }
 }
 
-void eros_log_debug(const char* file, int line, const char* fmt, ...)
+void eros_log_debug(const char* file, file_line_t line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
@@ -101,7 +102,7 @@ void eros_log_debug(const char* file, int line, const char* fmt, ...)
   va_end(args);
 }
 
-void eros_log_info(const char* file, int line, const char* fmt, ...)
+void eros_log_info(const char* file, file_line_t line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
@@ -109,7 +110,7 @@ void eros_log_info(const char* file, int line, const char* fmt, ...)
   va_end(args);
 }
 
-void eros_log_warn(const char* file, int line, const char* fmt, ...)
+void eros_log_warn(const char* file, file_line_t line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);
@@ -117,7 +118,7 @@ void eros_log_warn(const char* file, int line, const char* fmt, ...)
   va_end(args);
 }
 
-void eros_log_error(const char* file, int line, const char* fmt, ...)
+void eros_log_error(const char* file, file_line_t line, const char* fmt, ...)
 {
   va_list args;
   va_start(args, fmt);

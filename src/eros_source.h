@@ -15,24 +15,22 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_SOURCE_H
 #define EROS_SOURCE_H
 
-#include <stdlib.h>
+#include "eros_defines.h"
 
-typedef struct eros_source_t
+struct eros_source_t
 {
   /* file name from there this was loaded (NULL when loaded from string) */
-  char* file;
+  char* filename;
 
   /* contents of the loaded file or string */
   char* data;
 
-  /* size of the data */
-  size_t size;
-} eros_source_t;
+  /* size of loaded data, from file or string */
+  source_size_t size;
+};
 
 eros_source_t* eros_source_from_file(char* filename);
-
 eros_source_t* eros_source_from_string(char* str);
-
 void eros_source_delete(eros_source_t* source);
 
 #endif // EROS_SOURCE_H

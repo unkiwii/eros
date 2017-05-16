@@ -12,8 +12,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "eros_mem.h"
 

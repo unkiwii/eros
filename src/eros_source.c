@@ -12,37 +12,40 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdio.h>
-#include <string.h>
-
-#include "eros_source.h"
+#include "eros_defines.h"
+#include "eros_logger.h"
 #include "eros_mem.h"
+#include "eros_source.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 eros_source_t* eros_source_from_file(char* filename)
 {
   FILE* file = fopen(filename, "rb");
   if (!file) {
-    printf("Can't open file %s\n", filename);
+    LOGE("Can't open file %s\n", filename);
     return NULL;
   }
 
   fseek(file, 0, SEEK_END);
-  long int filesize = ftell(file);
+  file_size_t filesize = ftell(file);
 
   if (filesize < 0) {
-    printf("Can't get size of file %s\n", filename);
+    LOGE("Can't get size of file %s\n", filename);
     fclose(file);
     return NULL;
   }
 
   fseek(file, 0, SEEK_SET);
 
-  eros_source_t* source = malloc(sizeof(eros_source_t));
-  source->file = filename;
+  eros_source_t* source = (eros_source_t*) malloc(sizeof(eros_source_t));
+  source->filename = filename;
   source->size = filesize;
-  source->data = malloc(filesize);
+  source->data = (char*) calloc(filesize, sizeof(char*));
 
-  long int readsize = fread(source->data, sizeof(char), filesize, file);
+  file_size_t readsize = fread(source->data, sizeof(char), filesize, file);
   fclose(file);
 
   if (readsize < filesize) {
@@ -56,8 +59,8 @@ eros_source_t* eros_source_from_file(char* filename)
 
 eros_source_t* eros_source_from_string(char* str)
 {
-  eros_source_t* source = malloc(sizeof(eros_source_t));
-  source->file = NULL;
+  eros_source_t* source = (eros_source_t*) malloc(sizeof(eros_source_t));
+  source->filename = NULL;
   source->size = strlen(str);
   source->data = eros_strdup(str);
   return source;

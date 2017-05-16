@@ -12,11 +12,11 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "eros_defines.h"
 #include "eros_repl_cmds.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 void CMD(help)()
 {

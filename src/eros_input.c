@@ -12,16 +12,16 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
+#include "eros_input.h"
+#include "eros_logger.h"
+#include "eros_mem.h"
+
 #include <stdlib.h>
 #include <string.h>
 
-#include "eros_input.h"
-#include "eros_mem.h"
-#include "eros_logger.h"
-
 eros_input_t* eros_input_new(int argc, char** argv)
 {
-  eros_input_t* input = malloc(sizeof(eros_input_t));
+  eros_input_t* input = (eros_input_t*) malloc(sizeof(eros_input_t));
   input->files = NULL;
   input->files_count = 0;
   input->compile_flag = 0;

@@ -12,13 +12,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdlib.h>
-#include <string.h>
-
 #include "eros_context.h"
+#include "eros_mem.h"
 #include "eros_parser.h"
 #include "eros_value.h"
-#include "eros_mem.h"
+
+#include <stdlib.h>
+#include <string.h>
 
 eros_context_t* eros_context_new(void)
 {

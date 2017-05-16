@@ -12,12 +12,12 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdlib.h>
-#include <string.h>
-
-#include "eros_value.h"
 #include "eros_defines.h"
 #include "eros_mem.h"
+#include "eros_value.h"
+
+#include <stdlib.h>
+#include <string.h>
 
 char* eros_value_name(int type)
 {
@@ -47,7 +47,7 @@ void eros_value_delete(eros_value_t* value)
 
 eros_value_t* eros_value_module(char* name)
 {
-  eros_value_t* module = malloc(sizeof(eros_value_t));
+  eros_value_t* module = (eros_value_t*) malloc(sizeof(eros_value_t));
   module->type = EROS_VALUE_MODULE;
   module->str = eros_strdup(name);
   return module;
@@ -55,7 +55,7 @@ eros_value_t* eros_value_module(char* name)
 
 eros_value_t* eros_value_error(char* data)
 {
-  eros_value_t* error = malloc(sizeof(eros_value_t));
+  eros_value_t* error = (eros_value_t*) malloc(sizeof(eros_value_t));
   error->type = EROS_VALUE_ERROR;
   error->str = eros_strdup(data);
   return error;

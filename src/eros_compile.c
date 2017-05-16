@@ -12,12 +12,13 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdio.h>
-
 #include "eros_compile.h"
+
+#include <stdio.h>
 
 int eros_compile(eros_input_t* input)
 {
+  //TODO
   puts("compile");
   for (int i = 0; i < input->files_count; i++) {
     printf("  file: %s\n", input->files[i]);

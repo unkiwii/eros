@@ -10,11 +10,7 @@ as the name is changed.
            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
-
 0. You just DO WHAT THE FUCK YOU WANT TO. */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #ifdef _WIN32
 #include "prompt_win.h"
@@ -24,19 +20,23 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_context.h"
 #include "eros_defines.h"
+#include "eros_error.h"
 #include "eros_eval.h"
+#include "eros_logger.h"
 #include "eros_parser.h"
 #include "eros_print.h"
 #include "eros_repl.h"
 #include "eros_repl_cmds.h"
-#include "eros_logger.h"
-#include "eros_error.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define PROGRAM_REPL_HELP "Type '.help' for more information"
 
-int eros_repl_stop(eros_context_t* context)
+status_code_t eros_repl_stop(eros_context_t* context)
 {
-  int status = 0;
+  status_code_t status = 0;
   if (context->error) {
     LOGE("FATAL: %s", context->error);
     status = EROS_ERR_CONTEXT;
@@ -46,7 +46,7 @@ int eros_repl_stop(eros_context_t* context)
   return status;
 }
 
-int eros_repl(eros_input_t* input)
+status_code_t eros_repl(eros_input_t* input)
 {
   //TODO: load input (files)
 
@@ -66,12 +66,12 @@ int eros_repl(eros_input_t* input)
     else if (strcmp(line, ".license") == 0)  { CMD(license)();      }
     else {
       LOGD("evaluating '%s'", line);
-      eros_value_t* result = eros_parser_parse(context, line);
-      if (result) {
-        eros_value_t* value = eros_eval(context, result);
-        eros_println(value);
-        eros_value_delete(value);
-      }
+      /* eros_value_t* result = eros_parser_parse(context, line); */
+      /* if (result) { */
+      /*   eros_value_t* value = eros_eval(context, result); */
+      /*   eros_println(value); */
+      /*   eros_value_delete(value); */
+      /* } */
     }
 
     free(line);

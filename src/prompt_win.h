@@ -15,10 +15,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef PROMPT_WIN_H
 #define PROMPT_WIN_H
 
+#include "eros_mem.h"
+
 #include <stdio.h>
 #include <string.h>
-
-#include "eros_mem.h"
 
 #define BUFFER_SIZE 2048
 

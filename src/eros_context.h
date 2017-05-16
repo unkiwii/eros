@@ -15,9 +15,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_CONTEXT_H
 #define EROS_CONTEXT_H
 
-#include "eros_fwd.h"
-
-typedef long long int symbols_count_t;
+#include "eros_defines.h"
 
 struct eros_context_t
 {

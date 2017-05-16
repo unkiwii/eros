@@ -12,11 +12,11 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include "eros_input.h"
 #include "eros_compile.h"
-#include "eros_repl.h"
-#include "eros_logger.h"
 #include "eros_error.h"
+#include "eros_input.h"
+#include "eros_logger.h"
+#include "eros_repl.h"
 
 #include <stdio.h>
 

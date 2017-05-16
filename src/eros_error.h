@@ -15,7 +15,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_ERROR_H
 #define EROS_ERROR_H
 
-static const int EROS_ERR_BAD_INPUT = 1;
-static const int EROS_ERR_CONTEXT = 2;
+#include "eros_defines.h"
+
+static const error_code_t EROS_ERR_BAD_INPUT = 1;
+static const error_code_t EROS_ERR_CONTEXT = 2;
 
 #endif // EROS_ERROR_H

@@ -15,6 +15,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_LOGGER_H
 #define EROS_LOGGER_H
 
+#include "eros_defines.h"
+
 #define LOGD(...) eros_log_debug(__FILE__, __LINE__, __VA_ARGS__);
 #define LOGI(...) eros_log_info(__FILE__, __LINE__, __VA_ARGS__);
 #define LOGW(...) eros_log_warn(__FILE__, __LINE__, __VA_ARGS__);
@@ -27,12 +29,12 @@ enum {
   EROS_LOG_LEVEL_ERROR
 };
 
-void eros_log_init(int level, const char* filename, int eros_log_flag);
+void eros_log_init(log_level_t level, const char* filename, flag_t eros_log_flag);
 void eros_log_deinit();
 
-void eros_log_debug(const char* file, int line, const char* fmt, ...);
-void eros_log_info(const char* file, int line, const char* fmt, ...);
-void eros_log_warn(const char* file, int line, const char* fmt, ...);
-void eros_log_error(const char* file, int line, const char* fmt, ...);
+void eros_log_debug(const char* file, file_line_t line, const char* fmt, ...);
+void eros_log_info(const char* file, file_line_t line, const char* fmt, ...);
+void eros_log_warn(const char* file, file_line_t line, const char* fmt, ...);
+void eros_log_error(const char* file, file_line_t line, const char* fmt, ...);
 
 #endif // EROS_LOGGER_H

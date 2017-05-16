@@ -17,14 +17,18 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_source.h"
 
-typedef struct eros_lexer_t
+struct eros_lexer_t
 {
+  /** source to lex, can be a file or string **/
   eros_source_t* source;
 
-  size_t row;
-  size_t col;
+  /** current position in the source **/
+  source_row_t row;
+  source_col_t col;
 
-} eros_lexer_t;
+  token_t** tokens;
+  token_count_t token_count;
+};
 
 eros_lexer_t* eros_lexer_new(eros_source_t*);
 

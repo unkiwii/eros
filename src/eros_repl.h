@@ -15,8 +15,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_REPL_H
 #define EROS_REPL_H
 
+#include "eros_defines.h"
 #include "eros_input.h"
 
-int eros_repl(eros_input_t* input);
+status_code_t eros_repl(eros_input_t* input);
 
 #endif // EROS_REPL_H

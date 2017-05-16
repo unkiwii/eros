@@ -15,7 +15,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_VALUE_H
 #define EROS_VALUE_H
 
-#include "eros_fwd.h"
+#include "eros_defines.h"
 
 /** types of values in the language **/
 enum {
@@ -37,7 +37,6 @@ struct eros_value_t
 void eros_value_delete(eros_value_t* value);
 
 eros_value_t* eros_value_module(char* name);
-
 eros_value_t* eros_value_error(char* data);
 
 #endif // EROS_VALUE_H

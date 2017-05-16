@@ -51,4 +51,36 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
   #define COMPILE_DATE COMPILE_MONTH " " COMPILE_DAY ", " COMPILE_YEAR
 #endif
 
+typedef long long int file_size_t;
+typedef int file_line_t;
+typedef int error_code_t;
+typedef char flag_t;
+typedef long long int files_count_t;
+typedef long long int symbols_count_t;
+typedef int source_row_t;
+typedef int source_col_t;
+typedef long long int source_size_t;
+typedef int log_level_t;
+typedef char* token_t;  //TODO change to list of tokens
+typedef long int token_count_t;  //TODO change to list of tokens
+typedef int status_code_t;
+
+struct eros_parser_t;
+typedef struct eros_parser_t eros_parser_t;
+
+struct eros_lexer_t;
+typedef struct eros_lexer_t eros_lexer_t;
+
+struct eros_source_t;
+typedef struct eros_source_t eros_source_t;
+
+struct eros_context_t;
+typedef struct eros_context_t eros_context_t;
+
+struct eros_value_t;
+typedef struct eros_value_t eros_value_t;
+
+struct eros_input_t;
+typedef struct eros_input_t eros_input_t;
+
 #endif // EROS_DEFINES_H

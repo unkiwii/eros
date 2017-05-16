@@ -15,33 +15,35 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_PARSER_H
 #define EROS_PARSER_H
 
-#include "eros_fwd.h"
+#include "eros_defines.h"
 
-typedef void (*eros_parser_step_t)(eros_parser_t*, char);
+typedef void (*eros_parser_step_t)(eros_parser_t*, token_t*);
 
 struct eros_parser_t
 {
+  /** current step in the parser **/
   eros_parser_step_t step;
 
+  /** result of the parse operation **/
   eros_value_t* result;
 
   /** current column being parsed **/
-  int column;
+  source_col_t column;
 
   /** current line being parsed **/
-  int line;
+  source_row_t line;
 };
 
 eros_parser_t* eros_parser_new(void);
 
 void eros_parser_delete(eros_parser_t* parser);
 
-eros_value_t* eros_parser_parse(eros_context_t* context, char* input);
+eros_value_t* eros_parser_parse(eros_context_t*, token_t**, token_count_t);
 
-void eros_parser_step_module(eros_parser_t*, char);
-void eros_parser_step_assignment(eros_parser_t*, char);
-void eros_parser_step_slot(eros_parser_t*, char);
-void eros_parser_step_type(eros_parser_t*, char);
-void eros_parser_step_identifier(eros_parser_t*, char);
+void eros_parser_step_module(eros_parser_t*, token_t*);
+void eros_parser_step_assignment(eros_parser_t*, token_t*);
+void eros_parser_step_slot(eros_parser_t*, token_t*);
+void eros_parser_step_type(eros_parser_t*, token_t*);
+void eros_parser_step_identifier(eros_parser_t*, token_t*);
 
 #endif // EROS_PARSER_H

@@ -13,10 +13,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
 #include "eros_eval.h"
-#include "eros_defines.h"
 
 eros_value_t* eros_eval(eros_context_t* context, eros_value_t* value)
 {
-  //TODO: complete eval
+  //TODO
   return value;
 }

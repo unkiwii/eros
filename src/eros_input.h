@@ -15,25 +15,27 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_INPUT_H
 #define EROS_INPUT_H
 
-typedef struct eros_input_t
+#include "eros_defines.h"
+
+struct eros_input_t
 {
   /**
    * -d [FILE], optional: to log to stderr or FILE
    */
-  int log_flag;
+  flag_t log_flag;
   char* log_filename;
 
   /**
    * -c, optional: to compile, is absent go into repl mode
    */
-  int compile_flag;
+  flag_t compile_flag;
 
   /**
    * the rest of the arguments are treated as files to load or compile
    */
   char** files;
-  int files_count;
-} eros_input_t;
+  files_count_t files_count;
+};
 
 eros_input_t* eros_input_new(int argc, char** argv);
 
