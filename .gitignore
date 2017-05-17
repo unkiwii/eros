@@ -1,6 +1,7 @@
 bin
 obj
 eros
+eros_test
 tags
 *.bat
 *.swp
