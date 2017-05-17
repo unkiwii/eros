@@ -1,13 +1,14 @@
 NAME = eros
-EXECUTABLE = eros
 
 OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src
 
-TEST = eros_test
+EXECUTABLE = $(BIN_DIR)/eros
+
 TEST_SRC_DIR = test/src
 TEST_OBJ_DIR = test/obj
+TEST = eros_test
 
 YEAR = $(shell date +%Y)
 MONTH = $(shell date +%h)
@@ -21,20 +22,23 @@ MAIN_OBJ = eros.o
 OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(wildcard $(SRC_DIR)/*.c))
 TEST_OBJECTS = $(OBJECTS) $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(wildcard $(TEST_SRC_DIR)/*.c))
 
-.PHONY: all clean prep_debug debug run test
+.PHONY: all clean prep_debug debug run test objects
 
-all: $(OBJ_DIR) $(BIN_DIR) $(EXECUTABLE)
+all: $(EXECUTABLE)
 
 test: prep_debug $(TEST_OBJ_DIR) $(TEST)
-	@./$(TEST)
+	@./$(TEST) &
+	@rm $(TEST) >/dev/null 2>&1 || true
 
 debug: clean prep_debug all
 
-run:
-	@$(BIN_DIR)/$(EXECUTABLE)
+run: $(EXECUTABLE)
+	@exec $(EXECUTABLE)
 
 prep_debug:
 	$(eval CFLAGS += -g)
+
+objects: $(OBJ_DIR) $(OBJECTS)
 
 clean:
 	@echo Cleaning
@@ -42,10 +46,11 @@ clean:
 	@rm -rf $(OBJ_DIR) >/dev/null 2>&1 || true
 	@rm -rf $(BIN_DIR) >/dev/null 2>&1 || true
 	@rm -rf $(TEST_OBJ_DIR) >/dev/null 2>&1 || true
+	@rm $(TEST) >/dev/null 2>&1 || true
 
-$(EXECUTABLE): $(OBJECTS) $(MAIN_OBJ)
+$(EXECUTABLE): $(BIN_DIR) objects $(MAIN_OBJ)
 	@echo Linking $(EXECUTABLE)
-	@$(CC) -o $(BIN_DIR)/$@ $^ $(CFLAGS) -ledit
+	@$(CC) -o $@ $(OBJECTS) $(MAIN_OBJ) $(CFLAGS) -ledit
 
 $(OBJ_DIR):
 	@echo Creating $@ folder
@@ -55,7 +60,7 @@ $(BIN_DIR):
 	@echo Creating $@ folder
 	@mkdir $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(OBJ_DIR) 
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
@@ -63,14 +68,14 @@ $(MAIN_OBJ): eros.c
 	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS) -I src
 
-$(TEST): $(TEST_OBJECTS)
+$(TEST): objects $(TEST_OBJECTS)
 	@echo Linking $(TEST)
-	@$(CC) -o $@ $^ $(CFLAGS) -ledit
+	@$(CC) -o $@ $(TEST_OBJECTS) $(CFLAGS) -ledit
 
 $(TEST_OBJ_DIR):
 	@echo Creating $@ folder
 	@mkdir $@
 
-$(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c $(TEST_OBJ_DIR)
+$(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.c
 	@echo Compiling $<
 	@$(CC) -c -o $@ $< $(CFLAGS) -I $(SRC_DIR)
