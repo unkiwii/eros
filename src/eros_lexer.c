@@ -20,9 +20,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 void eros_add_token(eros_lexer_t* lexer, token_t token)
 {
-  lexer->token_count++;
-  lexer->tokens = (token_t*) realloc(lexer->tokens, sizeof(token_t*) * lexer->token_count);
-  lexer->tokens[lexer->token_count - 1] = eros_strdup(token);
+  int count = lexer->token_count + 1;
+  lexer->tokens = (token_t*) realloc(lexer->tokens, sizeof(token_t*) * count);
+  lexer->tokens[lexer->token_count] = eros_strdup(token);
+  lexer->token_count = count;
 }
 
 void eros_lex(eros_lexer_t* lexer)
