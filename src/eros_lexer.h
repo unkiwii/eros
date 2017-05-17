@@ -26,12 +26,11 @@ struct eros_lexer_t
   source_row_t row;
   source_col_t col;
 
-  token_t** tokens;
+  token_t* tokens;
   token_count_t token_count;
 };
 
 eros_lexer_t* eros_lexer_new(eros_source_t*);
-
 void eros_lexer_delete(eros_lexer_t*);
 
 #endif // EROS_LEXER_H

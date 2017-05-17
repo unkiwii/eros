@@ -14,8 +14,21 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_defines.h"
 #include "eros_lexer.h"
+#include "eros_mem.h"
 
 #include <stdlib.h>
+
+void eros_add_token(eros_lexer_t* lexer, token_t token)
+{
+  lexer->token_count++;
+  lexer->tokens = (token_t*) realloc(lexer->tokens, sizeof(token_t*) * lexer->token_count);
+  lexer->tokens[lexer->token_count - 1] = eros_strdup(token);
+}
+
+void eros_lex(eros_lexer_t* lexer)
+{
+  //TODO
+}
 
 eros_lexer_t* eros_lexer_new(eros_source_t* source)
 {
@@ -26,6 +39,7 @@ eros_lexer_t* eros_lexer_new(eros_source_t* source)
   lexer->col = 0;
   lexer->tokens = NULL;
   lexer->token_count = 0;
+  eros_lex(lexer);
 
   return lexer;
 }
