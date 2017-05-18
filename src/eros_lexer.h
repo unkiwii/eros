@@ -16,6 +16,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #define EROS_LEXER_H
 
 #include "eros_source.h"
+#include "eros_defines.h"
 
 struct eros_lexer_t
 {
@@ -23,14 +24,17 @@ struct eros_lexer_t
   eros_source_t* source;
 
   /** current position in the source **/
-  source_row_t row;
-  source_col_t col;
+  source_position_t current_position;
+  source_position_t end_position;
 
-  token_t* tokens;
-  token_count_t token_count;
+  /** current character read **/
+  char current_char;
 };
 
 eros_lexer_t* eros_lexer_new(eros_source_t*);
+
 void eros_lexer_delete(eros_lexer_t*);
+
+eros_token_t* next_token(eros_lexer_t*);
 
 #endif // EROS_LEXER_H

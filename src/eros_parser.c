@@ -26,8 +26,6 @@ eros_parser_t* eros_parser_new(void)
 
   parser->step = NULL;
   parser->result = NULL;
-  parser->column = 1;
-  parser->line = 1;
 
   return parser;
 }
@@ -42,47 +40,47 @@ void eros_parser_delete(eros_parser_t* parser)
   free(parser);
 }
 
-eros_value_t* eros_parser_parse(eros_context_t* context, token_t** tokens, token_count_t token_count)
+eros_value_t* eros_parser_parse(eros_context_t* context, eros_lexer_t* lexer)
 {
   eros_parser_t* parser = eros_context_getparser(context);
 
   parser->step = eros_parser_step_module;
   parser->result = NULL;
 
-  token_t* token = NULL;
-  for (token_count_t i = 0; i < token_count; i++) {
-    token = tokens[i];
-    parser->step(parser, token);
-    if (parser->result && parser->result->type == EROS_VALUE_ERROR) {
-      return parser->result;
-    }
-  }
+  /* eros_token_t* token = NULL; */
+  /* for (token_count_t i = 0; i < token_count; i++) { */
+  /*   token = tokens[i]; */
+  /*   parser->step(parser, token); */
+  /*   if (parser->result && parser->result->type == EROS_VALUE_ERROR) { */
+  /*     return parser->result; */
+  /*   } */
+  /* } */
 
   return parser->result;
 }
 
-void eros_parser_step_module(eros_parser_t* parser, token_t* token)
+void eros_parser_step_module(eros_parser_t* parser, eros_token_t* token)
 {
   LOGD("step_module: %s", token);
   //TODO
 }
 
-void eros_parser_step_assignment(eros_parser_t* parser, token_t* token)
+void eros_parser_step_assignment(eros_parser_t* parser, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_slot(eros_parser_t* parser, token_t* token)
+void eros_parser_step_slot(eros_parser_t* parser, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_type(eros_parser_t* parser, token_t* token)
+void eros_parser_step_type(eros_parser_t* parser, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_identifier(eros_parser_t* parser, token_t* token)
+void eros_parser_step_identifier(eros_parser_t* parser, eros_token_t* token)
 {
   //TODO
 }

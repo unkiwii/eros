@@ -78,3 +78,12 @@ void eros_source_delete(eros_source_t* source)
 
   free(source);
 }
+
+char eros_source_read(eros_source_t* source, source_size_t at)
+{
+  if (at >= source->size) {
+    return 0;
+  }
+
+  return source->data[at];
+}

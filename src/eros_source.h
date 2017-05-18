@@ -31,6 +31,9 @@ struct eros_source_t
 
 eros_source_t* eros_source_from_file(char* filename);
 eros_source_t* eros_source_from_string(char* str);
+
 void eros_source_delete(eros_source_t* source);
+
+char eros_source_read(eros_source_t* source, source_size_t at);
 
 #endif // EROS_SOURCE_H

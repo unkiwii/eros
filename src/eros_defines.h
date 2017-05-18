@@ -57,12 +57,9 @@ typedef int error_code_t;
 typedef char flag_t;
 typedef long long int files_count_t;
 typedef long long int symbols_count_t;
-typedef int source_row_t;
-typedef int source_col_t;
+typedef int source_position_t;
 typedef long long int source_size_t;
 typedef int log_level_t;
-typedef char* token_t;  //TODO change to list of tokens
-typedef long int token_count_t;  //TODO change to list of tokens
 typedef int status_code_t;
 
 struct eros_parser_t;
@@ -82,5 +79,8 @@ typedef struct eros_value_t eros_value_t;
 
 struct eros_input_t;
 typedef struct eros_input_t eros_input_t;
+
+struct eros_token_t;
+typedef struct eros_token_t eros_token_t;
 
 #endif // EROS_DEFINES_H
