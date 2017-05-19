@@ -15,6 +15,12 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef EROS_DEFINES_H
 #define EROS_DEFINES_H
 
+#ifndef BOOL
+  #define BOOL char
+  #define TRUE ((char)1)
+  #define FALSE ((char)0)
+#endif
+
 #ifndef PROGRAM_NAME
   #define PROGRAM_NAME "eros"
 #endif
