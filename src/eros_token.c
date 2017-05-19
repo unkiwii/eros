@@ -50,6 +50,56 @@ int eros_token_simple_index(eros_token_type type)
   }
 }
 
+char* eros_token_simple_value(eros_token_type type)
+{
+  switch (type) {
+
+    case EROS_TK_EOF:       return "eof";
+    case EROS_TK_SPACE:     return " ";
+    case EROS_TK_EQUAL:     return "=";
+    case EROS_TK_SET:       return ":=";
+    case EROS_TK_DOT:       return ".";
+    case EROS_TK_COMMA:     return ",";
+    case EROS_TK_LBRACKET:  return "[";
+    case EROS_TK_RBRACKET:  return "]";
+    case EROS_TK_LPAREN:    return "(";
+    case EROS_TK_RPAREN:    return ")";
+    case EROS_TK_LBRACE:    return "{";
+    case EROS_TK_RBRACE:    return "}";
+
+    default:
+      return NULL;
+  }
+}
+
+const char* eros_token_type_name(eros_token_type type)
+{
+  switch (type) {
+
+    case EROS_TK_EOF:       return "<eof>";
+    case EROS_TK_SPACE:     return "<space>";
+    case EROS_TK_EQUAL:     return "<equal>";
+    case EROS_TK_SET:       return "<set>";
+    case EROS_TK_DOT:       return "<dot>";
+    case EROS_TK_COMMA:     return "<comma>";
+    case EROS_TK_LBRACKET:  return "<lbracket>";
+    case EROS_TK_RBRACKET:  return "<rbracket>";
+    case EROS_TK_LPAREN:    return "<lparen>";
+    case EROS_TK_RPAREN:    return "<rparen>";
+    case EROS_TK_LBRACE:    return "<lbrace>";
+    case EROS_TK_RBRACE:    return "<rbrace>";
+
+    case EROS_TK_NUMBER:      return "<number>";
+    case EROS_TK_IDENTIFIER:  return "<identifier>";
+    case EROS_TK_STRING:      return "<string>";
+
+    case EROS_TK_ILLEGAL:     return "<illegal>";
+
+    default:
+      return "<invalid>";
+  }
+}
+
 eros_token_t* eros_token_simple(eros_token_type type)
 {
   int index = eros_token_simple_index(type);
@@ -57,14 +107,14 @@ eros_token_t* eros_token_simple(eros_token_type type)
     return eros_token_illegal_new('\255');
   }
 
-  loaded_token_t entry = eros_simple_tokens[index];
-  if (!entry.isLoaded) {
-    entry.isLoaded = 1;
-    entry.token.type = type;
-    entry.token.value = NULL;
+  loaded_token_t* entry = &eros_simple_tokens[index];
+  if (!entry->isLoaded) {
+    entry->isLoaded = 1;
+    entry->token.type = type;
+    entry->token.value = eros_token_simple_value(type);
   }
 
-  return &(eros_simple_tokens[index].token);
+  return &(entry->token);
 }
 
 eros_token_t* eros_token_illegal_new(char ch)
@@ -91,8 +141,7 @@ void eros_token_delete(eros_token_t* token)
     return;
   }
 
-  int index = eros_token_simple_index(token->type);
-  if (index > 0) {
+  if (eros_token_is_simple(token)) {
     /* we don't free simple tokens */
     return;
   }
@@ -104,4 +153,22 @@ void eros_token_delete(eros_token_t* token)
 
   free(token);
   token = NULL;
+}
+
+BOOL eros_token_is_simple(eros_token_t* token)
+{
+  if (!token) {
+    return FALSE;
+  }
+
+  return eros_token_simple_index(token->type) >= 0;
+}
+
+BOOL eros_token_is_eof(eros_token_t* token)
+{
+  if (!token) {
+    return FALSE;
+  }
+
+  return token->type == EROS_TK_EOF;
 }

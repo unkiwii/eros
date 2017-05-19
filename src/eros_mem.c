@@ -24,3 +24,15 @@ char* eros_strdup(const char* s)
   strncpy(r, s, length);
   return r;
 }
+
+char* eros_strcpy(const char* source, int from, int to)
+{
+  if (to <= from) {
+    return NULL;
+  }
+
+  int length = to - from;
+  char* r = (char*) calloc(length + 1, sizeof(char*));
+  strncpy(r, source + from, length);
+  return r;
+}

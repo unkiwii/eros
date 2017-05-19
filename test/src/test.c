@@ -14,6 +14,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "test.h"
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +23,7 @@ typedef void (*eros_test)();
 
 static int test_status;
 
-void test(char* name, eros_test t)
+void test(const char* name, eros_test t)
 {
   test_status = 0;
   printf("%s\n", name);
@@ -33,22 +34,38 @@ void test(char* name, eros_test t)
   }
 }
 
-void eros_assert_eq_length(char* name, int actual, int expected)
+void eros_assert_eq_length(const char* name, int actual, int expected)
 {
   if (actual != expected) {
-    printf("  ERROR: expected %d %s, but found %d\n", expected, name, actual);
-    test_status += 1;
+    fail("expected %d %s, but found %d\n", expected, name, actual);
   }
 }
 
-void eros_assert_eq_carr(char* name, int length, char** actual, char** expected)
+void eros_assert_eq_char_arr(const char* name, int length, char** actual, char** expected)
 {
   for (int i = 0; i < length; i++) {
     if (strcmp(actual[i], expected[i]) != 0) {
-      printf("  ERROR: expected %s '%s' but found '%s'\n", name, expected[i], actual[i]);
-      test_status += 1;
+      fail("expected %s '%s' but found '%s'\n", name, expected[i], actual[i]);
     }
   }
+}
+
+void eros_assert_eq_char_ptr(const char* name, char* actual, char* expected)
+{
+  if (strcmp(actual, expected) != 0) {
+    fail("expected %s to be '%s', but found '%s'\n", name, expected, actual);
+  }
+}
+
+void fail(const char* format, ...)
+{
+  va_list args;
+  va_start(args, format);
+  printf("  ERROR: ");
+  vprintf(format, args);
+  va_end(args);
+
+  test_status += 1;
 }
 
 int main(int argc, char** argv)

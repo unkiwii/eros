@@ -13,35 +13,14 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
 #include "eros_lexer.h"
-#include "eros_source.h"
 #include "eros_mem.h"
+#include "eros_source.h"
+#include "eros_token.h"
 #include "test.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-char* expected[512];
-int expected_length;
-
-void expect(char* str)
-{
-  expected_length = 0;
-
-  char* tk = eros_strdup(str);
-
-  char* next = strtok(tk, " ");
-  if (next) {
-    expected[expected_length++] = next;
-  }
-
-  while ((next = strtok(NULL, " ")) != NULL) {
-    expected[expected_length++] = " ";
-    expected[expected_length++] = next;
-  }
-
-  free(tk);
-}
 
 void test_lexer()
 {
@@ -49,10 +28,31 @@ void test_lexer()
   eros_source_t* source = eros_source_from_string(test);
   eros_lexer_t* lexer = eros_lexer_new(source);
 
-  expect(test);
+  #define SIZE 9
+  eros_token_t* expected[SIZE] = {
+    eros_token_new(EROS_TK_IDENTIFIER, "Number"),
+    eros_token_simple(EROS_TK_SPACE),
+    eros_token_new(EROS_TK_IDENTIFIER, "a"),
+    eros_token_simple(EROS_TK_SPACE),
+    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_SPACE),
+    eros_token_new(EROS_TK_NUMBER, "123"),
+    eros_token_simple(EROS_TK_DOT),
+    eros_token_simple(EROS_TK_EOF)
+  };
 
-  /* eros_assert_eq_length("tokens", lexer->token_count, expected_length); */
-  /* eros_assert_eq_carr("token", lexer->token_count, lexer->tokens, expected); */
+  eros_token_t* actual[SIZE];
+
+  int count = 0;
+  do {
+    actual[count] = eros_lexer_next_token(lexer);
+  } while (!eros_token_is_eof(actual[count++]));
+
+  eros_assert_eq_length("tokens", count, SIZE);
+
+  for (int i = 0; i < SIZE; i++) {
+    eros_assert_eq_char_ptr("token", actual[i]->value, expected[i]->value);
+  }
 
   eros_lexer_delete(lexer);
 }

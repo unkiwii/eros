@@ -16,5 +16,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #define EROS_MEM_H
 
 char* eros_strdup(const char* s);
+char* eros_strcpy(const char* source, int from, int to);
 
 #endif // EROS_MEM_H

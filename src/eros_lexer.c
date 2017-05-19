@@ -18,6 +18,17 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include "eros_token.h"
 
 #include <stdlib.h>
+#include <stdio.h>
+
+char eros_lexer_is_letter(char ch)
+{
+  return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
+}
+
+char eros_lexer_is_digit(char ch)
+{
+  return ch >= '0' && ch <= '9';
+}
 
 void eros_lexer_read_char(eros_lexer_t* lexer)
 {
@@ -29,6 +40,17 @@ void eros_lexer_read_char(eros_lexer_t* lexer)
 
   lexer->current_position = lexer->end_position;
   lexer->end_position++;
+}
+
+void eros_lexer_unread_char(eros_lexer_t* lexer)
+{
+  if (lexer->current_position <= 0) {
+    lexer->current_char = 0;
+  } else {
+    lexer->current_position--;
+    lexer->end_position--;
+    lexer->current_char = eros_source_read(lexer->source, lexer->end_position);
+  }
 }
 
 char eros_lexer_peek_char(eros_lexer_t* lexer)
@@ -48,66 +70,108 @@ char* eros_lexer_read_string(eros_lexer_t* lexer)
 
 char* eros_lexer_read_identifier(eros_lexer_t* lexer)
 {
-  //TODO
-  return NULL;
+  int start_position = lexer->current_position;
+  while (eros_lexer_is_letter(lexer->current_char)) {
+    eros_lexer_read_char(lexer);
+  }
+
+  char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+  eros_lexer_unread_char(lexer);
+  return interval;
 }
 
 char* eros_lexer_read_number(eros_lexer_t* lexer)
 {
-  //TODO
-  return NULL;
+  int start_position = lexer->current_position;
+  while (eros_lexer_is_digit(lexer->current_char)) {
+    eros_lexer_read_char(lexer);
+  }
+
+  char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+  eros_lexer_unread_char(lexer);
+  return interval;
 }
 
-char eros_lexer_is_letter(char ch)
+eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 {
-  //TODO
-  return 0;
-}
-
-char eros_lexer_is_digit(char ch)
-{
-  //TODO
-  return 0;
-}
-
-eros_token_t* next_token(eros_lexer_t* lexer)
-{
+  eros_token_t* token;
   eros_lexer_read_char(lexer);
 
   switch (lexer->current_char) {
 
-    case '\0': return eros_token_simple(EROS_TK_EOF);
-    case ' ':  return eros_token_simple(EROS_TK_SPACE);
-    case '=':  return eros_token_simple(EROS_TK_EQUAL);
-    case '.':  return eros_token_simple(EROS_TK_DOT);
-    case ',':  return eros_token_simple(EROS_TK_COMMA);
-    case '[':  return eros_token_simple(EROS_TK_LBRACKET);
-    case ']':  return eros_token_simple(EROS_TK_RBRACKET);
-    case '(':  return eros_token_simple(EROS_TK_LPAREN);
-    case ')':  return eros_token_simple(EROS_TK_RPAREN);
-    case '{':  return eros_token_simple(EROS_TK_LBRACE);
-    case '}':  return eros_token_simple(EROS_TK_RBRACE);
+    case '\0': 
+      token = eros_token_simple(EROS_TK_EOF);
+      break;
+
+    case ' ':
+      token = eros_token_simple(EROS_TK_SPACE);
+      break;
+
+    case '=':
+      token = eros_token_simple(EROS_TK_EQUAL);
+      break;
+
+    case '.':
+      token = eros_token_simple(EROS_TK_DOT);
+      break;
+
+    case ',':
+      token = eros_token_simple(EROS_TK_COMMA);
+      break;
+
+    case '[':
+      token = eros_token_simple(EROS_TK_LBRACKET);
+      break;
+
+    case ']':
+      token = eros_token_simple(EROS_TK_RBRACKET);
+      break;
+
+    case '(':
+      token = eros_token_simple(EROS_TK_LPAREN);
+      break;
+
+    case ')':
+      token = eros_token_simple(EROS_TK_RPAREN);
+      break;
+
+    case '{':
+      token = eros_token_simple(EROS_TK_LBRACE);
+      break;
+
+    case '}':
+      token = eros_token_simple(EROS_TK_RBRACE);
+      break;
 
     case ':':
       if (eros_lexer_peek_char(lexer) == '=') {
-        return eros_token_simple(EROS_TK_SET);
+        token = eros_token_simple(EROS_TK_SET);
       } else {
-        return eros_token_illegal_new(lexer->current_char);
+        token = eros_token_illegal_new(lexer->current_char);
       }
+      break;
 
     case '\'':
-      return eros_token_new(EROS_TK_STRING, eros_lexer_read_string(lexer));
+      token = eros_token_new(EROS_TK_STRING, eros_lexer_read_string(lexer));
+      break;
 
     /** number or identifier **/
     default:
       if (eros_lexer_is_letter(lexer->current_char)) {
-        return eros_token_new(EROS_TK_IDENTIFIER, eros_lexer_read_identifier(lexer));
+        char* identifier = eros_lexer_read_identifier(lexer);
+        token = eros_token_new(EROS_TK_IDENTIFIER, identifier);
+        free(identifier);
       } else if (eros_lexer_is_digit(lexer->current_char)) {
-        return eros_token_new(EROS_TK_NUMBER, eros_lexer_read_number(lexer));
+        char* number = eros_lexer_read_number(lexer);
+        token = eros_token_new(EROS_TK_NUMBER, number);
+        free(number);
       } else {
-        return eros_token_illegal_new(lexer->current_char);
+        token = eros_token_illegal_new(lexer->current_char);
       }
+      break;
   }
+
+  return token;
 }
 
 eros_lexer_t* eros_lexer_new(eros_source_t* source)

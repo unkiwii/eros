@@ -49,9 +49,13 @@ struct eros_token_t
 };
 
 eros_token_t* eros_token_simple(eros_token_type);
-
 eros_token_t* eros_token_illegal_new(char ch);
 eros_token_t* eros_token_new(eros_token_type, const char* value);
 void eros_token_delete(eros_token_t*);
+
+const char* eros_token_type_name(eros_token_type);
+
+BOOL eros_token_is_simple(eros_token_t*);
+BOOL eros_token_is_eof(eros_token_t*);
 
 #endif  /* EROS_TOKEN_H */

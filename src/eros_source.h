@@ -35,5 +35,6 @@ eros_source_t* eros_source_from_string(char* str);
 void eros_source_delete(eros_source_t* source);
 
 char eros_source_read(eros_source_t* source, source_size_t at);
+char* eros_source_read_interval(eros_source_t* source, source_size_t from, source_size_t to);
 
 #endif // EROS_SOURCE_H

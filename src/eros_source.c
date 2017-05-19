@@ -49,7 +49,7 @@ eros_source_t* eros_source_from_file(char* filename)
   fclose(file);
 
   if (readsize < filesize) {
-    printf("Couldn't read file %s completely\n", filename);
+    LOGE("Couldn't read file %s completely\n", filename);
     eros_source_delete(source);
     return NULL;
   }
@@ -86,4 +86,13 @@ char eros_source_read(eros_source_t* source, source_size_t at)
   }
 
   return source->data[at];
+}
+
+char* eros_source_read_interval(eros_source_t* source, source_size_t from, source_size_t to)
+{
+  if (from >= source->size || to >= source->size) {
+    return NULL;
+  }
+
+  return eros_strcpy(source->data, from, to);
 }
