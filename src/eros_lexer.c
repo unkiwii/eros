@@ -99,12 +99,16 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 
   switch (lexer->current_char) {
 
-    case '\0': 
+    case 0:
       token = eros_token_simple(EROS_TK_EOF);
       break;
 
     case ' ':
       token = eros_token_simple(EROS_TK_SPACE);
+      break;
+
+    case '#':
+      token = eros_token_simple(EROS_TK_NUMERAL);
       break;
 
     case '=':
@@ -147,7 +151,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       if (eros_lexer_peek_char(lexer) == '=') {
         token = eros_token_simple(EROS_TK_SET);
       } else {
-        token = eros_token_illegal_new(lexer->current_char);
+        token = eros_token_illegal(lexer->current_char);
       }
       break;
 
@@ -166,7 +170,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
         token = eros_token_new(EROS_TK_NUMBER, number);
         free(number);
       } else {
-        token = eros_token_illegal_new(lexer->current_char);
+        token = eros_token_illegal(lexer->current_char);
       }
       break;
   }

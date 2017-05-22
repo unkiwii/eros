@@ -17,120 +17,112 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include <stdlib.h>
 
-typedef struct loaded_token_t
+static eros_token_type token_types[] = {
+  /** NOTE: keep simple types always on top */
+  { .code = EROS_TK_EOF,         .name = "<eof>",         .value = "eof" },
+  { .code = EROS_TK_SPACE,       .name = "<space>",       .value = " "   },
+  { .code = EROS_TK_NUMERAL,     .name = "<numeral>",     .value = "#"   },
+  { .code = EROS_TK_EQUAL,       .name = "<equal>",       .value = "="   },
+  { .code = EROS_TK_SET,         .name = "<set>",         .value = ":="  },
+  { .code = EROS_TK_DOT,         .name = "<dot>",         .value = "."   },
+  { .code = EROS_TK_COMMA,       .name = "<comma>",       .value = ","   },
+  { .code = EROS_TK_LBRACKET,    .name = "<lbracket>",    .value = "["   },
+  { .code = EROS_TK_RBRACKET,    .name = "<rbracket>",    .value = "]"   },
+  { .code = EROS_TK_LPAREN,      .name = "<lparen>",      .value = "("   },
+  { .code = EROS_TK_RPAREN,      .name = "<rparen>",      .value = ")"   },
+  { .code = EROS_TK_LBRACE,      .name = "<lbrace>",      .value = "{"   },
+  { .code = EROS_TK_RBRACE,      .name = "<rbrace>",      .value = "}"   },
+
+  { .code = EROS_TK_NUMBER,      .name = "<number>",      .value = NULL  },
+  { .code = EROS_TK_IDENTIFIER,  .name = "<identifier>",  .value = NULL  },
+  { .code = EROS_TK_STRING,      .name = "<string>",      .value = NULL  },
+
+  { .code = EROS_TK_ILLEGAL,     .name = "<illegal>",     .value = NULL  },
+
+  { .code = _EROS_TK_LAST_,      .name = NULL,            .value = NULL  }
+};
+
+static eros_token_t* simple_tokens[(int)_EROS_TK_LAST_SIMPLE_] = { NULL };
+
+eros_token_type* eros_token_type_by_code(eros_token_type_code code)
 {
-  /** is loaded or not? **/
-  char isLoaded;
+  int index = 0;
+  eros_token_type* t;
+  do {
+    t = &token_types[index++];
+    if (t->code == code) {
+      return t;
+    }
+  } while (t->code != _EROS_TK_LAST_);  /* simple types have a value */
 
-  /** the token itself **/
-  eros_token_t token;
-} loaded_token_t;
-
-loaded_token_t eros_simple_tokens[12];
-
-int eros_token_simple_index(eros_token_type type)
-{
-  switch (type) {
-
-    case EROS_TK_EOF:       return 0;
-    case EROS_TK_SPACE:     return 1;
-    case EROS_TK_EQUAL:     return 2;
-    case EROS_TK_SET:       return 3;
-    case EROS_TK_DOT:       return 4;
-    case EROS_TK_COMMA:     return 5;
-    case EROS_TK_LBRACKET:  return 6;
-    case EROS_TK_RBRACKET:  return 7;
-    case EROS_TK_LPAREN:    return 8;
-    case EROS_TK_RPAREN:    return 9;
-    case EROS_TK_LBRACE:    return 10;
-    case EROS_TK_RBRACE:    return 11;
-
-    default:
-      return -1;
-  }
+  return NULL;
 }
 
-char* eros_token_simple_value(eros_token_type type)
+int eros_token_simple_index(eros_token_type_code code)
 {
-  switch (type) {
+  int index = 0;
+  const eros_token_type* t;
+  do {
+    t = &token_types[index++];
+    if (t->code == code) {
+      return index;
+    }
+  } while (t->value != NULL);  /* simple types have a value */
 
-    case EROS_TK_EOF:       return "eof";
-    case EROS_TK_SPACE:     return " ";
-    case EROS_TK_EQUAL:     return "=";
-    case EROS_TK_SET:       return ":=";
-    case EROS_TK_DOT:       return ".";
-    case EROS_TK_COMMA:     return ",";
-    case EROS_TK_LBRACKET:  return "[";
-    case EROS_TK_RBRACKET:  return "]";
-    case EROS_TK_LPAREN:    return "(";
-    case EROS_TK_RPAREN:    return ")";
-    case EROS_TK_LBRACE:    return "{";
-    case EROS_TK_RBRACE:    return "}";
-
-    default:
-      return NULL;
-  }
+  return -1;
 }
 
-const char* eros_token_type_name(eros_token_type type)
+const char* eros_token_simple_value(eros_token_type_code code)
 {
-  switch (type) {
-
-    case EROS_TK_EOF:       return "<eof>";
-    case EROS_TK_SPACE:     return "<space>";
-    case EROS_TK_EQUAL:     return "<equal>";
-    case EROS_TK_SET:       return "<set>";
-    case EROS_TK_DOT:       return "<dot>";
-    case EROS_TK_COMMA:     return "<comma>";
-    case EROS_TK_LBRACKET:  return "<lbracket>";
-    case EROS_TK_RBRACKET:  return "<rbracket>";
-    case EROS_TK_LPAREN:    return "<lparen>";
-    case EROS_TK_RPAREN:    return "<rparen>";
-    case EROS_TK_LBRACE:    return "<lbrace>";
-    case EROS_TK_RBRACE:    return "<rbrace>";
-
-    case EROS_TK_NUMBER:      return "<number>";
-    case EROS_TK_IDENTIFIER:  return "<identifier>";
-    case EROS_TK_STRING:      return "<string>";
-
-    case EROS_TK_ILLEGAL:     return "<illegal>";
-
-    default:
-      return "<invalid>";
+  eros_token_type* type = eros_token_type_by_code(code);
+  if (type) {
+    return type->value;
   }
+
+  return NULL;
 }
 
-eros_token_t* eros_token_simple(eros_token_type type)
+const char* eros_token_type_name(eros_token_type_code code)
 {
-  int index = eros_token_simple_index(type);
+  eros_token_type* type = eros_token_type_by_code(code);
+  if (type) {
+    return type->name;
+  }
+
+  return "<INVALID>";
+}
+
+eros_token_t* eros_token_simple(eros_token_type_code code)
+{
+  int index = eros_token_simple_index(code);
   if (index < 0) {
-    return eros_token_illegal_new('\255');
+    return eros_token_illegal('\255');
   }
 
-  loaded_token_t* entry = &eros_simple_tokens[index];
-  if (!entry->isLoaded) {
-    entry->isLoaded = 1;
-    entry->token.type = type;
-    entry->token.value = eros_token_simple_value(type);
+  eros_token_t* token = simple_tokens[index];
+  if (!token) {
+    token = simple_tokens[index] = (eros_token_t*) malloc(sizeof(eros_token_t*));
+    token->type = eros_token_type_by_code(code);
+    token->value = token->type->value;
   }
 
-  return &(entry->token);
+  return token;
 }
 
-eros_token_t* eros_token_illegal_new(char ch)
+eros_token_t* eros_token_illegal(char ch)
 {
   eros_token_t* token = (eros_token_t*) malloc(sizeof(eros_token_t));
-  token->type = EROS_TK_ILLEGAL;
+  token->type = eros_token_type_by_code(EROS_TK_ILLEGAL);
   token->value = (char*) malloc(sizeof(char) * 2);
   token->value[0] = ch;
   token->value[1] = '\0';
   return token;
 }
 
-eros_token_t* eros_token_new(eros_token_type type, const char* value)
+eros_token_t* eros_token_new(eros_token_type_code code, const char* value)
 {
   eros_token_t* token = (eros_token_t*) malloc(sizeof(eros_token_t));
-  token->type = type;
+  token->type = eros_token_type_by_code(code);
   token->value = eros_strdup(value);
   return token;
 }
@@ -155,20 +147,28 @@ void eros_token_delete(eros_token_t* token)
   token = NULL;
 }
 
+BOOL eros_token_is_simple_type(eros_token_type* type)
+{
+  /* simple token types have a value, complex ones do not (by definition) */
+  return type->value != NULL;
+}
+
 BOOL eros_token_is_simple(eros_token_t* token)
 {
   if (!token) {
+    /* a null token is not simple */
     return FALSE;
   }
 
-  return eros_token_simple_index(token->type) >= 0;
+  return eros_token_is_simple_type(token->type);
 }
 
 BOOL eros_token_is_eof(eros_token_t* token)
 {
   if (!token) {
+    /* a null token is not eof */
     return FALSE;
   }
 
-  return token->type == EROS_TK_EOF;
+  return token->type->code == EROS_TK_EOF;
 }
