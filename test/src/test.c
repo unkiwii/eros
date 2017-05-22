@@ -26,18 +26,20 @@ static int test_status;
 void test(const char* name, eros_test t)
 {
   test_status = 0;
-  printf("%s\n", name);
+  printf("%s", name);
   t();
   if (test_status != 0) {
     printf("\n");
     exit(test_status);
+  } else {
+    printf(" ok\n");
   }
 }
 
 void eros_assert_eq_length(const char* name, int actual, int expected)
 {
   if (actual != expected) {
-    fail("expected %d %s, but found %d\n", expected, name, actual);
+    fail("expected %d %s, but found %d", expected, name, actual);
   }
 }
 
@@ -45,7 +47,7 @@ void eros_assert_eq_char_arr(const char* name, int length, char** actual, char**
 {
   for (int i = 0; i < length; i++) {
     if (strcmp(actual[i], expected[i]) != 0) {
-      fail("expected %s '%s' but found '%s'\n", name, expected[i], actual[i]);
+      fail("expected %s '%s' but found '%s'", name, expected[i], actual[i]);
     }
   }
 }
@@ -53,7 +55,7 @@ void eros_assert_eq_char_arr(const char* name, int length, char** actual, char**
 void eros_assert_eq_char_ptr(const char* name, char* actual, char* expected)
 {
   if (strcmp(actual, expected) != 0) {
-    fail("expected %s to be '%s', but found '%s'\n", name, expected, actual);
+    fail("expected %s to be '%s', but found '%s'", name, expected, actual);
   }
 }
 
@@ -61,7 +63,7 @@ void fail(const char* format, ...)
 {
   va_list args;
   va_start(args, format);
-  printf("  ERROR: ");
+  printf("\n  ERROR: ");
   vprintf(format, args);
   va_end(args);
 

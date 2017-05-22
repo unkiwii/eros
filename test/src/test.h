@@ -15,9 +15,9 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #ifndef TEST_LEXER_H
 #define TEST_LEXER_H
 
-void eros_assert_eq_length(const char* name, int, int);
-void eros_assert_eq_char_arr(const char* name, int, char**, char**);
-void eros_assert_eq_char_ptr(const char* name, char*, char*);
+void eros_assert_eq_length(const char* name, int actual, int expected);
+void eros_assert_eq_char_arr(const char* name, int size, char** actual, char** expected);
+void eros_assert_eq_char_ptr(const char* name, char* actual, char* expected);
 
 void fail(const char* format, ...);
 

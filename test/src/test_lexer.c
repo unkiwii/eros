@@ -28,8 +28,7 @@ void test_lexer()
   eros_source_t* source = eros_source_from_string(test);
   eros_lexer_t* lexer = eros_lexer_new(source);
 
-  #define SIZE 9
-  eros_token_t* expected[SIZE] = {
+  eros_token_t* expected[] = {
     eros_token_new(EROS_TK_IDENTIFIER, "Number"),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_IDENTIFIER, "a"),
@@ -38,21 +37,33 @@ void test_lexer()
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_NUMBER, "123"),
     eros_token_simple(EROS_TK_DOT),
-    eros_token_simple(EROS_TK_EOF)
+    eros_token_simple(EROS_TK_EOF),
+    NULL
   };
 
-  eros_token_t* actual[SIZE];
+  /* how many expected tokens are */
+  int expected_count = 0;
+  while (expected[expected_count]) {
+    expected_count++;
+  }
 
-  int count = 0;
+  eros_token_t** actual = malloc(sizeof(eros_token_t*) * expected_count);
+
+  int actual_count = 0;
   do {
-    actual[count] = eros_lexer_next_token(lexer);
-  } while (!eros_token_is_eof(actual[count++]));
+    actual[actual_count] = eros_lexer_next_token(lexer);
+  } while (!eros_token_is_eof(actual[actual_count++]) && actual_count <= expected_count);
 
-  eros_assert_eq_length("tokens", count, SIZE);
+  eros_assert_eq_length("tokens", actual_count, expected_count);
 
-  for (int i = 0; i < SIZE; i++) {
+  for (int i = 0; i < expected_count; i++) {
     eros_assert_eq_char_ptr("token", actual[i]->value, expected[i]->value);
   }
+
+  for (int i = 0; i < expected_count; i++) {
+    free(actual[i]);
+  }
+  free(actual);
 
   eros_lexer_delete(lexer);
 }
