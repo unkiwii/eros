@@ -53,6 +53,13 @@ void eros_lexer_unread_char(eros_lexer_t* lexer)
   }
 }
 
+void eros_lexer_skip_line(eros_lexer_t* lexer)
+{
+  do {
+    eros_lexer_read_char(lexer);
+  } while (lexer->current_char != 0 && lexer->current_char != '\n');
+}
+
 char eros_lexer_peek_char(eros_lexer_t* lexer)
 {
   if (lexer->end_position >= lexer->source->size) {
@@ -107,10 +114,6 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       token = eros_token_simple(EROS_TK_SPACE);
       break;
 
-    case '#':
-      token = eros_token_simple(EROS_TK_NUMERAL);
-      break;
-
     case '=':
       token = eros_token_simple(EROS_TK_EQUAL);
       break;
@@ -145,6 +148,11 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 
     case '}':
       token = eros_token_simple(EROS_TK_RBRACE);
+      break;
+
+    case '#':
+      eros_lexer_skip_line(lexer);
+      token = eros_lexer_next_token(lexer);
       break;
 
     case ':':
