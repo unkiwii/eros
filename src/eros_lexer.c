@@ -78,9 +78,9 @@ char* eros_lexer_read_string(eros_lexer_t* lexer)
 char* eros_lexer_read_identifier(eros_lexer_t* lexer)
 {
   int start_position = lexer->current_position;
-  while (eros_lexer_is_letter(lexer->current_char)) {
+  do {
     eros_lexer_read_char(lexer);
-  }
+  } while (eros_lexer_is_letter(lexer->current_char));
 
   char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
   eros_lexer_unread_char(lexer);
@@ -103,6 +103,8 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 {
   eros_token_t* token = NULL;
   eros_lexer_read_char(lexer);
+
+  /* printf("    current_char = '%c'\n", lexer->current_char); */
 
   switch (lexer->current_char) {
 
@@ -183,6 +185,8 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       }
       break;
   }
+
+  /* printf("    \\__ token = %s '%s'\n", token->type->name, token->value); */
 
   return token;
 }

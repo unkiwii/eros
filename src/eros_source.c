@@ -92,7 +92,7 @@ char eros_source_read(eros_source_t* source, source_size_t at)
 
 char* eros_source_read_interval(eros_source_t* source, source_size_t from, source_size_t to)
 {
-  if (from >= source->size || to >= source->size) {
+  if (from >= source->size || to > source->size) {
     return NULL;
   }
 
