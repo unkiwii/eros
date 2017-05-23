@@ -74,9 +74,11 @@ void eros_source_delete(eros_source_t* source)
 
   if (source->data) {
     free(source->data);
+    source->data = NULL;
   }
 
   free(source);
+  source = NULL;
 }
 
 char eros_source_read(eros_source_t* source, source_size_t at)

@@ -31,7 +31,7 @@ struct eros_lexer_t
   char current_char;
 };
 
-eros_lexer_t* eros_lexer_new(eros_source_t*);
+eros_lexer_t* eros_lexer_new(eros_source_t* source);
 
 void eros_lexer_delete(eros_lexer_t*);
 

@@ -101,7 +101,7 @@ char* eros_lexer_read_number(eros_lexer_t* lexer)
 
 eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 {
-  eros_token_t* token;
+  eros_token_t* token = NULL;
   eros_lexer_read_char(lexer);
 
   switch (lexer->current_char) {
@@ -157,6 +157,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 
     case ':':
       if (eros_lexer_peek_char(lexer) == '=') {
+        eros_lexer_read_char(lexer);  /* consume the '=' char */
         token = eros_token_simple(EROS_TK_SET);
       } else {
         token = eros_token_illegal(lexer->current_char);
@@ -204,10 +205,9 @@ void eros_lexer_delete(eros_lexer_t* lexer)
     return;
   }
 
-  if (lexer->source) {
-    eros_source_delete(lexer->source);
-    lexer->source = NULL;
-  }
+  /* we do not create the source, then we don't have to free it */
+  lexer->source = NULL;
 
   free(lexer);
+  lexer = NULL;
 }
