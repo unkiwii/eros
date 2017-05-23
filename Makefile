@@ -28,7 +28,6 @@ all: $(EXECUTABLE)
 
 test: prep_debug $(TEST_OBJ_DIR) $(TEST)
 	@./$(TEST) &
-	@rm $(TEST) >/dev/null 2>&1 || true
 
 debug: clean prep_debug all
 
