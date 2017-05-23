@@ -14,7 +14,6 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 #include "eros_lexer.h"
 #include "eros_mem.h"
-#include "eros_source.h"
 #include "eros_token.h"
 #include "test.h"
 
@@ -47,7 +46,7 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
   int actual_count = 0;
   do {
     actual[actual_count] = eros_lexer_next_token(lexer);
-    printf("   got: '%s'\n", actual[actual_count]->value);
+    /* printf("   got: '%s'\n", actual[actual_count]->value); */
   } while (!eros_token_is_eof(actual[actual_count++]) && actual_count <= expected_count);
 
   eros_assert_eq_length("tokens", actual_count, expected_count);
@@ -59,9 +58,7 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
 
   for (int i = 0; i < actual_count; i++) {
     if (actual[i]) {
-      printf("freeing: '%s'\n", actual[i]->value);
-      printf("i: %d\n", i);
-      free(actual[i]);
+      eros_token_delete(actual[i]);
       actual[i] = NULL;
     }
   }
@@ -69,20 +66,60 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
   free(expected);
 
   eros_lexer_delete(lexer);
+  eros_source_delete(source);
 }
 
 void test_lexer()
 {
   char* t;
 
-  t = "Number a = 123.";
+  t = "";
+  printf("  lexing '%s'\n", t);
+  test_lexer_case(t,
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  t = " =:=.,[]{}()1a";
+  printf("  lexing '%s'\n", t);
+  test_lexer_case(t,
+    eros_token_simple(EROS_TK_SPACE),
+    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_SET),
+    eros_token_simple(EROS_TK_DOT),
+    eros_token_simple(EROS_TK_COMMA),
+    eros_token_simple(EROS_TK_LBRACKET),
+    eros_token_simple(EROS_TK_RBRACKET),
+    eros_token_simple(EROS_TK_LBRACE),
+    eros_token_simple(EROS_TK_RBRACE),
+    eros_token_simple(EROS_TK_LPAREN),
+    eros_token_simple(EROS_TK_RPAREN),
+    eros_token_new(EROS_TK_NUMBER, "1"),
+    eros_token_new(EROS_TK_IDENTIFIER, "a"),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  t = "==:=:==";
+  printf("  lexing '%s'\n", t);
+  test_lexer_case(t,
+    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_SET),
+    eros_token_simple(EROS_TK_SET),
+    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  t = "Number a := 123.";
   printf("  lexing '%s'\n", t);
   test_lexer_case(t,
     eros_token_new(EROS_TK_IDENTIFIER, "Number"),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_IDENTIFIER, "a"),
     eros_token_simple(EROS_TK_SPACE),
-    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_SET),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_NUMBER, "123"),
     eros_token_simple(EROS_TK_DOT),
@@ -90,16 +127,17 @@ void test_lexer()
     NULL
   );
 
-  t = "name = a.";
+  t = "name := a.";
   printf("  lexing '%s'\n", t);
   test_lexer_case(t,
     eros_token_new(EROS_TK_IDENTIFIER, "name"),
     eros_token_simple(EROS_TK_SPACE),
-    eros_token_simple(EROS_TK_EQUAL),
+    eros_token_simple(EROS_TK_SET),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_IDENTIFIER, "a"),
     eros_token_simple(EROS_TK_DOT),
     eros_token_simple(EROS_TK_EOF),
     NULL
   );
+
 }
