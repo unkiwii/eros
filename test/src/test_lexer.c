@@ -24,6 +24,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 void test_lexer_case(char* text, eros_token_t* token, ...)
 {
+  printf("  lexing '%s'\n", text);
+
   eros_source_t* source = eros_source_from_string(text);
   eros_lexer_t* lexer = eros_lexer_new(source);
 
@@ -71,18 +73,12 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
 
 void test_lexer()
 {
-  char* t;
-
-  t = "";
-  printf("  lexing '%s'\n", t);
-  test_lexer_case(t,
+  test_lexer_case("",
     eros_token_simple(EROS_TK_EOF),
     NULL
   );
 
-  t = " =:=.,[]{}()1a";
-  printf("  lexing '%s'\n", t);
-  test_lexer_case(t,
+  test_lexer_case(" =:=.,[]{}()1a",
     eros_token_simple(EROS_TK_SPACE),
     eros_token_simple(EROS_TK_EQUAL),
     eros_token_simple(EROS_TK_SET),
@@ -100,9 +96,7 @@ void test_lexer()
     NULL
   );
 
-  t = "==:=:==";
-  printf("  lexing '%s'\n", t);
-  test_lexer_case(t,
+  test_lexer_case("==:=:==",
     eros_token_simple(EROS_TK_EQUAL),
     eros_token_simple(EROS_TK_EQUAL),
     eros_token_simple(EROS_TK_SET),
@@ -112,9 +106,7 @@ void test_lexer()
     NULL
   );
 
-  t = "Number a := 123.";
-  printf("  lexing '%s'\n", t);
-  test_lexer_case(t,
+  test_lexer_case("Number a := 123.",
     eros_token_new(EROS_TK_IDENTIFIER, "Number"),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_new(EROS_TK_IDENTIFIER, "a"),
@@ -127,9 +119,7 @@ void test_lexer()
     NULL
   );
 
-  t = "name := a.";
-  printf("  lexing '%s'\n", t);
-  test_lexer_case(t,
+  test_lexer_case("name := a.",
     eros_token_new(EROS_TK_IDENTIFIER, "name"),
     eros_token_simple(EROS_TK_SPACE),
     eros_token_simple(EROS_TK_SET),
@@ -139,5 +129,4 @@ void test_lexer()
     eros_token_simple(EROS_TK_EOF),
     NULL
   );
-
 }

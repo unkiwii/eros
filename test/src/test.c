@@ -21,15 +21,25 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 typedef void (*eros_test)();
 
-static int test_status;
+static int test_status = 0;
 
 void test(const char* name, eros_test t)
 {
   test_status = 0;
   printf("%s\n", name);
   t();
+  /**
+   *
+   * IMPORTANT:
+   *
+   *  Something inside t(); is modifying test_status indirectly (via bad memory acces?)
+   *  I need to fix it before doing anything else
+   *
+   *  All tests are passing (test_status should be 0) but I see them as failing
+   *
+   */
   if (test_status != 0) {
-    printf("\n");
+    printf("Some tests failed\n");
     exit(test_status);
   }
 }
