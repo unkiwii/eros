@@ -29,43 +29,19 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
   eros_source_t* source = eros_source_from_string(text);
   eros_lexer_t* lexer = eros_lexer_new(source);
 
-  eros_token_t** expected = NULL;
-  int expected_count = 0;
-
   va_list arg;
   va_start(arg, token);
   eros_token_t* next = token;
+  eros_token_t* lex_output = NULL;
+  int count = 0;
   while (next) {
-    expected_count++;
-    expected = (eros_token_t**) realloc(expected, sizeof(eros_token_t*) * expected_count);
-    expected[expected_count - 1] = next;
+    lex_output = eros_lexer_next_token(lexer);
+    eros_assert_eq_char_ptr(text, lex_output->value, next->value);
+    eros_token_delete(lex_output);
+    count++;
     next = va_arg(arg, eros_token_t*);
   }
   va_end(arg);
-
-  eros_token_t** actual = calloc(expected_count, sizeof(eros_token_t*));
-
-  int actual_count = 0;
-  do {
-    actual[actual_count] = eros_lexer_next_token(lexer);
-    /* printf("   got: '%s'\n", actual[actual_count]->value); */
-  } while (!eros_token_is_eof(actual[actual_count++]) && actual_count <= expected_count);
-
-  eros_assert_eq_length("tokens", actual_count, expected_count);
-
-  int count = actual_count > expected_count ? expected_count : actual_count;
-  for (int i = 0; i < count; i++) {
-    eros_assert_eq_char_ptr("token", actual[i]->value, expected[i]->value);
-  }
-
-  for (int i = 0; i < actual_count; i++) {
-    if (actual[i]) {
-      eros_token_delete(actual[i]);
-      actual[i] = NULL;
-    }
-  }
-  free(actual);
-  free(expected);
 
   eros_lexer_delete(lexer);
   eros_source_delete(source);

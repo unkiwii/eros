@@ -22,26 +22,17 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 typedef void (*eros_test)();
 
 #define INITIAL_STATUS 65000
-static int _test_status = INITIAL_STATUS;
+static int failed = INITIAL_STATUS;
 
 void test(const char* name, eros_test t)
 {
-  _test_status = 0;
+  failed = INITIAL_STATUS;
   printf("%s\n", name);
   t();
-  /**
-   *
-   * IMPORTANT:
-   *
-   *  Something inside t(); is modifying test_status indirectly (via bad memory acces?)
-   *  I need to fix it before doing anything else
-   *
-   *  All tests are passing (test_status should be 0) but I see them as failing
-   *
-   */
-  if (_test_status != 0) {
-    printf("%d tests failed\n", _test_status - INITIAL_STATUS);
-    exit(_test_status);
+  int total = failed - INITIAL_STATUS;
+  if (total != 0) {
+    printf("%d test%s failed\n", total, total == 1 ? "" : "s");
+    exit(failed);
   }
 }
 
@@ -64,7 +55,7 @@ void eros_assert_eq_char_arr(const char* name, int length, char** actual, char**
 void eros_assert_eq_char_ptr(const char* name, char* actual, char* expected)
 {
   if (strcmp(actual, expected) != 0) {
-    fail("expected %s to be '%s', but found '%s'\n", name, expected, actual);
+    fail("expected '%s', but found '%s' in '%s'\n", expected, actual, name);
   }
 }
 
@@ -76,7 +67,7 @@ void fail(const char* format, ...)
   vprintf(format, args);
   va_end(args);
 
-  _test_status += 1;
+  failed += 1;
 }
 
 int main(int argc, char** argv)
