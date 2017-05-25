@@ -21,11 +21,12 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 typedef void (*eros_test)();
 
-static int test_status = 0;
+#define INITIAL_STATUS 65000
+static int _test_status = INITIAL_STATUS;
 
 void test(const char* name, eros_test t)
 {
-  test_status = 0;
+  _test_status = 0;
   printf("%s\n", name);
   t();
   /**
@@ -38,9 +39,9 @@ void test(const char* name, eros_test t)
    *  All tests are passing (test_status should be 0) but I see them as failing
    *
    */
-  if (test_status != 0) {
-    printf("Some tests failed\n");
-    exit(test_status);
+  if (_test_status != 0) {
+    printf("%d tests failed\n", _test_status - INITIAL_STATUS);
+    exit(_test_status);
   }
 }
 
@@ -75,7 +76,7 @@ void fail(const char* format, ...)
   vprintf(format, args);
   va_end(args);
 
-  test_status += 1;
+  _test_status += 1;
 }
 
 int main(int argc, char** argv)
