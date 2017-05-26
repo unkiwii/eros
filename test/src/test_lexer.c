@@ -36,9 +36,11 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
   int count = 0;
   while (next) {
     lex_output = eros_lexer_next_token(lexer);
-    eros_assert_eq_char_ptr(text, lex_output->value, next->value);
-    eros_token_delete(lex_output);
-    count++;
+    if (eros_assert_not_null("eros_lexer_next_token(lexer)", lex_output)) {
+      eros_assert_eq_char_ptr(text, lex_output->value, next->value);
+      eros_token_delete(lex_output);
+      count++;
+    }
     next = va_arg(arg, eros_token_t*);
   }
   va_end(arg);
@@ -68,6 +70,30 @@ void test_lexer()
     eros_token_simple(EROS_TK_RPAREN),
     eros_token_new(EROS_TK_NUMBER, "1"),
     eros_token_new(EROS_TK_IDENTIFIER, "a"),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  test_lexer_case("1234567890",
+    eros_token_new(EROS_TK_NUMBER, "1234567890"),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  test_lexer_case("identifier",
+    eros_token_new(EROS_TK_IDENTIFIER, "identifier"),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  test_lexer_case("\"hola\"",
+    eros_token_new(EROS_TK_STRING, "hola"),
+    eros_token_simple(EROS_TK_EOF),
+    NULL
+  );
+
+  test_lexer_case("\"\"",
+    eros_token_new(EROS_TK_STRING, ""),
     eros_token_simple(EROS_TK_EOF),
     NULL
   );
