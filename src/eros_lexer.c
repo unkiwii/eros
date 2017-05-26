@@ -71,8 +71,21 @@ char eros_lexer_peek_char(eros_lexer_t* lexer)
 
 char* eros_lexer_read_string(eros_lexer_t* lexer)
 {
-  //TODO
-  return NULL;
+  //TODO: recognize escaped characters
+
+  int start_position = lexer->current_position;
+  do {
+    eros_lexer_read_char(lexer);
+  } while (lexer->current_char != '"' && lexer->current_char != 0);
+
+  int end_position = lexer->current_position - 1;
+
+  /* check for empty string */
+  if (start_position == end_position) {
+    return "";
+  }
+
+  return eros_source_read_interval(lexer->source, start_position, lexer->current_position);
 }
 
 char* eros_lexer_read_identifier(eros_lexer_t* lexer)
@@ -83,7 +96,10 @@ char* eros_lexer_read_identifier(eros_lexer_t* lexer)
   } while (eros_lexer_is_letter(lexer->current_char));
 
   char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+
+  /* unread char (we read one past the end of the identifier) */
   eros_lexer_unread_char(lexer);
+
   return interval;
 }
 
@@ -95,7 +111,10 @@ char* eros_lexer_read_number(eros_lexer_t* lexer)
   }
 
   char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+
+  /* unread char (we read one past the end of the number) */
   eros_lexer_unread_char(lexer);
+
   return interval;
 }
 
@@ -166,7 +185,8 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       }
       break;
 
-    case '\'':
+    case '\"':
+      eros_lexer_read_char(lexer);  /* skip the '"' char */
       token = eros_token_new(EROS_TK_STRING, eros_lexer_read_string(lexer));
       break;
 

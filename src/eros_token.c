@@ -111,6 +111,10 @@ eros_token_t* eros_token_simple(eros_token_type_code code)
 
 eros_token_t* eros_token_illegal(char ch)
 {
+  if (!ch) {
+    return NULL;
+  }
+
   eros_token_t* token = (eros_token_t*) malloc(sizeof(eros_token_t));
   token->type = eros_token_type_by_code(EROS_TK_ILLEGAL);
   token->value = (char*) malloc(sizeof(char) * 2);
@@ -121,6 +125,10 @@ eros_token_t* eros_token_illegal(char ch)
 
 eros_token_t* eros_token_new(eros_token_type_code code, const char* value)
 {
+  if (!value) {
+    return NULL;
+  }
+
   eros_token_t* token = (eros_token_t*) malloc(sizeof(eros_token_t));
   token->type = eros_token_type_by_code(code);
   token->value = eros_strdup(value);
