@@ -12,8 +12,8 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#ifndef TEST_LEXER_H
-#define TEST_LEXER_H
+#ifndef EROS_ASSERT_H
+#define EROS_ASSERT_H
 
 #include "eros_defines.h"
 
@@ -23,8 +23,4 @@ BOOL eros_assert_eq_length(const char* name, int actual, int expected);
 BOOL eros_assert_eq_char_arr(const char* name, int size, char** actual, char** expected);
 BOOL eros_assert_eq_char_ptr(const char* name, char* actual, char* expected);
 
-void fail(const char* format, ...);
-
-void test_lexer();
-
-#endif // TEST_LEXER_H
+#endif // EROS_ASSERT_H

@@ -12,10 +12,10 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
+#include "eros_assert.h"
 #include "eros_lexer.h"
 #include "eros_mem.h"
 #include "eros_token.h"
-#include "test.h"
 
 #include <stdarg.h>
 #include <stdio.h>
