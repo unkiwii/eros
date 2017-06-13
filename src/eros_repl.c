@@ -59,7 +59,11 @@ status_code_t eros_repl(eros_input_t* input)
 
   while (context->is_alive) {
     char* line = readline("> ");
-    add_history(line);
+
+    /* do not add empty lines to history */
+    if (line && *line) {
+      add_history(line);
+    }
 
     if      (strcmp(line, ".help") == 0)     { CMD(help)();         }
     else if (strcmp(line, ".exit") == 0)     { CMD(exit)(context);  }
@@ -76,6 +80,8 @@ status_code_t eros_repl(eros_input_t* input)
 
     free(line);
   }
+
+  clear_history();
 
   return eros_repl_stop(context);
 }
