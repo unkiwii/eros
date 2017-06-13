@@ -20,7 +20,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 char* eros_strdup(const char* s)
 {
   size_t length = strlen(s);
-  char* r = (char*) calloc(length + 1, sizeof(char*));
+  char* r = (char*) calloc(length + 1, sizeof(char));
   strncpy(r, s, length);
   return r;
 }
@@ -32,7 +32,7 @@ char* eros_strcpy(const char* source, int from, int to)
   }
 
   int length = to - from;
-  char* r = (char*) calloc(length + 1, sizeof(char*));
+  char* r = (char*) calloc(length + 1, sizeof(char));
   strncpy(r, source + from, length);
   return r;
 }

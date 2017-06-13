@@ -187,7 +187,11 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 
     case '\"':
       eros_lexer_read_char(lexer);  /* skip the '"' char */
-      token = eros_token_new(EROS_TK_STRING, eros_lexer_read_string(lexer));
+      char* str = eros_lexer_read_string(lexer);
+      token = eros_token_new(EROS_TK_STRING, str);
+      if (str && *str) {
+        free(str);
+      }
       break;
 
     /** number or identifier **/

@@ -41,6 +41,7 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
       eros_token_delete(lex_output);
       count++;
     }
+    eros_token_delete(next);
     next = va_arg(arg, eros_token_t*);
   }
   va_end(arg);

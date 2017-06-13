@@ -32,7 +32,7 @@ typedef enum eros_token_type_code_t {
   EROS_TK_RPAREN,     /* )          */
   EROS_TK_LBRACE,     /* {          */
   EROS_TK_RBRACE,     /* }          */
-  _EROS_TK_LAST_SIMPLE_,  /* not a token type code, just to mark the end of simple tokens */
+  _EROS_TK_SIMPLE_COUNT_,  /* not a token type code, just to mark the end of simple tokens */
 
   EROS_TK_NUMBER,     /* 1234567890 */
   EROS_TK_IDENTIFIER, /* identifier */
@@ -42,6 +42,8 @@ typedef enum eros_token_type_code_t {
 
   _EROS_TK_LAST_  /* not a token type code, just to mark the end of this enum */
 } eros_token_type_code;
+
+#define EROS_TOKEN_SIMPLE_COUNT ((int)_EROS_TK_SIMPLE_COUNT_)
 
 typedef struct eros_token_type
 {

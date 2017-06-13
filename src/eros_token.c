@@ -42,7 +42,13 @@ static eros_token_type token_types[] = {
   { .code = _EROS_TK_LAST_,      .name = NULL,            .value = NULL  }
 };
 
-static eros_token_t* simple_tokens[(int)_EROS_TK_LAST_SIMPLE_] = { NULL };
+static eros_token_t* simple_tokens[EROS_TOKEN_SIMPLE_COUNT] = { NULL };
+
+void eros_token_delete_simples() {
+  for (int i = 0; i <= EROS_TOKEN_SIMPLE_COUNT; ++i) {
+    free(simple_tokens[i]);
+  }
+}
 
 eros_token_type* eros_token_type_by_code(eros_token_type_code code)
 {
@@ -92,8 +98,14 @@ const char* eros_token_type_name(eros_token_type_code code)
   return "<INVALID>";
 }
 
+BOOL _will_clean_simples = FALSE;
 eros_token_t* eros_token_simple(eros_token_type_code code)
 {
+  if (!_will_clean_simples) {
+    _will_clean_simples = TRUE;
+    atexit(eros_token_delete_simples);
+  }
+
   int index = eros_token_simple_index(code);
   if (index < 0) {
     return eros_token_illegal('\255');
@@ -101,7 +113,7 @@ eros_token_t* eros_token_simple(eros_token_type_code code)
 
   eros_token_t* token = simple_tokens[index];
   if (!token) {
-    token = simple_tokens[index] = (eros_token_t*) malloc(sizeof(eros_token_t*));
+    token = simple_tokens[index] = (eros_token_t*) malloc(sizeof(eros_token_t));
     token->type = eros_token_type_by_code(code);
     token->value = token->type->value;
   }
@@ -142,7 +154,7 @@ void eros_token_delete(eros_token_t* token)
   }
 
   if (eros_token_is_simple(token)) {
-    /* we don't free simple tokens */
+    /* don't delete simple tokens, that is made at the end of the application */
     return;
   }
 
