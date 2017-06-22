@@ -43,3 +43,19 @@ make test
 ```
 nmake test
 ```
+
+# Ideas to have in mind
+
+1. Whitespace matters: `a := 123` is valid but `a:=123` or `a:= 123` are syntax errors.
+2. One tool to rule them all (compile, interpret, package management).
+3. Automagic package management (if a package is not available ask to download).
+4. Inmutability by default, mutability as opt-in but difficult to write.
+5. Compiled and interpreted, also a REPL.
+6. Strong typing but with implicit types: `Number a := 123` must be the same as `a := 123`.
+7. Observer builtin (or pub/sub or something like that).
+8. Multiparadigm: Functional and OOP at least (like python and/or js).
+9. Closures.
+10. First Class everything: Numbers, Arrays, Functions, Types.
+11. OOP Without inheritance, only composition (like golang, maybe?).
+12. Parametrized types (like List<T> or something like that).
+13. Metaprogramming: If a type is first class we can create and modify types at runtime.
