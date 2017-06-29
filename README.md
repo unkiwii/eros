@@ -56,6 +56,13 @@ nmake test
 8. Multiparadigm: Functional and OOP at least (like python and/or js).
 9. Closures.
 10. First Class everything: Numbers, Arrays, Functions, Types.
-11. OOP Without inheritance, only composition (like golang, maybe?).
-12. Parametrized types (like List<T> or something like that).
-13. Metaprogramming: If a type is first class we can create and modify types at runtime.
+11. OOP without inheritance, only composition (like golang, maybe?).
+12. OOP without classes. (see Self)
+13. Parametrized types (like List<T> or something like that).
+14. Metaprogramming: If a type is first class we can create and modify types at runtime.
+15. No implicit 'operator' precedence allowed: 2 + 3 * 4 should be illegal, you must write (2 + 3) * 4 or 2 + (3 * 4). But 2 + 3 + 4 is allowed (becasuse they are the same operator) (see Self)
+
+# Things to investigate
+
+* Self: http://www.selflanguage.org/
+
