@@ -1,16 +1,24 @@
-/*     DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-                   Version 2, December 2004
+/*
+Copyright (c) 2016-2017 Lucas Gabriel Sánchez
 
-Copyright (C) 2016 Lucas Gabriel Sanchez <unkiwii@gmail.com>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Everyone is permitted to copy and distribute verbatim or modified
-copies of this license document, and changing it is allowed as long
-as the name is changed.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
-TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-
-0. You just DO WHAT THE FUCK YOU WANT TO. */
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 #include "eros_defines.h"
 #include "eros_repl_cmds.h"
@@ -37,19 +45,24 @@ void CMD(exit)(eros_context_t* context)
 
 void CMD(license)()
 {
-  printf("\n\
-       DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n\
-                   Version 2, December 2004\n\
+  printf("Copyright (c) 2016-%s %s\n\
 \n\
-Copyright (C) %s %s <%s>\n\
+Permission is hereby granted, free of charge, to any person obtaining a copy\n\
+of this software and associated documentation files (the \"Software\"), to deal\n\
+in the Software without restriction, including without limitation the rights\n\
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n\
+copies of the Software, and to permit persons to whom the Software is\n\
+furnished to do so, subject to the following conditions:\n\
 \n\
-Everyone is permitted to copy and distribute verbatim or modified\n\
-copies of this license document, and changing it is allowed as long\n\
-as the name is changed.\n\
+The above copyright notice and this permission notice shall be included in all\n\
+copies or substantial portions of the Software.\n\
 \n\
-           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE\n\
-TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION\n\
-\n\
-0. You just DO WHAT THE FUCK YOU WANT TO.\n\
-\n", COMPILE_YEAR, PROGRAM_AUTHOR, PROGRAM_AUTHOR_EMAIL);
+THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n\
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n\
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n\
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n\
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n\
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n\
+SOFTWARE.\n\
+", COMPILE_YEAR, PROGRAM_AUTHOR);
 }
