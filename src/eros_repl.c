@@ -70,7 +70,7 @@ status_code_t eros_repl(eros_input_t* input)
     else if (strcmp(line, ".license") == 0)  { CMD(license)();      }
     else {
       LOGD("evaluating '%s'", line);
-      /* eros_value_t* result = eros_parser_parse(context, line); */
+      eros_parser_parse(context, line);
       /* if (result) { */
       /*   eros_value_t* value = eros_eval(context, result); */
       /*   eros_println(value); */

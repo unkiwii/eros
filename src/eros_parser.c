@@ -12,13 +12,15 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
 0. You just DO WHAT THE FUCK YOU WANT TO. */
 
-#include <stdlib.h>
-
 #include "eros_context.h"
-#include "eros_defines.h"
+#include "eros_lexer.h"
 #include "eros_logger.h"
 #include "eros_parser.h"
+#include "eros_token.h"
 #include "eros_value.h"
+
+#include <stdio.h>
+#include <stdlib.h>
 
 eros_parser_t* eros_parser_new(void)
 {
@@ -40,14 +42,23 @@ void eros_parser_delete(eros_parser_t* parser)
   free(parser);
 }
 
-eros_value_t* eros_parser_parse(eros_context_t* context, eros_lexer_t* lexer)
+eros_value_t* eros_parser_parse(eros_context_t* context, const char* text)
 {
+  eros_source_t* source = eros_source_from_string(text);
+  eros_lexer_t* lexer = eros_lexer_new(source);
   eros_parser_t* parser = eros_context_getparser(context);
 
   parser->step = eros_parser_step_module;
   parser->result = NULL;
 
-  /* eros_token_t* token = NULL; */
+  BOOL line = FALSE;
+  eros_token_t* token = NULL;
+  while (eros_token_simple(EROS_TK_EOF) != (token = eros_lexer_next_token(lexer))) {
+    line = TRUE;
+    printf("(\"%s\", %s) ", eros_token_value(token), eros_token_type_name(token));
+    eros_token_delete(token);
+  }
+
   /* for (token_count_t i = 0; i < token_count; i++) { */
   /*   token = tokens[i]; */
   /*   parser->step(parser, token); */
@@ -55,6 +66,12 @@ eros_value_t* eros_parser_parse(eros_context_t* context, eros_lexer_t* lexer)
   /*     return parser->result; */
   /*   } */
   /* } */
+
+  if (line) {
+    printf("\n");
+  }
+  eros_lexer_delete(lexer);
+  eros_source_delete(source);
 
   return parser->result;
 }

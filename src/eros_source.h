@@ -20,7 +20,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 struct eros_source_t
 {
   /* file name from there this was loaded (NULL when loaded from string) */
-  char* filename;
+  const char* filename;
 
   /* contents of the loaded file or string */
   char* data;
@@ -29,8 +29,8 @@ struct eros_source_t
   source_size_t size;
 };
 
-eros_source_t* eros_source_from_file(char* filename);
-eros_source_t* eros_source_from_string(char* str);
+eros_source_t* eros_source_from_file(const char* filename);
+eros_source_t* eros_source_from_string(const char* str);
 
 void eros_source_delete(eros_source_t* source);
 

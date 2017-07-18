@@ -88,14 +88,27 @@ const char* eros_token_simple_value(eros_token_type_code code)
   return NULL;
 }
 
-const char* eros_token_type_name(eros_token_type_code code)
+const char* eros_token_type_name(eros_token_t* token)
 {
-  eros_token_type* type = eros_token_type_by_code(code);
+  if (!token) {
+    return "<NULL>";
+  }
+
+  eros_token_type* type = token->type;
   if (type) {
     return type->name;
   }
 
   return "<INVALID>";
+}
+
+const char* eros_token_value(eros_token_t* token)
+{
+  if (!token) {
+    return "null";
+  }
+
+  return token->value;
 }
 
 BOOL _will_clean_simples = FALSE;

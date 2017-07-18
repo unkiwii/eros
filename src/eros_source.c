@@ -21,7 +21,7 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <stdlib.h>
 #include <string.h>
 
-eros_source_t* eros_source_from_file(char* filename)
+eros_source_t* eros_source_from_file(const char* filename)
 {
   FILE* file = fopen(filename, "rb");
   if (!file) {
@@ -57,7 +57,7 @@ eros_source_t* eros_source_from_file(char* filename)
   return source;
 }
 
-eros_source_t* eros_source_from_string(char* str)
+eros_source_t* eros_source_from_string(const char* str)
 {
   eros_source_t* source = (eros_source_t*) malloc(sizeof(eros_source_t));
   source->filename = NULL;

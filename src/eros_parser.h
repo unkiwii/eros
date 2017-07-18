@@ -32,7 +32,7 @@ eros_parser_t* eros_parser_new(void);
 
 void eros_parser_delete(eros_parser_t* parser);
 
-eros_value_t* eros_parser_parse(eros_context_t*, eros_lexer_t*);
+eros_value_t* eros_parser_parse(eros_context_t*, const char* text);
 
 void eros_parser_step_module(eros_parser_t*, eros_token_t*);
 void eros_parser_step_assignment(eros_parser_t*, eros_token_t*);

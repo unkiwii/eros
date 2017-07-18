@@ -20,12 +20,12 @@ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 #include <stdlib.h>
 #include <stdio.h>
 
-char eros_lexer_is_letter(char ch)
+BOOL eros_lexer_is_letter(char ch)
 {
   return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 }
 
-char eros_lexer_is_digit(char ch)
+BOOL eros_lexer_is_digit(char ch)
 {
   return ch >= '0' && ch <= '9';
 }
