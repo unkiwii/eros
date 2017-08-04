@@ -59,13 +59,22 @@ eros_value_t* eros_parser_parse(eros_context_t* context, const char* text)
   parser->step = eros_parser_step_module;
   parser->result = NULL;
 
-  BOOL line = FALSE;
-  eros_token_t* token = NULL;
-  while (eros_token_simple(EROS_TK_EOF) != (token = eros_lexer_next_token(lexer))) {
-    line = TRUE;
-    printf("(\"%s\", %s) ", eros_token_value(token), eros_token_type_name(token));
-    eros_token_delete(token);
+  eros_token_t* token = eros_lexer_next_token(lexer);
+  if (token != eros_token_simple(EROS_TK_EOF)) {
+    parser->step(parser, lexer, token);
   }
+
+  /* BOOL line = FALSE; */
+  /* eros_token_t* token = NULL; */
+  /* while (eros_token_simple(EROS_TK_EOF) != (token = eros_lexer_next_token(lexer))) { */
+  /*   line = TRUE; */
+  /*   printf("(\"%s\", %s) ", eros_token_value(token), eros_token_type_name(token)); */
+  /*   parser->step(parser, lexer, token); */
+  /*   eros_token_delete(token); */
+  /* } */
+  /* if (line) { */
+  /*   printf("\n"); */
+  /* } */
 
   /* for (token_count_t i = 0; i < token_count; i++) { */
   /*   token = tokens[i]; */
@@ -75,37 +84,35 @@ eros_value_t* eros_parser_parse(eros_context_t* context, const char* text)
   /*   } */
   /* } */
 
-  if (line) {
-    printf("\n");
-  }
   eros_lexer_delete(lexer);
   eros_source_delete(source);
 
   return parser->result;
 }
 
-void eros_parser_step_module(eros_parser_t* parser, eros_token_t* token)
+void eros_parser_step_module(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
 {
   LOGD("step_module: %s", token);
-  //TODO
+  printf("step_module (\"%s\", %s) \n", eros_token_value(token), eros_token_type_name(token));
+  //TODO: check token type and parse accordingly
 }
 
-void eros_parser_step_assignment(eros_parser_t* parser, eros_token_t* token)
+void eros_parser_step_assignment(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_slot(eros_parser_t* parser, eros_token_t* token)
+void eros_parser_step_slot(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_type(eros_parser_t* parser, eros_token_t* token)
+void eros_parser_step_type(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
 {
   //TODO
 }
 
-void eros_parser_step_identifier(eros_parser_t* parser, eros_token_t* token)
+void eros_parser_step_identifier(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
 {
   //TODO
 }
