@@ -4,7 +4,7 @@ OBJ_DIR = obj
 BIN_DIR = bin
 SRC_DIR = src
 
-EXECUTABLE = $(BIN_DIR)/eros
+EXECUTABLE = $(BIN_DIR)/$(NAME)
 
 TEST_SRC_DIR = test/src
 TEST_OBJ_DIR = test/obj

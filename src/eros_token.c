@@ -52,7 +52,7 @@ static eros_token_type token_types[] = {
 
 static eros_token_t* simple_tokens[EROS_TOKEN_SIMPLE_COUNT] = { NULL };
 
-void eros_token_delete_simples() {
+void eros_token_delete_simples(void) {
   for (int i = 0; i <= EROS_TOKEN_SIMPLE_COUNT; ++i) {
     free(simple_tokens[i]);
   }

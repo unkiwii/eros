@@ -47,4 +47,8 @@ void add_history(char* ignored) {
   (void*)ignored;
 }
 
+void clear_history(void) {
+  //TODO: clear it
+}
+
 #endif // PROMPT_WIN_H
