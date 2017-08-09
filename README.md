@@ -46,7 +46,7 @@ nmake test
 
 # Ideas to have in mind
 
-1. Whitespace matters: `a := 123` is valid but `a:=123` or `a:= 123` are syntax errors.
+1. Whitespace matters: `a := 123` is valid, but `a:=123` or `a:= 123` are syntax errors.
 2. One tool to rule them all (compile, interpret, package management).
 3. Automagic package management (if a package is not available ask to download).
 4. Inmutability by default, mutability as opt-in but difficult to write.
@@ -61,10 +61,14 @@ nmake test
 13. Parametrized types (like List<T> or something like that).
 14. Metaprogramming: If a type is first class we can create and modify types at runtime.
 15. No implicit 'operator' precedence allowed: 2 + 3 * 4 should be illegal, you must write (2 + 3) * 4 or 2 + (3 * 4). But 2 + 3 + 4 is allowed (becasuse they are the same operator) (see Self)
+16. EASY TO READ AND WRITE: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand." - Martin Fowler.
+17. Hot Code Reload.
 
 # Things to investigate
 
 * Self: http://www.selflanguage.org/
+* Crystal: https://crystal-lang.org/
+* Nim: https://nim-lang.org/
 
 # LICENSE
 
