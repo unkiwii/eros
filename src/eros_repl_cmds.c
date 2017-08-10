@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Lucas Gabriel Sánchez
+Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ void CMD(exit)(eros_context_t* context)
 
 void CMD(license)()
 {
-  printf("Copyright (c) 2016-%s %s\n\
+  printf("Copyright (c) 2014-%s %s\n\
 \n\
 Permission is hereby granted, free of charge, to any person obtaining a copy\n\
 of this software and associated documentation files (the \"Software\"), to deal\n\

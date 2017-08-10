@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Lucas Gabriel Sánchez
+Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -50,15 +50,15 @@ SOFTWARE.
 #endif
 
 #ifndef COMPILE_YEAR
-  #define COMPILE_YEAR "2016"
+  #define COMPILE_YEAR "2017"
 #endif
 
 #ifndef COMPILE_MONTH
-  #define COMPILE_MONTH "Dec"
+  #define COMPILE_MONTH "Ago"
 #endif
 
 #ifndef COMPILE_DAY
-  #define COMPILE_DAY "31"
+  #define COMPILE_DAY "10"
 #endif
 
 #ifndef COMPILE_DATE
