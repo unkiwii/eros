@@ -8,34 +8,34 @@
 
 ########## comments ##########
 
-# any line starting with a '#' character is a comment, there are no
-# multi-line comments
+# any line starting with a '#' character is a comment, there is no
+# special syntax for multi-line comments
 
 
 ########## using code from other files and libraries ##########
 
 # import a file in same folder
 
-import aFile.eros
+import aFile
 
 # import a file in a subfolder
 
-import foo/aFile.eros
-import foo/bar/aLib.lib
+import foo/aFile
+import foo/bar/aLib
 
 # import a file in a parent folder
 
-import ../aFile.eros
-import ../../aLib.lib
-import ../foo/aFile.eros
-import ../foo/bar/aLib.lib
+import ../aFile
+import ../../aLib
+import ../foo/aFile
+import ../foo/bar/aLib
 
 # import several files
 import (
-  aFile.eros
-  anotherFile.eros
-  aLib.lib
-  anotherLib.lib
+  ../aFile
+  ../../aLib
+  ../foo/aFile
+  ../foo/bar/aLib
 )
 
 
@@ -74,8 +74,8 @@ String aGlobalString := "Hello World"
 # or
 anotherGlobalString := "Goodbye World"
 
-# if you declare them inside a block of code it will local to that block of code and invisible from anywhere else; same
-# within a type.
+# if you declare them inside a block of code it will be local to that block of code and invisible from anywhere else;
+# same within a type.
 
 # a constant is a value that can't change in time and is writter in ALL CAPS separating each word with a '_'
 
