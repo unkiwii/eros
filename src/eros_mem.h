@@ -1,3 +1,11 @@
+#ifndef EROS_MEM_H
+#define EROS_MEM_H
+
+char* eros_strdup(const char* s);
+char* eros_strcpy(const char* source, int from, int to);
+
+#endif // EROS_MEM_H
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,11 +27,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#ifndef EROS_MEM_H
-#define EROS_MEM_H
-
-char* eros_strdup(const char* s);
-char* eros_strcpy(const char* source, int from, int to);
-
-#endif // EROS_MEM_H

@@ -1,3 +1,13 @@
+#ifndef EROS_EVAL_H
+#define EROS_EVAL_H
+
+#include "eros_context.h"
+#include "eros_value.h"
+
+eros_value_t* eros_eval(eros_context_t* context, eros_value_t* value);
+
+#endif // EROS_EVAL_H
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,13 +29,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#ifndef EROS_EVAL_H
-#define EROS_EVAL_H
-
-#include "eros_context.h"
-#include "eros_value.h"
-
-eros_value_t* eros_eval(eros_context_t* context, eros_value_t* value);
-
-#endif // EROS_EVAL_H

@@ -1,3 +1,17 @@
+#ifndef EROS_REPL_CMDS_H
+#define EROS_REPL_CMDS_H
+
+// the '_()' at the end is neccesary to be compatible with GCC and Clang
+#define CMD(NAME) eros_repl_cmd_ ## NAME ## _
+
+#include "eros_context.h"
+
+void CMD(help)();
+void CMD(exit)(eros_context_t*);
+void CMD(license)();
+
+#endif // EROS_REPL_CMDS_H
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,17 +33,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#ifndef EROS_REPL_CMDS_H
-#define EROS_REPL_CMDS_H
-
-// the '_()' at the end is neccesary to be compatible with GCC and Clang
-#define CMD(NAME) eros_repl_cmd_ ## NAME ## _
-
-#include "eros_context.h"
-
-void CMD(help)();
-void CMD(exit)(eros_context_t*);
-void CMD(license)();
-
-#endif // EROS_REPL_CMDS_H

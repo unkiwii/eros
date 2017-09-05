@@ -1,3 +1,10 @@
+#include "eros_print.h"
+
+void eros_println(eros_value_t* value)
+{
+  //TODO
+}
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,10 +26,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#include "eros_print.h"
-
-void eros_println(eros_value_t* value)
-{
-  //TODO
-}

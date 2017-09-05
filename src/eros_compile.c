@@ -1,3 +1,17 @@
+#include "eros_compile.h"
+
+#include <stdio.h>
+
+int eros_compile(eros_input_t* input)
+{
+  //TODO
+  puts("compile");
+  for (int i = 0; i < input->files_count; i++) {
+    printf("  file: %s\n", input->files[i]);
+  }
+  return 0;
+}
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,17 +33,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#include "eros_compile.h"
-
-#include <stdio.h>
-
-int eros_compile(eros_input_t* input)
-{
-  //TODO
-  puts("compile");
-  for (int i = 0; i < input->files_count; i++) {
-    printf("  file: %s\n", input->files[i]);
-  }
-  return 0;
-}

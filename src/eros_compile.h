@@ -1,3 +1,12 @@
+#ifndef EROS_COMPILE_H
+#define EROS_COMPILE_H
+
+#include "eros_input.h"
+
+int eros_compile(eros_input_t* input);
+
+#endif // EROS_COMPILE_H
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -20,11 +29,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef EROS_COMPILE_H
-#define EROS_COMPILE_H
-
-#include "eros_input.h"
-
-int eros_compile(eros_input_t* input);
-
-#endif // EROS_COMPILE_H
