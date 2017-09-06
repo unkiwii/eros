@@ -4,6 +4,7 @@
 #include <editline/readline.h>
 #endif
 
+#include "eros_ast_node.h"
 #include "eros_context.h"
 #include "eros_defines.h"
 #include "eros_error.h"
@@ -57,11 +58,13 @@ status_code_t eros_repl(eros_input_t* input)
     else {
       LOGD("evaluating '%s'", line);
       eros_parser_parse(context, line);
-      /* if (result) { */
+      eros_ast_node_t* result = eros_context_getparser(context)->result;
+      if (result) {
+        eros_ast_node_delete(result);
       /*   eros_value_t* value = eros_eval(context, result); */
       /*   eros_println(value); */
       /*   eros_value_delete(value); */
-      /* } */
+      }
     }
 
     free(line);

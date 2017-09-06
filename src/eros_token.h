@@ -61,6 +61,7 @@ const char* eros_token_value(eros_token_t*);
 
 BOOL eros_token_is_simple(eros_token_t*);
 BOOL eros_token_is_eof(eros_token_t*);
+BOOL eros_token_is_identifier(eros_token_t*, const char* identifier);
 
 #endif  /* EROS_TOKEN_H */
 

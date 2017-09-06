@@ -1,33 +1,36 @@
-#ifndef EROS_LEXER_H
-#define EROS_LEXER_H
+#include "eros_ast_node.h"
 
-#include "eros_source.h"
-#include "eros_defines.h"
+#include <stdlib.h>
 
-struct eros_lexer_t
+eros_ast_node_t* eros_ast_node_new(void)
 {
-  /** source to lex, can be a file or string **/
-  eros_source_t* source;
+  eros_ast_node_t* node = malloc(sizeof(eros_ast_node_t));
 
-  /** current position in the source **/
-  source_position_t current_position;
-  source_position_t end_position;
+  node->children_count = 0;
+  node->children = NULL;
 
-  /** current character read **/
-  char current_char;
+  return node;
+}
 
-  /** current token **/
-  eros_token_t* current_token;
-};
+void eros_ast_node_delete(eros_ast_node_t* node)
+{
+  if (!node) {
+    return;
+  }
 
-eros_lexer_t* eros_lexer_new(eros_source_t* source);
+  children_count_t len = node->children_count;
+  for (children_count_t i = 0; i < len; i++) {
+    eros_ast_node_delete(node->children[i]);
+    node->children[i] = NULL;
+  }
 
-void eros_lexer_delete(eros_lexer_t*);
+  if (node->children) {
+    free(node->children);
+    node->children = NULL;
+  }
 
-eros_token_t* eros_lexer_next_token(eros_lexer_t*);
-eros_token_t* eros_lexer_peek_token(eros_lexer_t*);
-
-#endif // EROS_LEXER_H
+  free(node);
+}
 
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez

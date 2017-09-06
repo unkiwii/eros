@@ -198,7 +198,17 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
 
   /* printf("    \\__ token = %s '%s'\n", token->type->name, token->value); */
 
+  if (lexer->current_token) {
+    eros_token_delete(lexer->current_token);
+  }
+  lexer->current_token = token;
+
   return token;
+}
+
+eros_token_t* eros_lexer_peek_token(eros_lexer_t* lexer)
+{
+  return lexer->current_token;
 }
 
 eros_lexer_t* eros_lexer_new(eros_source_t* source)
@@ -209,6 +219,7 @@ eros_lexer_t* eros_lexer_new(eros_source_t* source)
   lexer->current_position = 0;
   lexer->end_position = 0;
   lexer->current_char = 0;
+  lexer->current_token = NULL;
 
   return lexer;
 }
@@ -217,6 +228,11 @@ void eros_lexer_delete(eros_lexer_t* lexer)
 {
   if (!lexer) {
     return;
+  }
+
+  if (lexer->current_token) {
+    eros_token_delete(lexer->current_token);
+    lexer->current_token = NULL;
   }
 
   /* we do not create the source, then we don't have to free it */

@@ -49,6 +49,7 @@ typedef int error_code_t;
 typedef char flag_t;
 typedef long long int files_count_t;
 typedef long long int symbols_count_t;
+typedef long long int children_count_t;
 typedef int source_position_t;
 typedef long long int source_size_t;
 typedef int log_level_t;
@@ -74,6 +75,9 @@ typedef struct eros_input_t eros_input_t;
 
 struct eros_token_t;
 typedef struct eros_token_t eros_token_t;
+
+struct eros_ast_node_t;
+typedef struct eros_ast_node_t eros_ast_node_t;
 
 #endif // EROS_DEFINES_H
 

@@ -3,7 +3,7 @@
 #include "eros_logger.h"
 #include "eros_parser.h"
 #include "eros_token.h"
-#include "eros_value.h"
+#include "eros_ast_node.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,26 +21,25 @@ eros_parser_t* eros_parser_new(void)
 void eros_parser_delete(eros_parser_t* parser)
 {
   if (parser->result) {
-    eros_value_delete(parser->result);
+    eros_ast_node_delete(parser->result);
     parser->result = NULL;
   }
 
   free(parser);
 }
 
-eros_value_t* eros_parser_parse(eros_context_t* context, const char* text)
+eros_ast_node_t* eros_parser_parse(eros_context_t* context, const char* text)
 {
   eros_source_t* source = eros_source_from_string(text);
   eros_lexer_t* lexer = eros_lexer_new(source);
   eros_parser_t* parser = eros_context_getparser(context);
 
-  parser->step = eros_parser_step_module;
-  parser->result = NULL;
+  parser->result = eros_parser_step(eros_parser_step_module, parser, lexer);
 
-  eros_token_t* token = eros_lexer_next_token(lexer);
-  if (token != eros_token_simple(EROS_TK_EOF)) {
-    parser->step(parser, lexer, token);
-  }
+  /* eros_token_t* token = eros_lexer_next_token(lexer); */
+  /* if (token != eros_token_simple(EROS_TK_EOF)) { */
+  /*   parser->step(parser, lexer, token); */
+  /* } */
 
   /* BOOL line = FALSE; */
   /* eros_token_t* token = NULL; */
@@ -68,31 +67,48 @@ eros_value_t* eros_parser_parse(eros_context_t* context, const char* text)
   return parser->result;
 }
 
-void eros_parser_step_module(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
+eros_ast_node_t* eros_parser_step(eros_parser_step_t step, eros_parser_t* parser, eros_lexer_t* lexer)
 {
-  LOGD("step_module: %s", token);
-  printf("step_module (\"%s\", %s) \n", eros_token_value(token), eros_token_type_name(token));
-  //TODO: check token type and parse accordingly
+  parser->step = step;
+  return parser->step(parser, lexer);
 }
 
-void eros_parser_step_assignment(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
+eros_ast_node_t* eros_parser_step_module(eros_parser_t* parser, eros_lexer_t* lexer)
 {
-  //TODO
+  eros_token_t* token = eros_lexer_next_token(lexer);
+  LOGD("step_module ('%s', %s)", eros_token_value(token), eros_token_type_name(token));
+
+  if (!eros_token_is_identifier(token, "import")) {
+    LOGD("'%s' is not the identifier 'import'", eros_token_value(token));
+    return NULL;
+  }
+
+  LOGD("FOUND %s", eros_token_value(token));
+  return NULL;
 }
 
-void eros_parser_step_slot(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
+eros_ast_node_t* eros_parser_step_assignment(eros_parser_t* parser, eros_lexer_t* lexer)
 {
   //TODO
+  return NULL;
 }
 
-void eros_parser_step_type(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
+eros_ast_node_t* eros_parser_step_slot(eros_parser_t* parser, eros_lexer_t* lexer)
 {
   //TODO
+  return NULL;
 }
 
-void eros_parser_step_identifier(eros_parser_t* parser, eros_lexer_t* lexer, eros_token_t* token)
+eros_ast_node_t* eros_parser_step_type(eros_parser_t* parser, eros_lexer_t* lexer)
 {
   //TODO
+  return NULL;
+}
+
+eros_ast_node_t* eros_parser_step_identifier(eros_parser_t* parser, eros_lexer_t* lexer)
+{
+  //TODO
+  return NULL;
 }
 
 /*

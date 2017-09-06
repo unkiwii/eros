@@ -2,6 +2,7 @@
 #include "eros_mem.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 static eros_token_type token_types[] = {
   /** NOTE: keep simple types always on top */
@@ -190,6 +191,16 @@ BOOL eros_token_is_eof(eros_token_t* token)
   }
 
   return token->type->code == EROS_TK_EOF;
+}
+
+BOOL eros_token_is_identifier(eros_token_t* token, const char* identifier)
+{
+  if (!token) {
+    return FALSE;
+  }
+
+  return token->type->code == EROS_TK_IDENTIFIER
+      && strncmp(token->value, identifier, strlen(identifier)) == 0;
 }
 
 /*
