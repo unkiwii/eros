@@ -46,7 +46,6 @@ void test_lexer_case(char* text, eros_token_t* token, ...)
     lex_output = eros_lexer_next_token(lexer);
     if (eros_assert_not_null("eros_lexer_next_token(lexer)", lex_output)) {
       eros_assert_eq_char_ptr(text, lex_output->value, next->value);
-      eros_token_delete(lex_output);
       count++;
     }
     eros_token_delete(next);
