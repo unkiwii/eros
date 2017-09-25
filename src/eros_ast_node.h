@@ -14,6 +14,8 @@ struct eros_ast_node_t
 
 eros_ast_node_t* eros_ast_node_new(void);
 
+void eros_ast_node_add(eros_ast_node_t* node, eros_ast_node_t* child);
+
 void eros_ast_node_delete(eros_ast_node_t*);
 
 #endif // EROS_AST_H

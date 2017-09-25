@@ -12,6 +12,13 @@ eros_ast_node_t* eros_ast_node_new(void)
   return node;
 }
 
+void eros_ast_node_add(eros_ast_node_t* node, eros_ast_node_t* child)
+{
+  node->children_count++;
+  node->children = realloc(node->children, sizeof(eros_ast_node_t*) * node->children_count);
+  node->children[node->children_count - 1] = child;
+}
+
 void eros_ast_node_delete(eros_ast_node_t* node)
 {
   if (!node) {
