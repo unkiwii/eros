@@ -20,7 +20,7 @@
 #endif
 
 #ifndef PROGRAM_AUTHOR
-  #define PROGRAM_AUTHOR "Lucas Gabriel Sanchez"
+  #define PROGRAM_AUTHOR "Lucas Gabriel Sánchez"
 #endif
 
 #ifndef PROGRAM_AUTHOR_EMAIL
