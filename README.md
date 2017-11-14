@@ -66,9 +66,12 @@ nmake test
 
 # Things to investigate
 
-* Self: http://www.selflanguage.org/
-* Crystal: https://crystal-lang.org/
-* Nim: https://nim-lang.org/
+* Self: http://www.selflanguage.org/ (OOP without classes, with "real" objects)
+* Crystal: https://crystal-lang.org/ (Ruby-like, Concurrent, created by Argentinians)
+* Nim: https://nim-lang.org/ (System language that compiles to JavaScript and builds dependency-free binaries)
+* Zig: http://andrewkelley.me/post/intro-to-zig.html (Implemented in C, with a complete C ABI)
+* Lemon: https://github.com/lemon-lang/lemon (Implemented in C)
+* Rust: https://www.rust-lang.org (Traits, Enums)
 
 # LICENSE
 
