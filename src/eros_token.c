@@ -32,7 +32,7 @@ static eros_token_type token_types[] = {
 static eros_token_t* simple_tokens[EROS_TOKEN_SIMPLE_COUNT] = { NULL };
 
 void eros_token_delete_simples(void) {
-  for (int i = 0; i <= EROS_TOKEN_SIMPLE_COUNT; ++i) {
+  for (int i = 0; i < EROS_TOKEN_SIMPLE_COUNT; ++i) {
     free(simple_tokens[i]);
   }
 }
@@ -42,10 +42,11 @@ eros_token_type* eros_token_type_by_code(eros_token_type_code code)
   int index = 0;
   eros_token_type* t;
   do {
-    t = &token_types[index++];
+    t = &token_types[index];
     if (t->code == code) {
       return t;
     }
+    index++;
   } while (t->code != _EROS_TK_LAST_);  /* simple types have a value */
 
   return NULL;
@@ -56,10 +57,11 @@ int eros_token_simple_index(eros_token_type_code code)
   int index = 0;
   const eros_token_type* t;
   do {
-    t = &token_types[index++];
+    t = &token_types[index];
     if (t->code == code) {
       return index;
     }
+    index++;
   } while (t->value != NULL);  /* simple types have a value */
 
   return -1;
