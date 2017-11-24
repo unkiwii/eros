@@ -27,7 +27,7 @@ TEST_OBJECTS = $(OBJECTS) $(patsubst $(TEST_SRC_DIR)/%.c,$(TEST_OBJ_DIR)/%.o,$(w
 all: $(EXECUTABLE)
 
 test: prep_debug $(TEST_OBJ_DIR) $(TEST)
-	@./$(TEST) &
+	@./$(TEST)
 
 debug: clean prep_debug all
 
