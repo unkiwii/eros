@@ -25,10 +25,10 @@ SOFTWARE.
 
 #include "eros_defines.h"
 
-BOOL eros_assert_null(const char* name, void* ptr);
-BOOL eros_assert_not_null(const char* name, void* ptr);
-BOOL eros_assert_eq_length(const char* name, int actual, int expected);
-BOOL eros_assert_eq_char_arr(const char* name, int size, char** actual, char** expected);
-BOOL eros_assert_eq_char_ptr(const char* name, char* actual, char* expected);
+bool eros_assert_null(const char* name, void* ptr);
+bool eros_assert_not_null(const char* name, void* ptr);
+bool eros_assert_eq_length(const char* name, int actual, int expected);
+bool eros_assert_eq_char_arr(const char* name, int size, char** actual, char** expected);
+bool eros_assert_eq_char_ptr(const char* name, char* actual, char* expected);
 
 #endif // EROS_ASSERT_H

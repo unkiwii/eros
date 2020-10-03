@@ -24,6 +24,7 @@ eros_lexer_t* eros_lexer_new(eros_source_t* source);
 
 void eros_lexer_delete(eros_lexer_t*);
 
+bool eros_lexer_eof(eros_lexer_t*);
 eros_token_t* eros_lexer_next_token(eros_lexer_t*);
 eros_token_t* eros_lexer_peek_token(eros_lexer_t*);
 

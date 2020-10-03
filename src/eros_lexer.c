@@ -6,19 +6,24 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-BOOL eros_lexer_is_letter(char ch)
+bool eros_lexer_is_letter(char ch)
 {
   return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z');
 }
 
-BOOL eros_lexer_is_digit(char ch)
+bool eros_lexer_is_digit(char ch)
 {
   return ch >= '0' && ch <= '9';
 }
 
+bool eros_lexer_eof(eros_lexer_t* lexer)
+{
+  return (lexer->end_position > lexer->source->size);
+}
+
 void eros_lexer_read_char(eros_lexer_t* lexer)
 {
-  if (lexer->end_position >= lexer->source->size) {
+  if (eros_lexer_eof(lexer)) {
     lexer->current_char = 0;
   } else {
     lexer->current_char = eros_source_read(lexer->source, lexer->end_position);
@@ -30,6 +35,11 @@ void eros_lexer_read_char(eros_lexer_t* lexer)
 
 void eros_lexer_unread_char(eros_lexer_t* lexer)
 {
+  if (eros_lexer_eof(lexer)) {
+    /* do not unread eof */
+    return;
+  }
+
   if (lexer->current_position <= 0) {
     lexer->current_char = 0;
   } else {
@@ -43,12 +53,12 @@ void eros_lexer_skip_line(eros_lexer_t* lexer)
 {
   do {
     eros_lexer_read_char(lexer);
-  } while (lexer->current_char != 0 && lexer->current_char != '\n');
+  } while (lexer->current_char != '\n' && !eros_lexer_eof(lexer));
 }
 
 char eros_lexer_peek_char(eros_lexer_t* lexer)
 {
-  if (lexer->end_position >= lexer->source->size) {
+  if (eros_lexer_eof(lexer)) {
     return 0;
   }
 
@@ -59,34 +69,38 @@ char* eros_lexer_read_string(eros_lexer_t* lexer)
 {
   //TODO: recognize escaped characters
 
-  int start_position = lexer->current_position;
-  do {
-    eros_lexer_read_char(lexer);
-  } while (lexer->current_char != '"' && lexer->current_char != 0);
+  eros_lexer_read_char(lexer);  /* consume the opening '"' char */
 
-  int end_position = lexer->current_position - 1;
+  int start_position = lexer->current_position;
+  while (lexer->current_char != '"' && !eros_lexer_eof(lexer)) {
+    eros_lexer_read_char(lexer);
+  }
+
+  int end_position = lexer->current_position;
+
+  eros_lexer_read_char(lexer);  /* consume the closing '"' char */
 
   /* check for empty string */
   if (start_position == end_position) {
     return "";
   }
 
-  return eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+  return eros_source_read_interval(lexer->source, start_position, end_position);
 }
 
 char* eros_lexer_read_identifier(eros_lexer_t* lexer)
 {
   int start_position = lexer->current_position;
-  do {
+  while (eros_lexer_is_letter(lexer->current_char)) {
     eros_lexer_read_char(lexer);
-  } while (eros_lexer_is_letter(lexer->current_char));
+  }
 
-  char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+  char* identifier = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
 
-  /* unread char (we read one past the end of the identifier) */
+  /* unread char (we read one past the end of the number) */
   eros_lexer_unread_char(lexer);
 
-  return interval;
+  return identifier;
 }
 
 char* eros_lexer_read_number(eros_lexer_t* lexer)
@@ -96,12 +110,12 @@ char* eros_lexer_read_number(eros_lexer_t* lexer)
     eros_lexer_read_char(lexer);
   }
 
-  char* interval = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
+  char* number = eros_source_read_interval(lexer->source, start_position, lexer->current_position);
 
   /* unread char (we read one past the end of the number) */
   eros_lexer_unread_char(lexer);
 
-  return interval;
+  return number;
 }
 
 eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
@@ -109,60 +123,60 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
   eros_token_t* token = NULL;
   eros_lexer_read_char(lexer);
 
+  if (eros_lexer_eof(lexer)) {
+    return eros_token_simple(EROS_TK_EOF);
+  }
+
   /* printf("    current_char = '%c'\n", lexer->current_char); */
 
   switch (lexer->current_char) {
 
-    case 0:
-      token = eros_token_simple(EROS_TK_EOF);
-      break;
-
-    case ' ':
+    case ' ': ;
       token = eros_token_simple(EROS_TK_SPACE);
       break;
 
-    case '=':
+    case '=': ;
       token = eros_token_simple(EROS_TK_EQUAL);
       break;
 
-    case '.':
+    case '.': ;
       token = eros_token_simple(EROS_TK_DOT);
       break;
 
-    case ',':
+    case ',': ;
       token = eros_token_simple(EROS_TK_COMMA);
       break;
 
-    case '[':
+    case '[': ;
       token = eros_token_simple(EROS_TK_LBRACKET);
       break;
 
-    case ']':
+    case ']': ;
       token = eros_token_simple(EROS_TK_RBRACKET);
       break;
 
-    case '(':
+    case '(': ;
       token = eros_token_simple(EROS_TK_LPAREN);
       break;
 
-    case ')':
+    case ')': ;
       token = eros_token_simple(EROS_TK_RPAREN);
       break;
 
-    case '{':
+    case '{': ;
       token = eros_token_simple(EROS_TK_LBRACE);
       break;
 
-    case '}':
+    case '}': ;
       token = eros_token_simple(EROS_TK_RBRACE);
       break;
 
-    case '#':
+    case '#': ;
       eros_lexer_skip_line(lexer);
       token = eros_lexer_next_token(lexer);
       break;
 
-    case ':':
+    case ':': ;
       if (eros_lexer_peek_char(lexer) == '=') {
         eros_lexer_read_char(lexer);  /* consume the '=' char */
         token = eros_token_simple(EROS_TK_SET);
@@ -171,8 +185,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       }
       break;
 
-    case '\"':
-      eros_lexer_read_char(lexer);  /* skip the '"' char */
+    case '\"': ;
       char* str = eros_lexer_read_string(lexer);
       token = eros_token_new(EROS_TK_STRING, str);
       if (str && *str) {
@@ -181,7 +194,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       break;
 
     /** number or identifier **/
-    default:
+    default: ;
       if (eros_lexer_is_letter(lexer->current_char)) {
         char* identifier = eros_lexer_read_identifier(lexer);
         token = eros_token_new(EROS_TK_IDENTIFIER, identifier);
@@ -196,7 +209,7 @@ eros_token_t* eros_lexer_next_token(eros_lexer_t* lexer)
       break;
   }
 
-  /* printf("    \\__ token = %s '%s'\n", token->type->name, token->value); */
+  /* printf("    \\__ token = %s '%s' pos %d,%d\n", token->type->name, token->value, lexer->current_position, lexer->end_position); */
 
   if (lexer->current_token) {
     eros_token_delete(lexer->current_token);

@@ -12,7 +12,7 @@ struct eros_input_t
   char* log_filename;
 
   /**
-   * -c, optional: to compile, is absent go into repl mode
+   * -c, optional: compile program, if absent start repl instead
    */
   flag_t compile_flag;
 

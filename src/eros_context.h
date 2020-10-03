@@ -21,7 +21,7 @@ struct eros_context_t
   eros_value_t** values;
 
   /** is this context alive? (see error) **/
-  int is_alive;
+  bool is_alive;
 
   /** why is not alive anymore **/
   char* error;

@@ -34,6 +34,7 @@ static eros_token_t* simple_tokens[EROS_TOKEN_SIMPLE_COUNT] = { NULL };
 void eros_token_delete_simples(void) {
   for (int i = 0; i < EROS_TOKEN_SIMPLE_COUNT; ++i) {
     free(simple_tokens[i]);
+    simple_tokens[i] = NULL;
   }
 }
 
@@ -100,11 +101,11 @@ const char* eros_token_value(eros_token_t* token)
   return token->value;
 }
 
-BOOL _will_clean_simples = FALSE;
+bool _will_clean_simples = false;
 eros_token_t* eros_token_simple(eros_token_type_code code)
 {
   if (!_will_clean_simples) {
-    _will_clean_simples = TRUE;
+    _will_clean_simples = true;
     atexit(eros_token_delete_simples);
   }
 
@@ -169,36 +170,36 @@ void eros_token_delete(eros_token_t* token)
   token = NULL;
 }
 
-BOOL eros_token_is_simple_type(eros_token_type* type)
+bool eros_token_is_simple_type(eros_token_type* type)
 {
   /* simple token types have a value, complex ones do not (by definition) */
   return type->value != NULL;
 }
 
-BOOL eros_token_is_simple(eros_token_t* token)
+bool eros_token_is_simple(eros_token_t* token)
 {
   if (!token) {
     /* a null token is not simple */
-    return FALSE;
+    return false;
   }
 
   return eros_token_is_simple_type(token->type);
 }
 
-BOOL eros_token_is_eof(eros_token_t* token)
+bool eros_token_is_eof(eros_token_t* token)
 {
   if (!token) {
     /* a null token is not eof */
-    return FALSE;
+    return false;
   }
 
   return token->type->code == EROS_TK_EOF;
 }
 
-BOOL eros_token_is_identifier(eros_token_t* token, const char* identifier)
+bool eros_token_is_identifier(eros_token_t* token, const char* identifier)
 {
   if (!token) {
-    return FALSE;
+    return false;
   }
 
   return token->type->code == EROS_TK_IDENTIFIER

@@ -1,3 +1,13 @@
+#ifndef EROS_TEST_H
+#define EROS_TEST_H
+
+void fail(const char* format, ...);
+
+typedef void (*eros_test)();
+void test_lexer();
+
+#endif // EROS_TEST_H
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,13 +29,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#ifndef EROS_TEST_H
-#define EROS_TEST_H
-
-void fail(const char* format, ...);
-
-typedef void (*eros_test)();
-void test_lexer();
-
-#endif // EROS_TEST_H

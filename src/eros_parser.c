@@ -41,10 +41,10 @@ eros_ast_node_t* eros_parser_parse(eros_context_t* context, const char* text)
   /*   parser->step(parser, lexer, token); */
   /* } */
 
-  /* BOOL line = FALSE; */
+  /* bool line = false; */
   /* eros_token_t* token = NULL; */
   /* while (eros_token_simple(EROS_TK_EOF) != (token = eros_lexer_next_token(lexer))) { */
-  /*   line = TRUE; */
+  /*   line = true; */
   /*   printf("(\"%s\", %s) ", eros_token_value(token), eros_token_type_name(token)); */
   /*   parser->step(parser, lexer, token); */
   /*   eros_token_delete(token); */

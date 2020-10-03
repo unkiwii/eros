@@ -1,3 +1,64 @@
+#include "eros_assert.h"
+#include "eros_test.h"
+
+#include <string.h>
+
+bool eros_assert_true(const char* name, bool value)
+{
+  if (!value) {
+    fail("expected %s to be true\n", name);
+    return false;
+  }
+  return true;
+}
+
+bool eros_assert_null(const char* name, void* ptr)
+{
+  if (ptr) {
+    fail("expected %s to be null, but found %p\n", name, ptr);
+    return false;
+  }
+  return true;
+}
+
+bool eros_assert_not_null(const char* name, void* ptr)
+{
+  if (!ptr) {
+    fail("expected %s to have a value, but found %p\n", name, ptr);
+    return false;
+  }
+  return true;
+}
+
+bool eros_assert_eq_length(const char* name, int actual, int expected)
+{
+  if (actual != expected) {
+    fail("expected %d %s, but found %d\n", expected, name, actual);
+    return false;
+  }
+  return true;
+}
+
+bool eros_assert_eq_char_arr(const char* name, int length, char** actual, char** expected)
+{
+  for (int i = 0; i < length; i++) {
+    if (strcmp(actual[i], expected[i]) != 0) {
+      fail("expected %s '%s' but found '%s'\n", name, expected[i], actual[i]);
+      return false;
+    }
+  }
+  return true;
+}
+
+bool eros_assert_eq_char_ptr(const char* name, char* actual, char* expected)
+{
+  if (strcmp(actual, expected) != 0) {
+    fail("expected '%s', but found '%s' in '%s'\n", expected, actual, name);
+    return false;
+  }
+  return true;
+}
+
 /*
 Copyright (c) 2014-2017 Lucas Gabriel Sánchez
 
@@ -19,55 +80,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
-#include "eros_assert.h"
-#include "eros_test.h"
-
-#include <string.h>
-
-BOOL eros_assert_null(const char* name, void* ptr)
-{
-  if (ptr) {
-    fail("expected %s to be null, but found %p\n", name, ptr);
-    return FALSE;
-  }
-  return TRUE;
-}
-
-BOOL eros_assert_not_null(const char* name, void* ptr)
-{
-  if (!ptr) {
-    fail("expected %s to have a value, but found %p\n", name, ptr);
-    return FALSE;
-  }
-  return TRUE;
-}
-
-BOOL eros_assert_eq_length(const char* name, int actual, int expected)
-{
-  if (actual != expected) {
-    fail("expected %d %s, but found %d\n", expected, name, actual);
-    return FALSE;
-  }
-  return TRUE;
-}
-
-BOOL eros_assert_eq_char_arr(const char* name, int length, char** actual, char** expected)
-{
-  for (int i = 0; i < length; i++) {
-    if (strcmp(actual[i], expected[i]) != 0) {
-      fail("expected %s '%s' but found '%s'\n", name, expected[i], actual[i]);
-      return FALSE;
-    }
-  }
-  return TRUE;
-}
-
-BOOL eros_assert_eq_char_ptr(const char* name, char* actual, char* expected)
-{
-  if (strcmp(actual, expected) != 0) {
-    fail("expected '%s', but found '%s' in '%s'\n", expected, actual, name);
-    return FALSE;
-  }
-  return TRUE;
-}

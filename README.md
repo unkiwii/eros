@@ -14,7 +14,7 @@ is a statically typed, general-purpose programming language. **eros** is being d
 It depends on ```libedit``` to be installed:
 
 ```
-apt-get install libedit   # on debian
+apt-get install libedit-dev   # on debian
 # TODO: add more distros here
 ```
 

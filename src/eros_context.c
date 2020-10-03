@@ -15,7 +15,7 @@ eros_context_t* eros_context_new(void)
   context->symbols_count = 0;
   context->symbols = NULL;
   context->values = NULL;
-  context->is_alive = 1;
+  context->is_alive = true;
   context->error = NULL;
 
   return context;

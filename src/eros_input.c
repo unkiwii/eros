@@ -10,8 +10,8 @@ eros_input_t* eros_input_new(int argc, char** argv)
   eros_input_t* input = (eros_input_t*) malloc(sizeof(eros_input_t));
   input->files = NULL;
   input->files_count = 0;
-  input->compile_flag = 0;
-  input->log_flag = 0;
+  input->compile_flag = false;
+  input->log_flag = false;
   input->log_filename = NULL;
 
   for (int i = 1; i < argc; i++) {

@@ -1,10 +1,10 @@
 #ifndef EROS_DEFINES_H
 #define EROS_DEFINES_H
 
-#ifndef BOOL
-  #define BOOL char
-  #define TRUE ((char)1)
-  #define FALSE ((char)0)
+#ifndef bool
+  #define bool char
+  #define true ((char)1)
+  #define false ((char)0)
 #endif
 
 #ifndef PROGRAM_NAME
@@ -46,7 +46,7 @@
 typedef long long int file_size_t;
 typedef int file_line_t;
 typedef int error_code_t;
-typedef char flag_t;
+typedef bool flag_t;
 typedef long long int files_count_t;
 typedef long long int symbols_count_t;
 typedef long long int children_count_t;
